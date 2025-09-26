@@ -10,7 +10,7 @@
                 <h5>Editar Sistema Operativo</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('sistemas.update', $sistema) }}" method="POST">
+                <form action="{{ route('sistemaoperativos.update', $sistema) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
@@ -26,7 +26,7 @@
                         <input type="text" name="version" id="version" class="form-control" value="{{ old('version', $sistema->version) }}">
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{{ route('sistemas.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <a href="{{ route('sistemaoperativos.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
                         <button type="submit" class="btn btn-warning">Actualizar</button>
                     </div>
                 </form>
