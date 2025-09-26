@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TipoEquipo extends Model
+class Tipoequipo extends Model
 {
-    
     protected $fillable = ['nombre_tipo'];
 
     public function equipos()

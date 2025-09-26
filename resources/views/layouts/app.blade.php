@@ -28,9 +28,9 @@
                             <li><a class="dropdown-item" href="{{ route('oficinas.index') }}">Oficinas</a></li>
                             <li><a class="dropdown-item" href="{{ route('marcas.index') }}">Marcas</a></li>
                             <li><a class="dropdown-item" href="{{ route('modelos.index') }}">Modelos</a></li>
-                            <li><a class="dropdown-item" href="{{ route('tipos.index') }}">Tipos de Equipo</a></li>
+                            <li><a class="dropdown-item" href="{{ route('tipoequipos.index') }}">Tipos de Equipo</a></li>
                             <li><a class="dropdown-item" href="{{ route('hardwares.index') }}">Hardware</a></li>
-                            <li><a class="dropdown-item" href="{{ route('sistemas.index') }}">Sistemas Operativos</a></li>
+                            <li><a class="dropdown-item" href="{{ route('sistemaoperativos.index') }}">Sistemas Operativos</a></li>
                             <li><a class="dropdown-item" href="{{ route('responsables.index') }}">Responsables</a></li>
                             <li><a class="dropdown-item" href="{{ route('equipos.index') }}">Equipos</a></li>
                         </ul>

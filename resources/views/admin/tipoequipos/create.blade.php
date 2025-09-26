@@ -10,14 +10,14 @@
                 <h5>Nuevo Tipo de Equipo</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('tipos.store') }}" method="POST">
+                <form action="{{ route('tipoequipos.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="nombre_tipo" class="form-label">Nombre *</label>
                         <input type="text" name="nombre_tipo" id="nombre_tipo" class="form-control" required value="{{ old('nombre_tipo') }}">
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{{ route('tipos.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <a href="{{ route('tipoequipos.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
                         <button type="submit" class="btn btn-success">Guardar</button>
                     </div>
                 </form>

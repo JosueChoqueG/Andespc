@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Equipo extends Model
 {
-    protected $table = 'equipos'; // Nombre exacto de la tabla en la BD
+   
     protected $fillable = [
         'nombre_dispositivo', 'numero_serie', 'direccion_ip', 'fecha_adquisicion',
         'estado_equipo', 'fecha_mantenimiento', 'observacion', 'copias_seguridad',

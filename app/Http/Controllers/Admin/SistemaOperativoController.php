@@ -6,17 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\SistemaOperativo;
 use Illuminate\Http\Request;
 
-class SistemaOperativoController extends Controller
+class SistemaoperativoController extends Controller
 {
     public function index()
     {
-        $sistemas = SistemaOperativo::all();
-        return view('admin.sistemas.index', compact('sistemas'));
+        $sistemaoperativos = Sistemaoperativo::all();
+        return view('admin.sistemaoperativos.index', compact('sistemaoperativos'));
     }
 
     public function create()
     {
-        return view('admin.sistemas.create');
+        return view('admin.sistemaoperativos.create');
     }
 
     public function store(Request $request)
@@ -27,23 +27,23 @@ class SistemaOperativoController extends Controller
             'version' => 'nullable|string|max:20',
         ]);
 
-        SistemaOperativo::create($request->all());
+        Sistemaoperativo::create($request->all());
 
-        return redirect()->route('sistemas.index')
+        return redirect()->route('sistemaoperativos.index')
             ->with('success', 'Sistema operativo creado correctamente.');
     }
 
-    public function show(SistemaOperativo $sistema)
+    public function show(Sistemaoperativo $sistemaoperativos)
     {
-        return view('admin.sistemas.show', compact('sistema'));
+        return view('admin.sistemaoperativos.show', compact('sistemaoperativo'));
     }
 
-    public function edit(SistemaOperativo $sistema)
+    public function edit(SistemaOperativo $sistemaoperativos)
     {
-        return view('admin.sistemas.edit', compact('sistema'));
+        return view('admin.sistemaoperativos.edit', compact('sistemaoperativo'));
     }
 
-    public function update(Request $request, SistemaOperativo $sistema)
+    public function update(Request $request, Sistemaoperativo $sistemaoperativos)
     {
         $request->validate([
             'nombre_so' => 'required|string|max:50',
@@ -51,17 +51,17 @@ class SistemaOperativoController extends Controller
             'version' => 'nullable|string|max:20',
         ]);
 
-        $sistema->update($request->all());
+        $sistemaoperativos->update($request->all());
 
-        return redirect()->route('sistemas.index')
+        return redirect()->route('sistemaoperativos.index')
             ->with('success', 'Sistema operativo actualizado correctamente.');
     }
 
-    public function destroy(SistemaOperativo $sistema)
+    public function destroy(Sistemaoperativo $sistemaoperativos)
     {
-        $sistema->delete();
+        $sistemaoperativos->delete();
 
-        return redirect()->route('sistemas.index')
+        return redirect()->route('sistemaoperativos.index')
             ->with('success', 'Sistema operativo eliminado correctamente.');
     }
 }

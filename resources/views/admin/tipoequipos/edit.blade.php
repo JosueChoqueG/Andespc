@@ -10,7 +10,7 @@
                 <h5>Editar Tipo de Equipo</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('tipos.update', $tipo) }}" method="POST">
+                <form action="{{ route('tipoequipos.update', $tipoequipo) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
@@ -18,7 +18,7 @@
                         <input type="text" name="nombre_tipo" id="nombre_tipo" class="form-control" required value="{{ old('nombre_tipo', $tipo->nombre_tipo) }}">
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                        <a href="{{ route('tipos.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
+                        <a href="{{ route('tipoequipos.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
                         <button type="submit" class="btn btn-warning">Actualizar</button>
                     </div>
                 </form>

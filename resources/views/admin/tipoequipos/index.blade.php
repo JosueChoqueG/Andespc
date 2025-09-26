@@ -5,7 +5,7 @@
 @section('content')
 <div class="d-flex justify-content-between mb-4">
     <h2>Tipos de Equipo</h2>
-    <a href="{{ route('tipos.create') }}" class="btn btn-primary">
+    <a href="{{ route('tipoequipos.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-circle"></i> Nuevo Tipo
     </a>
 </div>
@@ -23,14 +23,14 @@
         </tr>
     </thead>
     <tbody>
-        @forelse($tipos as $tipos)
+        @forelse($tipoequipos as $tipoequipo)
             <tr>
-                <td>{{ $tipos->id_tipo }}</td>
-                <td>{{ $tipos->nombre_tipo }}</td>
+                <td>{{ $tipoequipos->id_tipo }}</td>
+                <td>{{ $tipoequipos->nombre_tipo }}</td>
                 <td>
-                    <a href="{{ route('tipos.show', $tipos) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
-                    <a href="{{ route('tipos.edit', $tipos) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                    <form action="{{ route('tipos.destroy', $tipos) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este tipo?')">
+                    <a href="{{ route('tipoequipos.show', $tipos) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
+                    <a href="{{ route('tipoequipos.edit', $tipos) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
+                    <form action="{{ route('tipoequipos.destroy', $tipos) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este tipo?')">
                         @csrf @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
                     </form>
