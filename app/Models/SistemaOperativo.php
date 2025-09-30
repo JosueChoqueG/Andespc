@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SistemaOperativo extends Model
+class Sistemaoperativo extends Model
 {
     protected $table = 'sistemaoperativos';
     protected $fillable = ['nombre_so', 'edicion', 'version'];
