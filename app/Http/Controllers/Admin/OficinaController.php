@@ -35,7 +35,7 @@ class OficinaController extends Controller
         $request->validate([
             'nombre_oficina' => 'required|string|max:100',
             'ubicacion_equipo' => 'nullable|string|max:255',
-            'id_agencia' => 'required|exists:agencias,id_agencia',
+            'agencia_id' => 'required|exists:agencias,id',
         ]);
 
         Oficina::create($request->all());
@@ -43,6 +43,7 @@ class OficinaController extends Controller
         return redirect()->route('oficinas.index')
             ->with('success', 'Oficina creada correctamente.');
     }
+
 
     /**
      * Mostrar detalles.
