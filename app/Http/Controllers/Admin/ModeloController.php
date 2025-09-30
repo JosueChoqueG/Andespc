@@ -25,7 +25,7 @@ class ModeloController extends Controller
     {
         $request->validate([
             'nombre_modelo' => 'required|string|max:100',
-            'id_marca' => 'required|exists:marca,id_marca',
+            'marca_id' => 'required|exists:marcas,id',
         ]);
 
         Modelo::create($request->all());
@@ -50,7 +50,7 @@ class ModeloController extends Controller
     {
         $request->validate([
             'nombre_modelo' => 'required|string|max:100',
-            'id_marca' => 'required|exists:marca,id_marca',
+            'marca_id' => 'required|exists:marcas,id',
         ]);
 
         $modelo->update($request->all());
