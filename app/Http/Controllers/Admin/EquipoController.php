@@ -25,6 +25,37 @@ class EquipoController extends Controller
             'responsables' => Responsable::all(),
         ]);
     }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nombre_dispositivo'   => 'required|string|max:100',
+            'numero_serie'         => 'nullable|string|max:100',
+            'direccion_ip'         => 'nullable|string|max:45',
+            'fecha_adquisicion'    => 'nullable|date',
+            'estado_equipo'        => 'required|in:Activo,Inactivo,Baja',
+            'fecha_mantenimiento'  => 'nullable|date',
+            'observacion'          => 'nullable|string',
+            'copias_seguridad'     => 'nullable|string',
+            'depreciacion_anual'   => 'nullable|numeric',
+            'programas_instalados' => 'nullable|string',
+            'licencias'            => 'nullable|string',
+            'vpn_cusco'            => 'required|in:Sí,No',
+            'vpn_abancay'          => 'required|in:Sí,No',
+            'antivirus'            => 'nullable|string|max:100',
+            'oficina_id'           => 'required|exists:oficinas,id',
+            'tipo_equipo_id'       => 'required|exists:tipoequipos,id',
+            'hardware_id'          => 'required|exists:hardwares,id',
+            'modelo_id'            => 'required|exists:modelos,id',
+            'sistema_operativo_id' => 'required|exists:sistemas_operativos,id',
+            'responsable_id'       => 'nullable|exists:responsables,id',
+        ]);
+
+        Equipo::create($request->all());
+
+        return redirect()->route('equipos.index')
+                        ->with('success', 'Equipo creado correctamente.');
+    }
+
 
     public function edit(Equipo $equipo)
     {

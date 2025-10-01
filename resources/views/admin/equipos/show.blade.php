@@ -14,13 +14,49 @@
                     <tr><th>Nombre</th><td>{{ $equipo->nombre_dispositivo }}</td></tr>
                     <tr><th>Número de Serie</th><td>{{ $equipo->numero_serie ?? 'N/A' }}</td></tr>
                     <tr><th>Dirección IP</th><td>{{ $equipo->direccion_ip ?? 'N/A' }}</td></tr>
-                    <tr><th>Oficina</th><td>{{ $equipo->oficina->nombre_oficina ?? 'N/A' }} ({{ $equipo->oficina->agencia->nombre_agencia ?? 'N/A' }})</td></tr>
-                    <tr><th>Tipo de Equipo</th><td>{{ $equipo->tipo->nombre_tipo ?? 'N/A' }}</td></tr>
-                    <tr><th>Modelo</th><td>{{ $equipo->modelo->nombre_modelo ?? 'N/A' }} ({{ $equipo->modelo->marca->nombre_marca ?? 'N/A' }})</td></tr>
-                    <tr><th>Hardware</th><td>{{ $equipo->hardware->procesador }} | {{ $equipo->hardware->ram_gb }}GB RAM | {{ $equipo->hardware->almacenamiento_gb }}GB {{ $equipo->hardware->tipo_almacenamiento }}</td></tr>
-                    <tr><th>Sistema Operativo</th><td>{{ $equipo->sistemaOperativo->nombre_so }} {{ $equipo->sistemaOperativo->edicion }} ({{ $equipo->sistemaOperativo->version }})</td></tr>
-                    <tr><th>Responsable</th><td>{{ $equipo->responsable->nombre_responsable ?? 'N/A' }}</td></tr>
-                    <tr><th>Estado</th><td><span class="badge bg-{{ $equipo->estado_equipo == 'Activo' ? 'success' : ($equipo->estado_equipo == 'Inactivo' ? 'warning' : 'danger') }}">{{ $equipo->estado_equipo }}</span></td></tr>
+                    <tr><th>Oficina</th>
+                        <td>
+                            {{ optional($equipo->oficina)->nombre_oficina ?? 'N/A' }} 
+                            ({{ optional($equipo->oficina?->agencia)->nombre_agencia ?? 'N/A' }})
+                        </td>
+                    </tr>
+                    <tr><th>Tipo de Equipo</th><td>{{ optional($equipo->tipo)->nombre_tipo ?? 'N/A' }}</td></tr>
+                    <tr><th>Modelo</th>
+                        <td>
+                            {{ optional($equipo->modelo)->nombre_modelo ?? 'N/A' }} 
+                            ({{ optional($equipo->modelo?->marca)->nombre_marca ?? 'N/A' }})
+                        </td>
+                    </tr>
+                    <tr><th>Hardware</th>
+                        <td>
+                            @if($equipo->hardware)
+                                {{ $equipo->hardware->procesador }} | 
+                                {{ $equipo->hardware->ram_gb }}GB RAM | 
+                                {{ $equipo->hardware->almacenamiento_gb }}GB {{ $equipo->hardware->tipo_almacenamiento }}
+                            @else
+                                N/A
+                            @endif
+                        </td>
+                    </tr>
+                    <tr><th>Sistema Operativo</th>
+                        <td>
+                            @if($equipo->sistemaOperativo)
+                                {{ $equipo->sistemaOperativo->nombre_so }} 
+                                {{ $equipo->sistemaOperativo->edicion }} 
+                                ({{ $equipo->sistemaOperativo->version }})
+                            @else
+                                N/A
+                            @endif
+                        </td>
+                    </tr>
+                    <tr><th>Responsable</th><td>{{ optional($equipo->responsable)->nombre_responsable ?? 'N/A' }}</td></tr>
+                    <tr><th>Estado</th>
+                        <td>
+                            <span class="badge bg-{{ $equipo->estado_equipo == 'Activo' ? 'success' : ($equipo->estado_equipo == 'Inactivo' ? 'warning' : 'danger') }}">
+                                {{ $equipo->estado_equipo }}
+                            </span>
+                        </td>
+                    </tr>
                     <tr><th>Fecha Adquisición</th><td>{{ $equipo->fecha_adquisicion?->format('d/m/Y') ?? 'N/A' }}</td></tr>
                     <tr><th>Último Mantenimiento</th><td>{{ $equipo->fecha_mantenimiento?->format('d/m/Y') ?? 'N/A' }}</td></tr>
                     <tr><th>Depreciación Anual</th><td>{{ $equipo->depreciacion_anual ?? 'N/A' }}%</td></tr>

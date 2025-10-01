@@ -48,22 +48,22 @@
 
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="id_oficina" class="form-label">Oficina *</label>
-                            <select name="id_oficina" class="form-select" required>
+                            <label for="oficina_id" class="form-label">Oficina *</label>
+                            <select name="oficina_id" class="form-select" required>
                                 <option value="">Seleccionar oficina</option>
                                 @foreach($oficinas as $oficina)
-                                    <option value="{{ $oficina->id_oficina }}" {{ old('id_oficina', $equipo->id_oficina) == $oficina->id_oficina ? 'selected' : '' }}>
+                                    <option value="{{ $oficina->oficina_id }}" {{ old('oficina_id', $equipo->oficina_id) == $oficina->oficina_id ? 'selected' : '' }}>
                                         {{ $oficina->nombre_oficina }} ({{ $oficina->agencia->nombre_agencia }})
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="id_tipo" class="form-label">Tipo de Equipo *</label>
-                            <select name="id_tipo" class="form-select" required>
+                            <label for="tipo_id" class="form-label">Tipo de Equipo *</label>
+                            <select name="tipo_id" class="form-select" required>
                                 <option value="">Seleccionar tipo</option>
                                 @foreach($tipos as $tipo)
-                                    <option value="{{ $tipo->id_tipo }}" {{ old('id_tipo', $equipo->id_tipo) == $tipo->id_tipo ? 'selected' : '' }}>
+                                    <option value="{{ $tipo->tipo_id }}" {{ old('tipo_id', $equipo->tipo_id) == $tipo->tipo_id ? 'selected' : '' }}>
                                         {{ $tipo->nombre_tipo }}
                                     </option>
                                 @endforeach
@@ -73,22 +73,22 @@
 
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="id_modelo" class="form-label">Modelo *</label>
-                            <select name="id_modelo" class="form-select" required>
+                            <label for="modelo_id" class="form-label">Modelo *</label>
+                            <select name="modelo_id" class="form-select" required>
                                 <option value="">Seleccionar modelo</option>
                                 @foreach($modelos as $modelo)
-                                    <option value="{{ $modelo->id_modelo }}" {{ old('id_modelo', $equipo->id_modelo) == $modelo->id_modelo ? 'selected' : '' }}>
+                                    <option value="{{ $modelo->modelo_id }}" {{ old('modelo_id', $equipo->modelo_id) == $modelo->modelo_id ? 'selected' : '' }}>
                                         {{ $modelo->nombre_modelo }} ({{ $modelo->marca->nombre_marca }})
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="id_hardware" class="form-label">Hardware *</label>
-                            <select name="id_hardware" class="form-select" required>
+                            <label for="hardware_id" class="form-label">Hardware *</label>
+                            <select name="hardware_id" class="form-select" required>
                                 <option value="">Seleccionar hardware</option>
                                 @foreach($hardwares as $hardware)
-                                    <option value="{{ $hardware->id_hardware }}" {{ old('id_hardware', $equipo->id_hardware) == $hardware->id_hardware ? 'selected' : '' }}>
+                                    <option value="{{ $hardware->hardware_id }}" {{ old('hardware_id', $equipo->hardware_id) == $hardware->hardware_id ? 'selected' : '' }}>
                                         {{ $hardware->procesador }} | {{ $hardware->ram_gb }}GB RAM | {{ $hardware->almacenamiento_gb }}GB {{ $hardware->tipo_almacenamiento }}
                                     </option>
                                 @endforeach
@@ -98,22 +98,22 @@
 
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="id_so" class="form-label">Sistema Operativo *</label>
-                            <select name="id_so" class="form-select" required>
+                            <label for="so_id" class="form-label">Sistema Operativo *</label>
+                            <select name="so_id" class="form-select" required>
                                 <option value="">Seleccionar SO</option>
                                 @foreach($sistemas as $so)
-                                    <option value="{{ $so->id_so }}" {{ old('id_so', $equipo->id_so) == $so->id_so ? 'selected' : '' }}>
+                                    <option value="{{ $so->so_id }}" {{ old('so_id', $equipo->so_id) == $so->so_id ? 'selected' : '' }}>
                                         {{ $so->nombre_so }} {{ $so->edicion }} ({{ $so->version }})
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="id_responsable" class="form-label">Responsable *</label>
-                            <select name="id_responsable" class="form-select" required>
+                            <label for="responsable_id" class="form-label">Responsable *</label>
+                            <select name="responsable_id" class="form-select" required>
                                 <option value="">Seleccionar responsable</option>
                                 @foreach($responsables as $responsable)
-                                    <option value="{{ $responsable->id_responsable }}" {{ old('id_responsable', $equipo->id_responsable) == $responsable->id_responsable ? 'selected' : '' }}>
+                                    <option value="{{ $responsable->responsable_id }}" {{ old('responsable_id', $equipo->responsable_id) == $responsable->responsable_id ? 'selected' : '' }}>
                                         {{ $responsable->nombre_responsable }}
                                     </option>
                                 @endforeach

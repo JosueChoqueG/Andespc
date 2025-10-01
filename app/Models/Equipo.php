@@ -6,13 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Equipo extends Model
 {
-   
     protected $fillable = [
         'nombre_dispositivo', 'numero_serie', 'direccion_ip', 'fecha_adquisicion',
         'estado_equipo', 'fecha_mantenimiento', 'observacion', 'copias_seguridad',
         'depreciacion_anual', 'programas_instalados', 'licencias', 'vpn_cusco',
-        'vpn_abancay', 'antivirus', 'id_oficina', 'id_tipo', 'id_hardware',
-        'id_modelo', 'id_so', 'id_responsable'
+        'vpn_abancay', 'antivirus', 'oficina_id', 'tipo_equipo_id', 'hardware_id',
+        'modelo_id', 'sistema_operativo_id', 'responsable_id'
     ];
 
     protected $casts = [
@@ -22,31 +21,31 @@ class Equipo extends Model
 
     public function oficina()
     {
-        return $this->belongsTo(Oficina::class);
+        return $this->belongsTo(Oficina::class, 'oficina_id');
     }
 
     public function tipo()
     {
-        return $this->belongsTo(TipoEquipo::class, 'id_tipo');
+        return $this->belongsTo(Tipoequipo::class, 'tipo_equipo_id');
     }
 
     public function hardware()
     {
-        return $this->belongsTo(Hardware::class);
+        return $this->belongsTo(Hardware::class, 'hardware_id');
     }
 
     public function modelo()
     {
-        return $this->belongsTo(Modelo::class);
+        return $this->belongsTo(Modelo::class, 'modelo_id');
     }
 
     public function sistemaOperativo()
     {
-        return $this->belongsTo(SistemaOperativo::class, 'id_so');
+        return $this->belongsTo(SistemaOperativo::class, 'sistema_operativo_id');
     }
 
     public function responsable()
     {
-        return $this->belongsTo(Responsable::class);
+        return $this->belongsTo(Responsable::class, 'responsable_id');
     }
 }
