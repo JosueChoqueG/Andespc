@@ -22,7 +22,7 @@ class ResponsableController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre_responsable' => 'required|string|max:100|unique:responsable,nombre_responsable',
+            'nombre_responsable' => 'required|string|max:100|unique:responsables,nombre_responsable',
         ]);
 
         Responsable::create($request->all());
@@ -44,7 +44,7 @@ class ResponsableController extends Controller
     public function update(Request $request, Responsable $responsable)
     {
         $request->validate([
-            'nombre_responsable' => 'required|string|max:100|unique:responsable,nombre_responsable,' . $responsable->id_responsable . ',id_responsable',
+            'nombre_responsable' => 'required|string|max:100|unique:responsables,nombre_responsable,' . $responsable->id_responsable . ',id_responsable',
         ]);
 
         $responsable->update($request->all());
