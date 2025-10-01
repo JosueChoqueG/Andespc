@@ -25,14 +25,21 @@
     <tbody>
         @forelse($tipoequipos as $tipoequipo)
             <tr>
-                <td>{{ $tipoequipos->id_tipo }}</td>
-                <td>{{ $tipoequipos->nombre_tipo }}</td>
+                <td>{{ $tipoequipo->id }}</td>
+                <td>{{ $tipoequipo->nombre_tipo }}</td>
                 <td>
-                    <a href="{{ route('tipoequipos.show', $tipos) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
-                    <a href="{{ route('tipoequipos.edit', $tipos) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
-                    <form action="{{ route('tipoequipos.destroy', $tipos) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este tipo?')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></button>
+                    <a href="{{ route('tipoequipos.show', $tipoequipo) }}" class="btn btn-sm btn-info">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="{{ route('tipoequipos.edit', $tipoequipo) }}" class="btn btn-sm btn-warning">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <form action="{{ route('tipoequipos.destroy', $tipoequipo) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este tipo?')">
+                        @csrf 
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash"></i>
+                        </button>
                     </form>
                 </td>
             </tr>

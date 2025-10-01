@@ -11,11 +11,11 @@
             </div>
             <div class="card-body">
                 <table class="table table-bordered">
-                    <tr><th>ID</th><td>{{ $tipoequipo->id_tipo }}</td></tr>
+                    <tr><th>ID</th><td>{{ $tipoequipo->id }}</td></tr>
                     <tr><th>Nombre</th><td>{{ $tipoequipo->nombre_tipo }}</td></tr>
                 </table>
                 <div class="d-flex justify-content-end">
-                    <a href="{{ route('tipoequipos.edit', $tipo) }}" class="btn btn-warning me-2">Editar</a>
+                    <a href="{{ route('tipoequipos.edit', $tipoequipo) }}" class="btn btn-warning me-2">Editar</a>
                     <a href="{{ route('tipoequipos.index') }}" class="btn btn-secondary">Volver</a>
                 </div>
             </div>
