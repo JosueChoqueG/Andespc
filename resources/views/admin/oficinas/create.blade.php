@@ -36,11 +36,6 @@
                         @enderror
                     </div>
 
-                    <div class="mb-3">
-                        <label for="ubicacion_equipo" class="form-label">Ubicación del Equipo</label>
-                        <textarea name="ubicacion_equipo" id="ubicacion_equipo" class="form-control" rows="2">{{ old('ubicacion_equipo') }}</textarea>
-                    </div>
-
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a href="{{ route('oficinas.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
                         <button type="submit" class="btn btn-success">Guardar Oficina</button>

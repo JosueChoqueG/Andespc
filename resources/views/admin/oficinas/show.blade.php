@@ -13,7 +13,6 @@
                 <table class="table table-bordered">
                     <tr><th>Nombre</th><td>{{ $oficina->nombre_oficina }}</td></tr>
                     <tr><th>Agencia</th><td>{{ $oficina->agencia->nombre_agencia ?? 'N/A' }}</td></tr>
-                    <tr><th>Ubicación del Equipo</th><td>{{ $oficina->ubicacion_equipo ?? 'No especificada' }}</td></tr>
                 </table>
 
                 <div class="d-flex justify-content-end">

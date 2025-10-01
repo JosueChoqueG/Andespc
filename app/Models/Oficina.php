@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Oficina extends Model
 {
-    protected $fillable = ['nombre_oficina', 'ubicacion_equipo', 'agencia_id'];
+    protected $fillable = ['nombre_oficina', 'agencia_id'];
 
     public function agencia()
     {

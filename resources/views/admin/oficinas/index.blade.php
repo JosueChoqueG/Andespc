@@ -23,7 +23,6 @@
             <th>ID</th>
             <th>Nombre</th>
             <th>Agencia</th>
-            <th>Ubicación</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -33,7 +32,6 @@
                 <td>{{ $oficina->id_oficina }}</td>
                 <td>{{ $oficina->nombre_oficina }}</td>
                 <td>{{ $oficina->agencia->nombre_agencia ?? 'N/A' }}</td>
-                <td>{{ $oficina->ubicacion_equipo ?? 'No especificada' }}</td>
                 <td>
                     <a href="{{ route('oficinas.show', $oficina) }}" class="btn btn-sm btn-info" title="Ver">
                         <i class="bi bi-eye"></i>
