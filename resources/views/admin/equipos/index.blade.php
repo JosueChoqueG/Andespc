@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Equipos Registrados</h2>
+    <h2 class="mb-0"><i class="bi bi-pc-display"></i> Equipos Registrados</h2>
     <a href="{{ route('equipos.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-circle"></i> Nuevo Equipo
     </a>
@@ -17,10 +17,20 @@
     </div>
 @endif
 
-<div class="card">
+<div class="card shadow-sm">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <strong><i class="bi bi-list-check"></i> Lista de Equipos</strong>
+        <!-- Buscador -->
+        <form action="{{ route('equipos.index') }}" method="GET" class="d-flex">
+            <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Buscar..." value="{{ request('search') }}">
+            <button class="btn btn-sm btn-outline-primary" type="submit">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+    </div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-striped table-hover">
+            <table class="table table-bordered table-hover align-middle">
                 <thead class="table-light">
                     <tr>
                         <th>Dispositivo</th>
@@ -28,8 +38,8 @@
                         <th>IP</th>
                         <th>Oficina</th>
                         <th>Tipo</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,13 +49,13 @@
                             <td>{{ $equipo->numero_serie ?? 'N/A' }}</td>
                             <td>{{ $equipo->direccion_ip ?? 'N/A' }}</td>
                             <td>{{ $equipo->oficina->nombre_oficina ?? 'Sin oficina' }}</td>
-                            <td>{{ $equipo->tipo->nombre_tipo ?? 'Sin tipo' }}</td>
-                            <td>
+                            <td>{{ $equipo->tipoequipo->nombre_tipo ?? 'Sin tipo' }}</td>
+                            <td class="text-center">
                                 <span class="badge bg-{{ $equipo->estado_equipo == 'Activo' ? 'success' : ($equipo->estado_equipo == 'Inactivo' ? 'warning' : 'danger') }}">
                                     {{ $equipo->estado_equipo }}
                                 </span>
                             </td>
-                            <td>
+                            <td class="text-center">
                                 <a href="{{ route('equipos.show', $equipo) }}" class="btn btn-sm btn-info" title="Ver">
                                     <i class="bi bi-eye"></i>
                                 </a>
@@ -63,11 +73,18 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center text-muted">No hay equipos registrados.</td>
+                            <td colspan="7" class="text-center text-muted">
+                                <i class="bi bi-exclamation-circle"></i> No hay equipos registrados.
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
+        </div>
+
+        <!-- Paginación -->
+        <div class="d-flex justify-content-center mt-3">
+            {{ $equipos->links() }}
         </div>
     </div>
 </div>

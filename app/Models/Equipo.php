@@ -2,50 +2,70 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Equipo extends Model
 {
-    protected $fillable = [
-        'nombre_dispositivo', 'numero_serie', 'direccion_ip', 'fecha_adquisicion',
-        'estado_equipo', 'fecha_mantenimiento', 'observacion', 'copias_seguridad',
-        'depreciacion_anual', 'programas_instalados', 'licencias', 'vpn_cusco',
-        'vpn_abancay', 'antivirus', 'oficina_id', 'tipo_equipo_id', 'hardware_id',
-        'modelo_id', 'sistema_operativo_id', 'responsable_id'
-    ];
+    use HasFactory;
 
+    protected $table = 'equipos';
     protected $casts = [
         'fecha_adquisicion' => 'date',
         'fecha_mantenimiento' => 'date',
     ];
 
+    protected $fillable = [
+        'nombre_dispositivo',
+        'numero_serie',
+        'direccion_ip',
+        'fecha_adquisicion',
+        'estado_equipo',
+        'fecha_mantenimiento',
+        'observacion',
+        'copias_seguridad',
+        'depreciacion_anual',
+        'programas_instalados',
+        'licencias',
+        'vpn_cusco',
+        'vpn_abancay',
+        'antivirus',
+        'oficina_id',
+        'tipoequipo_id',
+        'hardware_id',
+        'modelo_id',
+        'sistemaoperativo_id',
+        'responsable_id',
+    ];
+
+    // Relaciones
     public function oficina()
     {
-        return $this->belongsTo(Oficina::class, 'oficina_id');
+        return $this->belongsTo(Oficina::class);
     }
 
-    public function tipo()
+    public function tipoequipo()
     {
-        return $this->belongsTo(Tipoequipo::class, 'tipo_equipo_id');
+        return $this->belongsTo(Tipoequipo::class);
     }
 
     public function hardware()
     {
-        return $this->belongsTo(Hardware::class, 'hardware_id');
+        return $this->belongsTo(Hardware::class);
     }
 
     public function modelo()
     {
-        return $this->belongsTo(Modelo::class, 'modelo_id');
+        return $this->belongsTo(Modelo::class);
     }
 
-    public function sistemaOperativo()
+    public function sistemaoperativo()
     {
-        return $this->belongsTo(SistemaOperativo::class, 'sistema_operativo_id');
+        return $this->belongsTo(Sistemaoperativo::class);
     }
 
     public function responsable()
     {
-        return $this->belongsTo(Responsable::class, 'responsable_id');
+        return $this->belongsTo(Responsable::class);
     }
 }

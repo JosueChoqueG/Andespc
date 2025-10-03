@@ -59,11 +59,11 @@
                             </select>
                         </div>
                         <div class="col-md-6">
-                            <label for="tipo_id" class="form-label">Tipo de Equipo *</label>
-                            <select name="tipo_id" class="form-select" required>
+                            <label for="tipoequipo_id" class="form-label">Tipo de Equipo *</label>
+                            <select name="tipoequipo_id" class="form-select" required>
                                 <option value="">Seleccionar tipo</option>
-                                @foreach($tipos as $tipo)
-                                    <option value="{{ $tipo->tipo_id }}" {{ old('tipo_id', $equipo->tipo_id) == $tipo->tipo_id ? 'selected' : '' }}>
+                                @foreach($tipoequipos as $tipo)
+                                    <option value="{{ $tipo->id }}" {{ old('tipo_id', $equipo->tipoequipo_id) == $tipo->id ? 'selected' : '' }}>
                                         {{ $tipo->nombre_tipo }}
                                     </option>
                                 @endforeach
