@@ -79,7 +79,7 @@
                             <select name="tipoequipo_id" id="tipoequipo_id"
                                     class="form-select @error('tipoequipo_id') is-invalid @enderror" required>
                                 <option value="">Seleccionar tipo</option>
-                                @foreach($tipoequipos as $tipo)
+                                @foreach($tipos as $tipo)
                                     <option value="{{ $tipo->id }}" {{ old('tipoequipo_id') == $tipo->id ? 'selected' : '' }}>
                                         {{ $tipo->nombre_tipo }}
                                     </option>
