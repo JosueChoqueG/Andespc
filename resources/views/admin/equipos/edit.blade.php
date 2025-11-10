@@ -14,7 +14,7 @@
                     @csrf
                     @method('PUT')
 
-                    <!-- Copia todo el formulario de create.blade.php, pero con los valores de $equipo -->
+                    <!-- Nombre y serie -->
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="nombre_dispositivo" class="form-label">Nombre del Dispositivo *</label>
@@ -25,34 +25,30 @@
                         </div>
                         <div class="col-md-6">
                             <label for="numero_serie" class="form-label">Número de Serie</label>
-                            <input type="text" name="numero_serie" id="numero_serie" class="form-control @error('numero_serie') is-invalid @enderror" value="{{ old('numero_serie', $equipo->numero_serie) }}">
-                            @error('numero_serie')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="text" name="numero_serie" id="numero_serie" class="form-control" value="{{ old('numero_serie', $equipo->numero_serie) }}">
                         </div>
                     </div>
 
+                    <!-- IP y fecha -->
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="direccion_ip" class="form-label">Dirección IP</label>
-                            <input type="text" name="direccion_ip" id="direccion_ip" class="form-control @error('direccion_ip') is-invalid @enderror" value="{{ old('direccion_ip', $equipo->direccion_ip) }}">
-                            @error('direccion_ip')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <input type="text" name="direccion_ip" id="direccion_ip" class="form-control" value="{{ old('direccion_ip', $equipo->direccion_ip) }}">
                         </div>
                         <div class="col-md-6">
                             <label for="fecha_adquisicion" class="form-label">Fecha de Adquisición</label>
-                            <input type="date" name="fecha_adquisicion" id="fecha_adquisicion" class="form-control" value="{{ old('fecha_adquisicion', $equipo->fecha_adquisicion?->format('Y-m-d')) }}">
+                            <input type="date" name="fecha_adquisicion" id="fecha_adquisicion" class="form-control" value="{{ old('fecha_adquisicion', optional($equipo->fecha_adquisicion)->format('Y-m-d')) }}">
                         </div>
                     </div>
 
+                    <!-- Oficina y tipo -->
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="oficina_id" class="form-label">Oficina *</label>
-                            <select name="oficina_id" class="form-select" required>
+                            <select name="oficina_id" id="oficina_id" class="form-select" required>
                                 <option value="">Seleccionar oficina</option>
                                 @foreach($oficinas as $oficina)
-                                    <option value="{{ $oficina->oficina_id }}" {{ old('oficina_id', $equipo->oficina_id) == $oficina->oficina_id ? 'selected' : '' }}>
+                                    <option value="{{ $oficina->id }}" {{ old('oficina_id', $equipo->oficina_id) == $oficina->id ? 'selected' : '' }}>
                                         {{ $oficina->nombre_oficina }} ({{ $oficina->agencia->nombre_agencia }})
                                     </option>
                                 @endforeach
@@ -60,10 +56,10 @@
                         </div>
                         <div class="col-md-6">
                             <label for="tipoequipo_id" class="form-label">Tipo de Equipo *</label>
-                            <select name="tipoequipo_id" class="form-select" required>
+                            <select name="tipoequipo_id" id="tipoequipo_id" class="form-select" required>
                                 <option value="">Seleccionar tipo</option>
                                 @foreach($tipoequipos as $tipo)
-                                    <option value="{{ $tipo->id }}" {{ old('tipo_id', $equipo->tipoequipo_id) == $tipo->id ? 'selected' : '' }}>
+                                    <option value="{{ $tipo->id }}" {{ old('tipoequipo_id', $equipo->tipoequipo_id) == $tipo->id ? 'selected' : '' }}>
                                         {{ $tipo->nombre_tipo }}
                                     </option>
                                 @endforeach
@@ -71,13 +67,14 @@
                         </div>
                     </div>
 
+                    <!-- Modelo y hardware -->
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="modelo_id" class="form-label">Modelo *</label>
-                            <select name="modelo_id" class="form-select" required>
+                            <select name="modelo_id" id="modelo_id" class="form-select" required>
                                 <option value="">Seleccionar modelo</option>
                                 @foreach($modelos as $modelo)
-                                    <option value="{{ $modelo->modelo_id }}" {{ old('modelo_id', $equipo->modelo_id) == $modelo->modelo_id ? 'selected' : '' }}>
+                                    <option value="{{ $modelo->id }}" {{ old('modelo_id', $equipo->modelo_id) == $modelo->id ? 'selected' : '' }}>
                                         {{ $modelo->nombre_modelo }} ({{ $modelo->marca->nombre_marca }})
                                     </option>
                                 @endforeach
@@ -85,10 +82,10 @@
                         </div>
                         <div class="col-md-6">
                             <label for="hardware_id" class="form-label">Hardware *</label>
-                            <select name="hardware_id" class="form-select" required>
+                            <select name="hardware_id" id="hardware_id" class="form-select" required>
                                 <option value="">Seleccionar hardware</option>
                                 @foreach($hardwares as $hardware)
-                                    <option value="{{ $hardware->hardware_id }}" {{ old('hardware_id', $equipo->hardware_id) == $hardware->hardware_id ? 'selected' : '' }}>
+                                    <option value="{{ $hardware->id }}" {{ old('hardware_id', $equipo->hardware_id) == $hardware->id ? 'selected' : '' }}>
                                         {{ $hardware->procesador }} | {{ $hardware->ram_gb }}GB RAM | {{ $hardware->almacenamiento_gb }}GB {{ $hardware->tipo_almacenamiento }}
                                     </option>
                                 @endforeach
@@ -96,13 +93,14 @@
                         </div>
                     </div>
 
+                    <!-- Sistema operativo y responsable -->
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label for="so_id" class="form-label">Sistema Operativo *</label>
-                            <select name="so_id" class="form-select" required>
+                            <label for="sistemaoperativo_id" class="form-label">Sistema Operativo *</label>
+                            <select name="sistemaoperativo_id" id="sistemaoperativo_id" class="form-select" required>
                                 <option value="">Seleccionar SO</option>
                                 @foreach($sistemas as $so)
-                                    <option value="{{ $so->so_id }}" {{ old('so_id', $equipo->so_id) == $so->so_id ? 'selected' : '' }}>
+                                    <option value="{{ $so->id }}" {{ old('sistemaoperativo_id', $equipo->sistemaoperativo_id) == $so->id ? 'selected' : '' }}>
                                         {{ $so->nombre_so }} {{ $so->edicion }} ({{ $so->version }})
                                     </option>
                                 @endforeach
@@ -110,10 +108,10 @@
                         </div>
                         <div class="col-md-6">
                             <label for="responsable_id" class="form-label">Responsable *</label>
-                            <select name="responsable_id" class="form-select" required>
+                            <select name="responsable_id" id="responsable_id" class="form-select">
                                 <option value="">Seleccionar responsable</option>
                                 @foreach($responsables as $responsable)
-                                    <option value="{{ $responsable->responsable_id }}" {{ old('responsable_id', $equipo->responsable_id) == $responsable->responsable_id ? 'selected' : '' }}>
+                                    <option value="{{ $responsable->id }}" {{ old('responsable_id', $equipo->responsable_id) == $responsable->id ? 'selected' : '' }}>
                                         {{ $responsable->nombre_responsable }}
                                     </option>
                                 @endforeach
@@ -121,10 +119,11 @@
                         </div>
                     </div>
 
+                    <!-- Estado y mantenimiento -->
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="estado_equipo" class="form-label">Estado del Equipo *</label>
-                            <select name="estado_equipo" class="form-select" required>
+                            <select name="estado_equipo" id="estado_equipo" class="form-select" required>
                                 <option value="Activo" {{ old('estado_equipo', $equipo->estado_equipo) == 'Activo' ? 'selected' : '' }}>Activo</option>
                                 <option value="Inactivo" {{ old('estado_equipo', $equipo->estado_equipo) == 'Inactivo' ? 'selected' : '' }}>Inactivo</option>
                                 <option value="Baja" {{ old('estado_equipo', $equipo->estado_equipo) == 'Baja' ? 'selected' : '' }}>Baja</option>
@@ -132,60 +131,64 @@
                         </div>
                         <div class="col-md-6">
                             <label for="fecha_mantenimiento" class="form-label">Último Mantenimiento</label>
-                            <input type="date" name="fecha_mantenimiento" class="form-control" value="{{ old('fecha_mantenimiento', $equipo->fecha_mantenimiento?->format('Y-m-d')) }}">
+                            <input type="date" name="fecha_mantenimiento" id="fecha_mantenimiento" class="form-control" value="{{ old('fecha_mantenimiento', optional($equipo->fecha_mantenimiento)->format('Y-m-d')) }}">
                         </div>
                     </div>
 
+                    <!-- VPNs y antivirus -->
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="vpn_cusco" class="form-label">VPN Cusco</label>
-                            <select name="vpn_cusco" class="form-select">
+                            <select name="vpn_cusco" id="vpn_cusco" class="form-select">
                                 <option value="Sí" {{ old('vpn_cusco', $equipo->vpn_cusco) == 'Sí' ? 'selected' : '' }}>Sí</option>
                                 <option value="No" {{ old('vpn_cusco', $equipo->vpn_cusco) == 'No' ? 'selected' : '' }}>No</option>
                             </select>
                         </div>
                         <div class="col-md-4">
                             <label for="vpn_abancay" class="form-label">VPN Abancay</label>
-                            <select name="vpn_abancay" class="form-select">
+                            <select name="vpn_abancay" id="vpn_abancay" class="form-select">
                                 <option value="Sí" {{ old('vpn_abancay', $equipo->vpn_abancay) == 'Sí' ? 'selected' : '' }}>Sí</option>
                                 <option value="No" {{ old('vpn_abancay', $equipo->vpn_abancay) == 'No' ? 'selected' : '' }}>No</option>
                             </select>
                         </div>
                         <div class="col-md-4">
                             <label for="antivirus" class="form-label">Antivirus</label>
-                            <input type="text" name="antivirus" class="form-control" value="{{ old('antivirus', $equipo->antivirus) }}">
+                            <input type="text" name="antivirus" id="antivirus" class="form-control" value="{{ old('antivirus', $equipo->antivirus) }}">
                         </div>
                     </div>
 
+                    <!-- Campos de texto largos -->
                     <div class="mb-3">
                         <label for="depreciacion_anual" class="form-label">Depreciación Anual (%)</label>
-                        <input type="number" step="0.01" name="depreciacion_anual" class="form-control" value="{{ old('depreciacion_anual', $equipo->depreciacion_anual) }}">
+                        <input type="number" step="0.01" name="depreciacion_anual" id="depreciacion_anual" class="form-control" value="{{ old('depreciacion_anual', $equipo->depreciacion_anual) }}">
                     </div>
 
                     <div class="mb-3">
                         <label for="programas_instalados" class="form-label">Programas Instalados</label>
-                        <textarea name="programas_instalados" class="form-control" rows="3">{{ old('programas_instalados', $equipo->programas_instalados) }}</textarea>
+                        <textarea name="programas_instalados" id="programas_instalados" class="form-control" rows="3">{{ old('programas_instalados', $equipo->programas_instalados) }}</textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="licencias" class="form-label">Licencias</label>
-                        <textarea name="licencias" class="form-control" rows="2">{{ old('licencias', $equipo->licencias) }}</textarea>
+                        <textarea name="licencias" id="licencias" class="form-control" rows="2">{{ old('licencias', $equipo->licencias) }}</textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="copias_seguridad" class="form-label">Copias de Seguridad</label>
-                        <textarea name="copias_seguridad" class="form-control" rows="2">{{ old('copias_seguridad', $equipo->copias_seguridad) }}</textarea>
+                        <textarea name="copias_seguridad" id="copias_seguridad" class="form-control" rows="2">{{ old('copias_seguridad', $equipo->copias_seguridad) }}</textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="observacion" class="form-label">Observaciones</label>
-                        <textarea name="observacion" class="form-control" rows="3">{{ old('observacion', $equipo->observacion) }}</textarea>
+                        <textarea name="observacion" id="observacion" class="form-control" rows="3">{{ old('observacion', $equipo->observacion) }}</textarea>
                     </div>
 
+                    <!-- Botones -->
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a href="{{ route('equipos.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>
                         <button type="submit" class="btn btn-warning">Actualizar</button>
                     </div>
+
                 </form>
             </div>
         </div>
