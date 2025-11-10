@@ -33,18 +33,18 @@ class MarcaController extends Controller
 
     public function show(Marca $marca)
     {
-        return view('admin.marcas.show', compact('marcas'));
+        return view('admin.marcas.show', compact('marca'));
     }
 
     public function edit(Marca $marca)
     {
-        return view('admin.marcas.edit', compact('marcas'));
+        return view('admin.marcas.edit', compact('marca'));
     }
 
     public function update(Request $request, Marca $marca)
     {
         $request->validate([
-            'nombre_marca' => 'required|string|max:50|unique:marcas,nombre_marca,' . $marca->id_marca . ',id_marca',
+            'nombre_marca' => 'required|string|max:50|unique:marcas,nombre_marca,' . $marca->id,
         ]);
 
         $marca->update($request->all());
