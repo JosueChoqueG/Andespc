@@ -23,16 +23,17 @@
                     </div>
 
                     <div class="mb-3">
-                        <label for="id_agencia" class="form-label">Agencia *</label>
-                        <select name="id_agencia" id="id_agencia" class="form-select @error('id_agencia') is-invalid @enderror" required>
+                        <label for="agencia_id" class="form-label">Agencia *</label>
+                        <select name="agencia_id" id="agencia_id" class="form-select @error('agencia_id') is-invalid @enderror" required>
                             <option value="">Seleccionar agencia</option>
                             @foreach($agencias as $agencia)
-                                <option value="{{ $agencia->id_agencia }}" {{ old('id_agencia', $oficina->id_agencia) == $agencia->id_agencia ? 'selected' : '' }}>
+                                <option value="{{ $agencia->id }}" 
+                                    {{ old('agencia_id', $oficina->agencia_id) == $agencia->id ? 'selected' : '' }}>
                                     {{ $agencia->nombre_agencia }} ({{ $agencia->codigo_agencia }})
                                 </option>
                             @endforeach
                         </select>
-                        @error('id_agencia')
+                        @error('agencia_id')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
