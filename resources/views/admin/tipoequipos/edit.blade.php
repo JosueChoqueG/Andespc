@@ -15,7 +15,11 @@
                     @method('PUT')
                     <div class="mb-3">
                         <label for="nombre_tipo" class="form-label">Nombre *</label>
-                        <input type="text" name="nombre_tipo" id="nombre_tipo" class="form-control" required value="{{ old('nombre_tipo', $tipo->nombre_tipo) }}">
+                        <input type="text" name="nombre_tipo" id="nombre_tipo" class="form-control @error('nombre_tipo') is-invalid @enderror"
+                               required value="{{ old('nombre_tipo', $tipoequipo->nombre_tipo) }}">
+                        @error('nombre_tipo')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a href="{{ route('tipoequipos.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>

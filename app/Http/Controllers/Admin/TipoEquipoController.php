@@ -25,7 +25,7 @@ class TipoequipoController extends Controller
             'nombre_tipo' => 'required|string|max:50|unique:tipoequipos,nombre_tipo',
         ]);
 
-        Tipoequipo::create($request->all());
+        Tipoequipo::create($request->only('nombre_tipo'));
 
         return redirect()->route('tipoequipos.index')
             ->with('success', 'Tipo de equipo creado correctamente.');
@@ -42,16 +42,16 @@ class TipoequipoController extends Controller
     }
 
     public function update(Request $request, Tipoequipo $tipoequipo)
-{
-    $request->validate([
-        'nombre_tipo' => 'required|string|max:50|unique:tipoequipos,nombre_tipo,' . $tipoequipo->id,
-    ]);
+    {
+        $request->validate([
+            'nombre_tipo' => 'required|string|max:50|unique:tipoequipos,nombre_tipo,' . $tipoequipo->id,
+        ]);
 
-    $tipoequipo->update($request->all());
+        $tipoequipo->update($request->only('nombre_tipo'));
 
-    return redirect()->route('tipoequipos.index')
-        ->with('success', 'Tipo de equipo actualizado correctamente.');
-}
+        return redirect()->route('tipoequipos.index')
+            ->with('success', 'Tipo de equipo actualizado correctamente.');
+    }
 
     public function destroy(Tipoequipo $tipoequipo)
     {
