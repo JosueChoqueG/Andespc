@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class HardwareController extends Controller
 {
     /**
-     * Listar todos los registros.
+     * Mostrar lista de hardware.
      */
     public function index()
     {
@@ -18,7 +18,7 @@ class HardwareController extends Controller
     }
 
     /**
-     * Mostrar formulario para crear.
+     * Mostrar formulario de creación.
      */
     public function create()
     {
@@ -39,17 +39,17 @@ class HardwareController extends Controller
             'ram_gb.required' => 'La memoria RAM es obligatoria.',
             'ram_gb.integer' => 'La RAM debe ser un número entero (GB).',
             'almacenamiento_gb.required' => 'La capacidad de almacenamiento es obligatoria.',
-            'tipo_almacenamiento.in' => 'El tipo debe ser HDD, SSD o NVMe.'
+            'tipo_almacenamiento.in' => 'El tipo debe ser HDD, SSD o NVMe.',
         ]);
 
-        Hardware::create($request->all());
+        Hardware::create($request->only(['procesador', 'ram_gb', 'almacenamiento_gb', 'tipo_almacenamiento']));
 
         return redirect()->route('hardwares.index')
             ->with('success', 'Hardware creado correctamente.');
     }
 
     /**
-     * Mostrar detalles.
+     * Mostrar detalles de un hardware.
      */
     public function show(Hardware $hardware)
     {
@@ -57,7 +57,7 @@ class HardwareController extends Controller
     }
 
     /**
-     * Mostrar formulario para editar.
+     * Mostrar formulario para editar hardware.
      */
     public function edit(Hardware $hardware)
     {
@@ -65,7 +65,7 @@ class HardwareController extends Controller
     }
 
     /**
-     * Actualizar registro.
+     * Actualizar un hardware existente.
      */
     public function update(Request $request, Hardware $hardware)
     {
@@ -76,14 +76,14 @@ class HardwareController extends Controller
             'tipo_almacenamiento' => 'required|in:HDD,SSD,NVMe',
         ]);
 
-        $hardware->update($request->all());
+        $hardware->update($request->only(['procesador', 'ram_gb', 'almacenamiento_gb', 'tipo_almacenamiento']));
 
         return redirect()->route('hardwares.index')
             ->with('success', 'Hardware actualizado correctamente.');
     }
 
     /**
-     * Eliminar registro.
+     * Eliminar un hardware.
      */
     public function destroy(Hardware $hardware)
     {
