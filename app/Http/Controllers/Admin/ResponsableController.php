@@ -44,7 +44,7 @@ class ResponsableController extends Controller
     public function update(Request $request, Responsable $responsable)
     {
         $request->validate([
-            'nombre_responsable' => 'required|string|max:100|unique:responsables,nombre_responsable,' . $responsable->id_responsable . ',id_responsable',
+            'nombre_responsable' => 'required|string|max:100|unique:responsables,nombre_responsable,' . $responsable->id,
         ]);
 
         $responsable->update($request->all());
