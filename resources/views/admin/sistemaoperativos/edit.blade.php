@@ -10,20 +10,20 @@
                 <h5>Editar Sistema Operativo</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('sistemaoperativos.update', $sistema) }}" method="POST">
+                <form action="{{ route('sistemaoperativos.update', $sistemaoperativo) }}" method="POST">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
                         <label for="nombre_so" class="form-label">Nombre *</label>
-                        <input type="text" name="nombre_so" id="nombre_so" class="form-control" required value="{{ old('nombre_so', $sistema->nombre_so) }}">
+                        <input type="text" name="nombre_so" id="nombre_so" class="form-control" required value="{{ old('nombre_so', $sistemaoperativo->nombre_so) }}">
                     </div>
                     <div class="mb-3">
                         <label for="edicion" class="form-label">Edición</label>
-                        <input type="text" name="edicion" id="edicion" class="form-control" value="{{ old('edicion', $sistema->edicion) }}">
+                        <input type="text" name="edicion" id="edicion" class="form-control" value="{{ old('edicion', $sistemaoperativo->edicion) }}">
                     </div>
                     <div class="mb-3">
                         <label for="version" class="form-label">Versión</label>
-                        <input type="text" name="version" id="version" class="form-control" value="{{ old('version', $sistema->version) }}">
+                        <input type="text" name="version" id="version" class="form-control" value="{{ old('version', $sistemaoperativo->version) }}">
                     </div>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                         <a href="{{ route('sistemaoperativos.index') }}" class="btn btn-secondary me-md-2">Cancelar</a>

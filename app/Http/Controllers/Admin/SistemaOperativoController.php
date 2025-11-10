@@ -33,17 +33,17 @@ class SistemaoperativoController extends Controller
             ->with('success', 'Sistema operativo creado correctamente.');
     }
 
-    public function show(Sistemaoperativo $sistemaoperativos)
+    public function show(Sistemaoperativo $sistemaoperativo)
     {
         return view('admin.sistemaoperativos.show', compact('sistemaoperativo'));
     }
 
-    public function edit(SistemaOperativo $sistemaoperativos)
+    public function edit(SistemaOperativo $sistemaoperativo)
     {
         return view('admin.sistemaoperativos.edit', compact('sistemaoperativo'));
     }
 
-    public function update(Request $request, Sistemaoperativo $sistemaoperativos)
+    public function update(Request $request, Sistemaoperativo $sistemaoperativo)
     {
         $request->validate([
             'nombre_so' => 'required|string|max:50',
@@ -51,15 +51,15 @@ class SistemaoperativoController extends Controller
             'version' => 'nullable|string|max:20',
         ]);
 
-        $sistemaoperativos->update($request->all());
+        $sistemaoperativo->update($request->all());
 
         return redirect()->route('sistemaoperativos.index')
             ->with('success', 'Sistema operativo actualizado correctamente.');
     }
 
-    public function destroy(Sistemaoperativo $sistemaoperativos)
+    public function destroy(Sistemaoperativo $sistemaoperativo)
     {
-        $sistemaoperativos->delete();
+        $sistemaoperativo->delete();
 
         return redirect()->route('sistemaoperativos.index')
             ->with('success', 'Sistema operativo eliminado correctamente.');
