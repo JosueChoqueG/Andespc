@@ -29,6 +29,7 @@ class ModeloController extends Controller
         ]);
 
         Modelo::create($request->all());
+        //Modelo::create($request->only(['nombre_modelo', 'marca_id']));
 
         return redirect()->route('modelos.index')
             ->with('success', 'Modelo creado correctamente.');
@@ -52,8 +53,9 @@ class ModeloController extends Controller
             'nombre_modelo' => 'required|string|max:100',
             'marca_id' => 'required|exists:marcas,id',
         ]);
-
+        
         $modelo->update($request->all());
+        //$modelo->update($request->only(['nombre_modelo', 'marca_id']));
 
         return redirect()->route('modelos.index')
             ->with('success', 'Modelo actualizado correctamente.');
