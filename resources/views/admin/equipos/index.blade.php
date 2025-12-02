@@ -28,6 +28,7 @@
             </button>
         </form>
     </div>
+
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered table-hover align-middle">
@@ -82,9 +83,50 @@
             </table>
         </div>
 
-        <!-- Paginación -->
+        <!-- Paginación Bootstrap -->
         <div class="d-flex justify-content-center mt-3">
-            {{ $equipos->links() }}
+            @if ($equipos->hasPages())
+                <nav>
+                    <ul class="pagination">
+
+                        {{-- Flecha izquierda --}}
+                        @if ($equipos->onFirstPage())
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo;</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $equipos->previousPageUrl() }}" rel="prev">&laquo;</a>
+                            </li>
+                        @endif
+
+                        {{-- Números --}}
+                        @foreach ($equipos->getUrlRange(1, $equipos->lastPage()) as $page => $url)
+                            @if ($page == $equipos->currentPage())
+                                <li class="page-item active">
+                                    <span class="page-link">{{ $page }}</span>
+                                </li>
+                            @else
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                </li>
+                            @endif
+                        @endforeach
+
+                        {{-- Flecha derecha --}}
+                        @if ($equipos->hasMorePages())
+                            <li class="page-item">
+                                <a class="page-link" href="{{ $equipos->nextPageUrl() }}" rel="next">&raquo;</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled">
+                                <span class="page-link">&raquo;</span>
+                            </li>
+                        @endif
+
+                    </ul>
+                </nav>
+            @endif
         </div>
     </div>
 </div>
