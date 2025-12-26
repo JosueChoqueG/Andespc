@@ -15,7 +15,7 @@ class EquipoController extends Controller
 {
     public function index()
     {
-        $equipos = Equipo::with(['oficina', 'tipoequipo', 'hardware', 'modelo', 'sistemaoperativo', 'responsable'])->paginate(10);
+        $equipos = Equipo::with(['oficina', 'tipoequipo', 'hardware', 'modelo', 'sistemaoperativo', 'responsable'])->paginate(13);
         return view('admin.equipos.index', compact('equipos'));
     }
 
