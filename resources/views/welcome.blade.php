@@ -87,12 +87,6 @@
                         <a href="{{ route('login') }}" class="btn btn-outline-primary btn-lg btn-custom d-flex align-items-center justify-content-center">
                             <i class="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión
                         </a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="btn btn-primary btn-lg btn-custom d-flex align-items-center justify-content-center">
-                                <i class="bi bi-person-plus me-2"></i> Registrarse
-                            </a>
-                        @endif
                     @endauth
                 @endif
             </div>

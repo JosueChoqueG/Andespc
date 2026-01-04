@@ -7,6 +7,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 </head>
+@include('auth.register')
 <body class="bg-light">
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
@@ -35,6 +36,15 @@
                             <li><a class="dropdown-item" href="{{ route('equipos.index') }}">Equipos</a></li>
                         </ul>
                     </li>
+                    {{-- BOTÓN REGISTRAR USUARIO --}}
+                  
+                        <button type="button"
+                            class="btn btn-light btn-sm"
+                            data-bs-toggle="modal"
+                            data-bs-target="#registerModal">
+                            <i class="bi bi-person-plus"></i> Registrarse
+                        </button>
+                   
                     <li class="nav-item">
                         <form method="POST" action="{{ route('logout') }}" class="d-inline">
                             @csrf

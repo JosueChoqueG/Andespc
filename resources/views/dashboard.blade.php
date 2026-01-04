@@ -3,14 +3,16 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div class="row">
-    <div class="col-12">
-        <h2>Panel de Administración</h2>
-        <p>Bienvenido al sistema de gestión de equipos de Andes PC.</p>
+<div class="row align-items-center mb-4">
+    <div class="col-md-8">
+        <h2 class="mb-0">Panel de Administración</h2>
+        <p class="text-muted mb-0">
+            Bienvenido al sistema de gestión de equipos de Andes PC.
+        </p>
     </div>
 </div>
 
-<div class="row mt-4">
+<div class="row">
     <div class="col-md-4 mb-3">
         <div class="card text-white bg-primary">
             <div class="card-body">
