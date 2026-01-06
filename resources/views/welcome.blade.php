@@ -59,6 +59,7 @@
         }
     </style>
 </head>
+
 <body class="antialiased">
     <div class="container">
         <div class="hero">
@@ -75,7 +76,7 @@
                 Sistema de gestión de equipos, hardware y responsables.
                 Accede al panel administrativo para gestionar dispositivos, oficinas y más.
             </p>
-
+           
             <!-- Botones de acceso -->
             <div class="d-grid gap-3 d-sm-flex justify-content-center">
                 @if (Route::has('login'))
@@ -87,9 +88,12 @@
                         <a href="{{ route('login') }}" class="btn btn-outline-primary btn-lg btn-custom d-flex align-items-center justify-content-center">
                             <i class="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión
                         </a>
+                       
+
                     @endauth
                 @endif
             </div>
+            
         </div>
     </div>
 
