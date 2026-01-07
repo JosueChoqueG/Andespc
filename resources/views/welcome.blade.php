@@ -85,9 +85,14 @@
                             <i class="bi bi-speedometer2 me-2"></i> Ir al Dashboard
                         </a>
                     @else
-                        <a href="{{ route('login') }}" class="btn btn-outline-primary btn-lg btn-custom d-flex align-items-center justify-content-center">
-                            <i class="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión
-                        </a>
+                        <button
+    type="button"
+    class="btn btn-outline-primary btn-lg btn-custom d-flex align-items-center"
+    data-bs-toggle="modal"
+    data-bs-target="#loginModal"
+>
+    <i class="bi bi-box-arrow-in-right me-2"></i> Iniciar Sesión
+</button>
                        
 
                     @endauth
@@ -99,5 +104,12 @@
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    @include('auth.login-modal')
+    @if ($errors->any())
+    <script>
+        const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+        loginModal.show();
+    </script>
+    @endif
 </body>
 </html>
