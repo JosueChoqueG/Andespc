@@ -38,8 +38,10 @@
                             <li><a class="dropdown-item" href="{{ route('equipos.index') }}">Equipos</a></li>
                         </ul>
                     </li>
+                    <a href="{{ route('admin.incidencias.formulario') }}" class="btn btn-primary btn-lg">
+                        <i class="bi bi-plus-circle me-2"></i>Nueva Incidencia
+                    </a>
                     {{-- BOTÓN REGISTRAR USUARIO --}}
-                  
                         <button type="button"
                             class="btn btn-light btn-sm"
                             data-bs-toggle="modal"
