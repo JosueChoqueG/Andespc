@@ -76,42 +76,48 @@
 
                     <div class="col-md-4">
                         <label class="form-label">Agencia</label>
-                        <select name="agencia" class="form-select" required>
+                        <select name="agencia" id="agencia" class="form-select" required>
                             <option value="">Seleccione</option>
-                            <option>99 Soporte Administrativo</option>
-                            <option>101 Chalhuanca</option>
-                            <option>102 Andahuaylas</option>
-                            <option>103 Uripa</option>
-                            <option>104 Antabamba</option>
-                            <option>105 Tintay</option>
-                            <option>106 Huaccana</option>
-                            <option>107 Lima</option>
-                            <option>108 Huancarama</option>
-                            <option>109 Abancay</option>
-                            <option>110 Grau</option>
-                            <option>111 Cotabambas</option>
-                            <option>112 Curahuasi</option>
-                            <option>113 Secclla</option>
-                            <option>114 Cusco</option>
-                            <option>115 SantoTomas</option>
-                            <option>116 Pampa Cangallo</option>
-                            <option>117 Huamanga</option>
-                            <option>118 Pampas Tayacaja</option>
-                            <option>119 Huancayo</option>
-                            <option>120 Urubamba</option>
-                            <option>121 Combapata</option>
-                            <option>122 La Merced</option>
-                            <option>123 SJMiraflores</option>
-                            <option>124 SJLurigancho</option>
-                            <option>125 Nueva Esperanza</option>
-                            <option>126 Ocampo</option>
-                            <option>127 Cañete</option>
+                            <option value="99">99 Soporte Administrativo</option>
+                            <option value="101">101 Chalhuanca</option>
+                            <option value="102">102 Andahuaylas</option>
+                            <option value="103">103 Uripa</option>
+                            <option value="104">104 Antabamba</option>
+                            <option value="105">105 Tintay</option>
+                            <option value="106">106 Huaccana</option>
+                            <option value="107">107 Lima</option>
+                            <option value="108">108 Huancarama</option>
+                            <option value="109">109 Abancay</option>
+                            <option value="110">110 Grau</option>
+                            <option value="111">111 Cotabambas</option>
+                            <option value="112">112 Curahuasi</option>
+                            <option value="113">113 Secclla</option>
+                            <option value="114">114 Cusco</option>
+                            <option value="115">115 SantoTomas</option>
+                            <option value="116">116 Pampa Cangallo</option>
+                            <option value="117">117 Huamanga</option>
+                            <option value="118">118 Pampas Tayacaja</option>
+                            <option value="119">119 Huancayo</option>
+                            <option value="120">120 Urubamba</option>
+                            <option value="121">121 Combapata</option>
+                            <option value="122">122 La Merced</option>
+                            <option value="123">123 SJMiraflores</option>
+                            <option value="124">124 SJLurigancho</option>
+                            <option value="125">125 Nueva Esperanza</option>
+                            <option value="126">126 Ocampo</option>
+                            <option value="127">127 Cañete</option>
                         </select>
                     </div>
 
-                    <div class="col-md-4">
+                    <!-- <div class="col-md-4">
                         <label class="form-label">Sub Agencia</label>
                         <input type="text" name="sub_agencia" class="form-control">
+                    </div> -->
+                    <div class="col-md-4">
+                        <label class="form-label">Sub Agencia</label>
+                        <select name="sub_agencia" id="sub_agencia" class="form-select" required>
+                            <option value="">Seleccione una agencia primero</option>
+                        </select>
                     </div>
 
                     <div class="col-md-4">
@@ -142,6 +148,11 @@
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    /* =========================
+       PROBLEMAS POR TIPO
+    ==========================*/
     const problemas = {
         software: [
             "USUARIO SFI BLOQUEADO",
@@ -187,7 +198,7 @@
         conectividad: [
             "DESCONFIGURACION DE TOTEM",
             "ERROR DE CONEXION CERTIFICADO VPN",
-            "ERORO DE CONECTIVIDAD RED",
+            "ERROR DE CONECTIVIDAD RED",
             "ACTIVACION O CONFIGURACION DE VPN",
             "CONECTIVIDAD GENERAL",
             "SIN ENERGÍA ELÉCTRICA",
@@ -198,10 +209,10 @@
         ]
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const tipoSelect = document.querySelector("select[name='tipo']");
-        const problemaSelect = document.querySelector("select[name='problema']");
+    const tipoSelect = document.querySelector("select[name='tipo']");
+    const problemaSelect = document.querySelector("select[name='problema']");
 
+    if (tipoSelect && problemaSelect) {
         tipoSelect.addEventListener("change", () => {
             const tipo = tipoSelect.value;
             problemaSelect.innerHTML = '<option value="">Seleccione</option>';
@@ -215,6 +226,40 @@
                 });
             }
         });
-    });
+    }
+
+    /* =========================
+       AGENCIA / SUB AGENCIA
+    ==========================*/
+    const subAgencias = {
+        99: ['TI', 'Operaciones', 'Contabilidad', 'logística', 'Comunicaciones']
+        101: ['Chalhuanca', 'Cotaruse', 'Chacapuente', 'Socco', 'Pachaconas', 'Tampumayu']
+        102: ['Talavera', 'Andarapa','Kaquiabamba', 'Soras', 'Pampachiri'],
+        103: ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'ranracancha'],
+        104: ['Yanaca', 'Ayrihuanca'],
+        
+    };
+
+    const agenciaSelect = document.getElementById('agencia');
+    const subAgenciaSelect = document.getElementById('sub_agencia');
+
+    if (agenciaSelect && subAgenciaSelect) {
+        agenciaSelect.addEventListener('change', () => {
+            const agenciaId = agenciaSelect.value;
+            subAgenciaSelect.innerHTML = '<option value="">Seleccione</option>';
+
+            if (subAgencias[agenciaId]) {
+                subAgencias[agenciaId].forEach(sub => {
+                    const option = document.createElement('option');
+                    option.value = sub;
+                    option.textContent = sub;
+                    subAgenciaSelect.appendChild(option);
+                });
+            }
+        });
+    }
+
+});
 </script>
+
 @endsection
