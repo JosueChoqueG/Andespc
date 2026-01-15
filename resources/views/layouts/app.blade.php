@@ -22,9 +22,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('dashboard') }}">Inicio</a>
                     </li>
+                    
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            Gestión
+                            Gestión Pc
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{{ route('agencias.index') }}">Agencias</a></li>
@@ -38,12 +39,15 @@
                             <li><a class="dropdown-item" href="{{ route('equipos.index') }}">Equipos</a></li>
                         </ul>
                     </li>
-                    <a href="{{ route('admin.incidencias.formulario') }}" class="btn btn-primary btn-lg">
-                        <i class="bi bi-plus-circle me-2"></i>Nueva Incidencia
-                    </a>
+                    <li class="nav-item">
+                        <a href="{{ route('admin.incidencias.formulario') }}" class="btn btn-primary btn-lg">
+                            Bitácora
+                        </a>
+                    </li>
+                        
                     {{-- BOTÓN REGISTRAR USUARIO --}}
                         <button type="button"
-                            class="btn btn-light btn-sm"
+                            class="btn btn-success btn-sm"
                             data-bs-toggle="modal"
                             data-bs-target="#registerModal">
                             <i class="bi bi-person-plus"></i> Registrarse
@@ -55,6 +59,9 @@
                             <button type="submit" class="btn btn-link nav-link">Salir</button>
                         </form>
                     </li>
+                    <span class="navbar-text text-white me-3">
+                        Hola, {{ auth()->user()->email }}
+                    </span>
                 </ul>
             </div>
         </div>
