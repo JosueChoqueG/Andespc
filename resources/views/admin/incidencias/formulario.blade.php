@@ -23,125 +23,158 @@
         </div>
     @endif
 
-    <div class="card">
+   <div class="card">
         <div class="card-body">
-            <form action="{{ route('admin.incidencias.guardar') }}" method="POST">
+
+            <form action="{{ route('admin.incidencias.guardar') }}"
+                method="POST"
+                class="row g-3 needs-validation"
+                novalidate>
                 @csrf
 
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <label class="form-label">Tipo de Asistencia</label>
-                        <select name="tipo" class="form-select" required>
-                            <option value="">Seleccione</option>
-                            <option value="software">Software</option>
-                            <option value="hardware">Hardware</option>
-                            <option value="conectividad">Conectividad</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label">Módulo</label>
-                        <select name="modulo" class="form-select" required>
-                            <option value="">Seleccione</option>
-                            <option value="caja">Caja</option>
-                            <option value="creditos">Créditos</option>
-                            <option value="administracion">Administración</option>
-                            <option value="soporte administrativo">Soporte Administrativo</option>
-                            <option value="OTROS">OTROS</option>
-                            <option value="plataforma">Plataforma</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label">Tipo de Problema</label>
-                        <select name="problema" class="form-select" required>
-                            <option value="">Seleccione un tipo primero</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label">Descripción del problema</label>
-                        <textarea name="descripcion" class="form-control" rows="3" required></textarea>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="form-label">Solución aplicada</label>
-                        <textarea name="solucion" class="form-control" rows="3" required></textarea>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label">Usuario afectado</label>
-                        <input type="text" name="usuario_afectado" class="form-control" required>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label">Agencia</label>
-                        <select name="agencia" id="agencia" class="form-select" required>
-                            <option value="">Seleccione</option>
-                            <option value="99">99 Soporte Administrativo</option>
-                            <option value="101">101 Chalhuanca</option>
-                            <option value="102">102 Andahuaylas</option>
-                            <option value="103">103 Uripa</option>
-                            <option value="104">104 Antabamba</option>
-                            <option value="105">105 Tintay</option>
-                            <option value="106">106 Huaccana</option>
-                            <option value="107">107 Lima</option>
-                            <option value="108">108 Huancarama</option>
-                            <option value="109">109 Abancay</option>
-                            <option value="110">110 Grau</option>
-                            <option value="111">111 Cotabambas</option>
-                            <option value="112">112 Curahuasi</option>
-                            <option value="113">113 Secclla</option>
-                            <option value="114">114 Cusco</option>
-                            <option value="115">115 SantoTomas</option>
-                            <option value="116">116 Pampa Cangallo</option>
-                            <option value="117">117 Huamanga</option>
-                            <option value="118">118 Pampas Tayacaja</option>
-                            <option value="119">119 Huancayo</option>
-                            <option value="120">120 Urubamba</option>
-                            <option value="121">121 Combapata</option>
-                            <option value="122">122 La Merced</option>
-                            <option value="123">123 SJMiraflores</option>
-                            <option value="124">124 SJLurigancho</option>
-                            <option value="125">125 Nueva Esperanza</option>
-                            <option value="126">126 Ocampo</option>
-                            <option value="127">127 Cañete</option>
-                        </select>
-                    </div>
-
-                    <!-- <div class="col-md-4">
-                        <label class="form-label">Sub Agencia</label>
-                        <input type="text" name="sub_agencia" class="form-control">
-                    </div> -->
-                    <div class="col-md-4">
-                        <label class="form-label">Sub Agencia</label>
-                        <select name="sub_agencia" id="sub_agencia" class="form-select" required>
-                            <option value="">Seleccione una agencia primero</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label">Prioridad</label>
-                        <select name="prioridad" class="form-select" required>
-                            <option>Alta</option>
-                            <option>Media</option>
-                            <option>Baja</option>
-                        </select>
-                    </div>
-
-                    <div class="col-md-4">
-                        <label class="form-label">Estado</label>
-                        <select name="estado" class="form-select" required>
-                            <option>Pendiente</option>
-                            <option>Derivado</option>
-                            <option>Atendido</option>
-                        </select>
-                    </div>
-
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary w-100">Guardar Incidencia</button>
+                <div class="col-md-4">
+                    <label class="form-label">Tipo de Asistencia</label>
+                    <select name="tipo" class="form-select" required>
+                        <option value="">Seleccione</option>
+                        <option value="software">Software</option>
+                        <option value="hardware">Hardware</option>
+                        <option value="conectividad">Conectividad</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Seleccione un tipo de asistencia.
                     </div>
                 </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Módulo</label>
+                    <select name="modulo" class="form-select" required>
+                        <option value="">Seleccione</option>
+                        <option value="caja">Caja</option>
+                        <option value="creditos">Créditos</option>
+                        <option value="administracion">Administración</option>
+                        <option value="soporte administrativo">Soporte Administrativo</option>
+                        <option value="OTROS">OTROS</option>
+                        <option value="plataforma">Plataforma</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Seleccione un módulo.
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Tipo de Problema</label>
+                    <select name="problema" class="form-select" required>
+                        <option value="">Seleccione un tipo primero</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Seleccione el tipo de problema.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Descripción del problema</label>
+                    <textarea name="descripcion" class="form-control" rows="3" required></textarea>
+                    <div class="invalid-feedback">
+                        Ingrese la descripción del problema.
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Solución aplicada</label>
+                    <textarea name="solucion" class="form-control" rows="3" required></textarea>
+                    <div class="invalid-feedback">
+                        Ingrese la solución aplicada.
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Usuario afectado</label>
+                    <input type="text" name="usuario_afectado" class="form-control" required>
+                    <div class="invalid-feedback">
+                        Ingrese el usuario afectado.
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Agencia</label>
+                    <select name="agencia" id="agencia" class="form-select" required>
+                        <option value="">Seleccione</option>
+                        <option value="99">99 Soporte Administrativo</option>
+                        <option value="101">101 Chalhuanca</option>
+                        <option value="102">102 Andahuaylas</option>
+                        <option value="103">103 Uripa</option> 
+                        <option value="104">104 Antabamba</option> 
+                        <option value="105">105 Tintay</option> 
+                        <option value="106">106 Huaccana</option> 
+                        <option value="107">107 Lima</option> 
+                        <option value="108">108 Huancarama</option> 
+                        <option value="109">109 Abancay</option> 
+                        <option value="110">110 Grau</option> 
+                        <option value="111">111 Cotabambas</option> 
+                        <option value="112">112 Curahuasi</option> 
+                        <option value="113">113 Secclla</option> 
+                        <option value="114">114 Cusco</option> 
+                        <option value="115">115 SantoTomas</option> 
+                        <option value="116">116 Pampa Cangallo</option> 
+                        <option value="117">117 Huamanga</option> 
+                        <option value="118">118 Pampas Tayacaja</option> 
+                        <option value="119">119 Huancayo</option> 
+                        <option value="120">120 Urubamba</option> 
+                        <option value="121">121 Combapata</option> 
+                        <option value="122">122 La Merced</option> 
+                        <option value="123">123 SJMiraflores</option> 
+                        <option value="124">124 SJLurigancho</option> 
+                        <option value="125">125 Nueva Esperanza</option> 
+                        <option value="126">126 Ocampo</option> 
+                        <option value="127">127 Cañete</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Seleccione una agencia.
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Sub Agencia</label>
+                    <select name="sub_agencia" id="sub_agencia" class="form-select" required>
+                        <option value="">Seleccione una agencia primero</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Seleccione una sub agencia.
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Prioridad</label>
+                    <select name="prioridad" class="form-select" required>
+                        <option value="">Seleccione</option>
+                        <option>Alta</option>
+                        <option>Media</option>
+                        <option>Baja</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Seleccione la prioridad.
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Estado</label>
+                    <select name="estado" class="form-select" required>
+                        <option value="">Seleccione</option>
+                        <option>Pendiente</option>
+                        <option>Derivado</option>
+                        <option>Atendido</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Seleccione el estado.
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary w-100">
+                        Guardar Incidencia
+                    </button>
+                </div>
+
             </form>
         </div>
     </div>
@@ -234,9 +267,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const subAgencias = {
         99: ['TI', 'Operaciones', 'Contabilidad', 'logística', 'Comunicaciones'],
         101: ['Chalhuanca', 'Cotaruse', 'Chacapuente', 'Socco', 'Pachaconas', 'Tampumayu'],
-        102: ['Talavera', 'Andarapa','Kaquiabamba', 'Soras', 'Pampachiri'],
+        102: ['Talavera','Champacocha','Pacucha', 'Andarapa','Kaquiabamba', 'Soras','Pampachiri','Jose María Arguedas','Turpo','Huancaray'],
         103: ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'ranracancha'],
-        104: ['Yanaca', 'Ayrihuanca'],
+        104: ['Antabamba', 'Mollebamba', 'Huaquirca'],
+        105: ['Tintay, Casinchihua'],
+        106: ['Huaccana','Chungui','Rocchacc'.'Ocobamba'],
+        107: ['San Isidro'],
+        108: ['Huancarama','Pacobamba','Kishuara','Matapuquio','San Fernando','San Martin','Amaybamba','Pucyura'],
+        109: ['Abancay','Huanipaca','Tacmara'],
+        110: ['Chuquibambilla','Vilcabamba','Totora Oropesa'],
+        111: ['Challhuahuacho','Haquira','Mara','Tambobamba','Cotabambas','Coyllurqui','Progreso'],
+        112: ['Curahuasi','Cachora','Limatambo','Mollepata'],
+        113: ['Secclla','Congalla','Lircay','Acobamba'],
+        114: ['Cusco','Ocongate','Pillcopata','Anta'],
+        115: ['Santo Tomás','Velille','Pulpera','Colquemarca','Quiñota'],
+        116: ['Pampa Cangallo','Vilcas Huamán','Chuschi','Huanca Sancos','Huancapi'],
+        117: ['Huamanga','Tambo La Mar','Tambillo','Acos Vinchos','Vinchos','Pampamarca','Ccayarpachi'],
+        118: ['Pampas Tayacaja','Paucarbamba','Colcabamba','Inyac'],
+        119: ['Huancayo','Lampa','S.M. de Rocchacc','Pichus'],
+        120: ['Urubamba','Chinchero','Calca'],
+        121: ['Combapata','Pomacanchi','Acomayo', 'Accha'],
+        122: ['La Merced','Yurinaki'],
+        123: ['S.J. Miraflores'],
+        124: ['S.J. de Lurigancho'],
+        125: ['Nueva Esperanza','Cascabamba'],
+        126: ['Ocampo','Lambrama','Paccaypata'],
+        127: ['Cañete'],
     };
 
     const agenciaSelect = document.getElementById('agencia');
@@ -259,6 +315,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
+</script>
+<script>
+(() => {
+  'use strict'
+
+  const forms = document.querySelectorAll('.needs-validation')
+
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
 </script>
 
 @endsection

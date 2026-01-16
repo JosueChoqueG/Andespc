@@ -30,11 +30,11 @@
 
                 <!-- LEFT MENU -->
                 <ul class="navbar-nav me-auto gap-2">
-                    <li class="nav-item">
+                   <!--  <li class="nav-item">
                         <a class="nav-link" href="{{ route('dashboard') }}">
                             <i class="bi bi-speedometer2 me-1"></i> Inicio
                         </a>
-                    </li>
+                    </li> -->
 
                     <!-- DROPDOWN -->
                     <li class="nav-item dropdown">
@@ -78,7 +78,7 @@
                             <img src="{{ auth()->user()->avatar ?? asset('img/user-default.png') }}"
                                 class="user-avatar me-2"
                                 alt="Usuario">
-                            <span class="d-none d-lg-inline">{{ auth()->user()->email }}</span>
+                            <span class="d-none d-lg-inline">{{ auth()->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow">
                             <li>
