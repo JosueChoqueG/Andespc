@@ -232,8 +232,8 @@ document.addEventListener("DOMContentLoaded", () => {
        AGENCIA / SUB AGENCIA
     ==========================*/
     const subAgencias = {
-        99: ['TI', 'Operaciones', 'Contabilidad', 'logística', 'Comunicaciones']
-        101: ['Chalhuanca', 'Cotaruse', 'Chacapuente', 'Socco', 'Pachaconas', 'Tampumayu']
+        99: ['TI', 'Operaciones', 'Contabilidad', 'logística', 'Comunicaciones'],
+        101: ['Chalhuanca', 'Cotaruse', 'Chacapuente', 'Socco', 'Pachaconas', 'Tampumayu'],
         102: ['Talavera', 'Andarapa','Kaquiabamba', 'Soras', 'Pampachiri'],
         103: ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'ranracancha'],
         104: ['Yanaca', 'Ayrihuanca'],
