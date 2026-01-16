@@ -1,1 +1,50 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+
+.futuristic-navbar {
+    background: linear-gradient(135deg, #0b132b, #1c2541, #3a506b);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 1050; /* Bootstrap usa 1050+ */
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.nav-link:hover {
+    color: #5bc0eb !important;
+    transform: translateY(-1px);
+}
+
+.dropdown-menu {
+    background: #1f2933;
+    border-radius: 14px;
+    padding: 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+    animation: dropdownFade 0.25s ease-in-out;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.navbar .dropdown-menu {
+    position: absolute;
+    z-index: 1100;
+    margin-top: 8px;
+}
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #5bc0eb;
+}

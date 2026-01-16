@@ -11,23 +11,37 @@
 @include('auth.register')
 
 <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('dashboard') }}">Andes PC Admin</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <nav class="navbar navbar-expand-lg navbar-dark futuristic-navbar shadow-sm">
+        <div class="container-fluid px-4">
+
+            <!-- LOGO / BRAND -->
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ route('dashboard') }}">
+                <i class="bi bi-cpu-fill me-2 text-info"></i>
+                Andes PC Admin
+            </a>
+
+            <!-- TOGGLER -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
+            <!-- NAV CONTENT -->
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+
+                <!-- LEFT MENU -->
+                <ul class="navbar-nav me-auto gap-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">Inicio</a>
-                    </li>
-                    
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            Gestión Pc
+                        <a class="nav-link" href="{{ route('dashboard') }}">
+                            <i class="bi bi-speedometer2 me-1"></i> Inicio
                         </a>
-                        <ul class="dropdown-menu">
+                    </li>
+
+                    <!-- DROPDOWN -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-pc-display me-1"></i> Gestión PC
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark shadow-lg">
                             <li><a class="dropdown-item" href="{{ route('agencias.index') }}">Agencias</a></li>
                             <li><a class="dropdown-item" href="{{ route('oficinas.index') }}">Oficinas</a></li>
                             <li><a class="dropdown-item" href="{{ route('marcas.index') }}">Marcas</a></li>
@@ -39,34 +53,49 @@
                             <li><a class="dropdown-item" href="{{ route('equipos.index') }}">Equipos</a></li>
                         </ul>
                     </li>
+
+                    <!-- BITÁCORA -->
                     <li class="nav-item">
-                        <a href="{{ route('admin.incidencias.formulario') }}" class="btn btn-primary btn-lg">
-                            Bitácora
+                        <a href="{{ route('admin.incidencias.formulario') }}" class="btn btn-outline-info btn-sm ms-2">
+                            <i class="bi bi-journal-text me-1"></i> Bitácora
                         </a>
                     </li>
-                        
-                    {{-- BOTÓN REGISTRAR USUARIO --}}
-                        <button type="button"
-                            class="btn btn-success btn-sm"
-                            data-bs-toggle="modal"
-                            data-bs-target="#registerModal">
-                            <i class="bi bi-person-plus"></i> Registrarse
-                        </button>
-                   
+                </ul>
+
+                <!-- RIGHT USER SECTION -->
+                <ul class="navbar-nav align-items-center gap-3">
+
+                    <!-- REGISTER -->
                     <li class="nav-item">
-                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                            @csrf
-                            <button type="submit" class="btn btn-link nav-link">Salir</button>
-                        </form>
+                        <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#registerModal">
+                            <i class="bi bi-person-plus"></i>
+                        </button>
                     </li>
-                    <span class="navbar-text text-white me-3">
-                        Hola, {{ auth()->user()->email }}
-                    </span>
+
+                    <!-- USER INFO -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                            <img src="{{ auth()->user()->avatar ?? asset('img/user-default.png') }}"
+                                class="user-avatar me-2"
+                                alt="Usuario">
+                            <span class="d-none d-lg-inline">{{ auth()->user()->email }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow">
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="bi bi-box-arrow-right me-1"></i> Cerrar sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+
                 </ul>
             </div>
         </div>
     </nav>
-
     <div class="container mt-4">
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">

@@ -237,7 +237,6 @@ document.addEventListener("DOMContentLoaded", () => {
         102: ['Talavera', 'Andarapa','Kaquiabamba', 'Soras', 'Pampachiri'],
         103: ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'ranracancha'],
         104: ['Yanaca', 'Ayrihuanca'],
-        
     };
 
     const agenciaSelect = document.getElementById('agencia');

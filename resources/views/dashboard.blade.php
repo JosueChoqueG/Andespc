@@ -13,7 +13,7 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4 mb-3">
+    <div class="col-md-2 mb-3">
         <div class="card text-white bg-primary">
             <div class="card-body">
                 <h5 class="card-title"><i class="bi bi-pc-display"></i> Equipos</h5>
@@ -23,7 +23,7 @@
         </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-2 mb-3">
         <div class="card text-white bg-success">
             <div class="card-body">
                 <h5 class="card-title"><i class="bi bi-building"></i> Oficinas</h5>
@@ -33,7 +33,7 @@
         </div>
     </div>
 
-    <div class="col-md-4 mb-3">
+    <div class="col-md-2 mb-3">
         <div class="card text-white bg-info">
             <div class="card-body">
                 <h5 class="card-title"><i class="bi bi-people"></i> Responsables</h5>
