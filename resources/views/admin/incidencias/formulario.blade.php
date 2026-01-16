@@ -160,9 +160,9 @@
                     <label class="form-label">Estado</label>
                     <select name="estado" class="form-select" required>
                         <option value="">Seleccione</option>
+                        <option>Atendido</option>
                         <option>Pendiente</option>
                         <option>Derivado</option>
-                        <option>Atendido</option>
                     </select>
                     <div class="invalid-feedback">
                         Seleccione el estado.
@@ -270,8 +270,8 @@ document.addEventListener("DOMContentLoaded", () => {
         102: ['Talavera','Champacocha','Pacucha', 'Andarapa','Kaquiabamba', 'Soras','Pampachiri','Jose María Arguedas','Turpo','Huancaray'],
         103: ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'ranracancha'],
         104: ['Antabamba', 'Mollebamba', 'Huaquirca'],
-        105: ['Tintay, Casinchihua'],
-        106: ['Huaccana','Chungui','Rocchacc'.'Ocobamba'],
+        105: ['Tintay', 'Casinchihua'],
+        106: ['Huaccana','Chungui','Rocchacc','Ocobamba'],
         107: ['San Isidro'],
         108: ['Huancarama','Pacobamba','Kishuara','Matapuquio','San Fernando','San Martin','Amaybamba','Pucyura'],
         109: ['Abancay','Huanipaca','Tacmara'],
@@ -292,7 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
         124: ['S.J. de Lurigancho'],
         125: ['Nueva Esperanza','Cascabamba'],
         126: ['Ocampo','Lambrama','Paccaypata'],
-        127: ['Cañete'],
+        127: ['Cañete']
     };
 
     const agenciaSelect = document.getElementById('agencia');
