@@ -12,17 +12,20 @@
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 
-                    <!-- Email -->
                     <div class="mb-3">
                         <label class="form-label">Email</label>
                         <input
-                            type="email"
+                            type="text"
+                            id="email"
                             name="email"
                             class="form-control @error('email') is-invalid @enderror"
                             value="{{ old('email') }}"
+                            placeholder="usuario"
                             required
                             autofocus
                         >
+                        <small class="text-muted">@gmail.com</small>
+
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -65,3 +68,12 @@
         </div>
     </div>
 </div>
+<script>
+    document.querySelector('form').addEventListener('submit', function () {
+        let emailInput = document.getElementById('email');
+
+        if (!emailInput.value.includes('@')) {
+            emailInput.value = emailInput.value + '@gmail.com';
+        }
+    });
+</script>

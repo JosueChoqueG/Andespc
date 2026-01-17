@@ -266,9 +266,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ==========================*/
     const subAgencias = {
         99: ['TI', 'Operaciones', 'Contabilidad', 'logística', 'Comunicaciones'],
-        101: ['Chalhuanca', 'Cotaruse', 'Chacapuente', 'Socco', 'Pachaconas', 'Tampumayu'],
-        102: ['Talavera','Champacocha','Pacucha', 'Andarapa','Kaquiabamba', 'Soras','Pampachiri','Jose María Arguedas','Turpo','Huancaray'],
-        103: ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'ranracancha'],
+        101: ['Chalhuanca', 'Huancapampa','Cotaruse', 'Chacapuente', 'Socco', 'Pachaconas', 'Tampumayu'],
+        102: ['Andahuaylas','Talavera','Champacocha','Pacucha', 'Andarapa','Kaquiabamba', 'Soras','Pampachiri','Jose María Arguedas','Turpo','Huancaray'],
+        103: ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'Ranracancha'],
         104: ['Antabamba', 'Mollebamba', 'Huaquirca'],
         105: ['Tintay', 'Casinchihua'],
         106: ['Huaccana','Chungui','Rocchacc','Ocobamba'],
@@ -278,7 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
         110: ['Chuquibambilla','Vilcabamba','Totora Oropesa'],
         111: ['Challhuahuacho','Haquira','Mara','Tambobamba','Cotabambas','Coyllurqui','Progreso'],
         112: ['Curahuasi','Cachora','Limatambo','Mollepata'],
-        113: ['Secclla','Congalla','Lircay','Acobamba'],
+        113: ['Secclla','Congalla','Lircay','Acobamba','Antaparco'],
         114: ['Cusco','Ocongate','Pillcopata','Anta'],
         115: ['Santo Tomás','Velille','Pulpera','Colquemarca','Quiñota'],
         116: ['Pampa Cangallo','Vilcas Huamán','Chuschi','Huanca Sancos','Huancapi'],
