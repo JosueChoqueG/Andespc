@@ -24,7 +24,7 @@
                             required
                             autofocus
                         >
-                        <small class="text-muted">@gmail.com</small>
+                        <small class="text-muted">@cooperativalosandes.com</small>
 
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -73,7 +73,7 @@
         let emailInput = document.getElementById('email');
 
         if (!emailInput.value.includes('@')) {
-            emailInput.value = emailInput.value + '@gmail.com';
+            emailInput.value = emailInput.value + '@cooperativalosandes.com';
         }
     });
 </script>
