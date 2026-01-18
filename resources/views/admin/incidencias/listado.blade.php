@@ -6,10 +6,10 @@
         <h2>Incidencias Registradas</h2>
         <div>
             <a href="{{ route('admin.incidencias.formulario') }}" class="btn btn-primary">Nueva Incidencia</a>
-            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+            <!-- <form method="POST" action="{{ route('logout') }}" class="d-inline">
                 @csrf
                 <button type="submit" class="btn btn-outline-danger">Salir</button>
-            </form>
+            </form> -->
         </div>
     </div>
 
@@ -28,12 +28,15 @@
                     <th>Tipo</th>
                     <th>Módulo</th>
                     <th>Problema</th>
+                    <th>Descripción</th>
+                    <th>Solución</th>
                     <th>Usuario</th>
                     <th>Agencia</th>
+                    <th>Oficina</th>
                     <th>Prioridad</th>
                     <th>Estado</th>
                     <th>Fecha</th>
-                    <th>Atendido Por</th>
+                    <th>Atendió</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,8 +46,11 @@
                         <td>{{ ucfirst($inc->tipo) }}</td>
                         <td>{{ ucfirst($inc->modulo) }}</td>
                         <td>{{ Str::limit($inc->problema, 25) }}</td>
+                        <td>{{ Str::limit($inc->descripcion, 50) }}</td>
+                        <td>{{ Str::limit($inc->solucion, 50) }}</td>
                         <td>{{ $inc->usuario_afectado }}</td>
                         <td>{{ $inc->agencia }}</td>
+                        <td>{{ $inc->sub_agencia }}</td>
                         <td>
                             <span class="badge bg-{{ 
                                 $inc->prioridad === 'Alta' ? 'danger' : 

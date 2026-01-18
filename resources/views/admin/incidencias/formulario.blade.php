@@ -6,10 +6,10 @@
         <h2>Registrar Nueva Incidencia</h2>
         <div>
             <a href="{{ route('admin.incidencias.listado') }}" class="btn btn-secondary">Ver Incidencias</a>
-            <form method="POST" action="{{ route('logout') }}" class="d-inline">
+            <!-- <form method="POST" action="{{ route('logout') }}" class="d-inline">
                 @csrf
                 <button type="submit" class="btn btn-outline-danger">Salir</button>
-            </form>
+            </form> -->
         </div>
     </div>
 
