@@ -61,8 +61,7 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="oficina_id" class="form-label">Oficina *</label>
-                            <select name="oficina_id" id="oficina_id"
-                                    class="form-select @error('oficina_id') is-invalid @enderror" required>
+                            <select name="oficina_id" id="oficina_id" class="form-select @error('oficina_id') is-invalid @enderror" required>
                                 <option value="">Seleccionar oficina</option>
                                 @foreach($oficinas as $oficina)
                                     <option value="{{ $oficina->id }}" {{ old('oficina_id') == $oficina->id ? 'selected' : '' }}>
@@ -231,5 +230,23 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        // Para el select de oficinas
+        $('#oficina_id').select2({
+            theme: "bootstrap-5",
+            placeholder: "Seleccionar oficina",
+            width: '100%'
+        });
+
+        // Para el select de responsables
+        $('#responsable_id').select2({
+            theme: "bootstrap-5",
+            placeholder: "Seleccionar responsable",
+            width: '100%'
+        });
+    });
+</script>
+
 @endsection
 
