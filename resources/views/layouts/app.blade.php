@@ -59,7 +59,15 @@
                             <li><a class="dropdown-item" href="{{ route('equipos.index') }}">Equipos</a></li>
                         </ul>
                     </li>
-
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-printer me-1"></i> Gestión Impresoras
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark shadow-lg">
+                            <li><a class="dropdown-item" href="{{ route('admin.impresoras.index') }}">Listado de impresoras</a></li>
+                        </ul>
+                    </li>
+                   
                     <!-- BITÁCORA -->
                     <li class="nav-item">
                         <a href="{{ route('admin.incidencias.formulario') }}" class="btn btn-outline-info btn-sm ms-2">

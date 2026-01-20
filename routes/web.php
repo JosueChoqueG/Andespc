@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\SistemaOperativoController;
 use App\Http\Controllers\Admin\ResponsableController;
 use App\Http\Controllers\Admin\EquipoController;
 use App\Http\Controllers\Admin\IncidenciaController;
+use App\Http\Controllers\Admin\ImpresoraController;
+use App\Http\Controllers\Admin\MantenimientoController;
 // Página de inicio (pública)
 Route::get('/', function () {
     return view('welcome');
@@ -45,6 +47,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/incidencias/nueva', [IncidenciaController::class, 'formulario'])->name('incidencias.formulario');
         Route::post('/incidencias', [IncidenciaController::class, 'guardar'])->name('incidencias.guardar');
         Route::get('/incidencias', [IncidenciaController::class, 'listado'])->name('incidencias.listado');
+        
+        // CRUD IMPRESORAS
+        Route::resource('impresoras', ImpresoraController::class);
+
+        // MANTENIMIENTOS (relacionados a impresoras)
+        Route::get('impresoras/{impresora}/mantenimientos/create',[MantenimientoController::class, 'create'])->name('mantenimientos.create');
+        Route::post('mantenimientos',[MantenimientoController::class, 'store'])->name('mantenimientos.store');
     });
 });
 

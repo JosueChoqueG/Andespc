@@ -42,5 +42,20 @@
             </div>
         </div>
     </div>
+    <div class="col-md-2 mb-3">
+    <div class="card text-white bg-warning">
+        <div class="card-body">
+            <h5 class="card-title">
+                <i class="bi bi-printer"></i> Impresoras
+            </h5>
+            <p class="card-text">
+                {{ \App\Models\Impresora::count() }} impresoras registradas
+            </p>
+            <a href="{{ route('admin.impresoras.index') }}" class="btn btn-light btn-sm">
+                Ver impresoras
+            </a>
+        </div>
+    </div>
+</div>
 </div>
 @endsection
