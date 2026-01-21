@@ -4,9 +4,9 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="mb-0"><i class="bi bi-pc-display"></i> Equipos Registrados</h2>
+    <h5 class="mb-0"><i class="bi bi-pc-display"></i> Equipos Registrados</h5>
     <a href="{{ route('equipos.create') }}" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> Nuevo Equipo
+        <i class="bi bi-plus-circle"></i> Nueva Computadora
     </a>
 </div>
 
@@ -19,7 +19,7 @@
 
 <div class="card shadow-sm">
     <div class="card-header bg-light d-flex justify-content-between align-items-center">
-        <strong><i class="bi bi-list-check"></i> Lista de Equipos</strong>
+        <strong><i class="bi bi-list-check"></i> Lista de Computadoras</strong>
         <!-- Buscador -->
         <form action="{{ route('equipos.index') }}" method="GET" class="d-flex">
             <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Buscar..." value="{{ request('search') }}">

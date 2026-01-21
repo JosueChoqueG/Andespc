@@ -9,9 +9,16 @@ use Illuminate\Http\Request;
 
 class ImpresoraController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $impresoras = Impresora::with('oficina.agencia')->paginate(10);
+        $query = Impresora::with('oficina.agencia');
+
+        if ($request->filled('serie')) {
+            $query->where('serie', 'like', '%' . $request->serie . '%');
+        }
+
+        $impresoras = $query->paginate(10)->withQueryString();
+
         return view('admin.impresoras.index', compact('impresoras'));
     }
 
