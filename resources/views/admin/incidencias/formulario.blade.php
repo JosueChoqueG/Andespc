@@ -99,35 +99,39 @@
                     <label class="form-label">Agencia</label>
                     <select name="agencia" id="agencia" class="form-select" required>
                         <option value="">Seleccione</option>
-                        <option value="99">99 Soporte Administrativo</option>
-                        <option value="101">101 Chalhuanca</option>
-                        <option value="102">102 Andahuaylas</option>
-                        <option value="103">103 Uripa</option> 
-                        <option value="104">104 Antabamba</option> 
-                        <option value="105">105 Tintay</option> 
-                        <option value="106">106 Huaccana</option> 
-                        <option value="107">107 Lima</option> 
-                        <option value="108">108 Huancarama</option> 
-                        <option value="109">109 Abancay</option> 
-                        <option value="110">110 Grau</option> 
-                        <option value="111">111 Cotabambas</option> 
-                        <option value="112">112 Curahuasi</option> 
-                        <option value="113">113 Secclla</option> 
-                        <option value="114">114 Cusco</option> 
-                        <option value="115">115 SantoTomas</option> 
-                        <option value="116">116 Pampa Cangallo</option> 
-                        <option value="117">117 Huamanga</option> 
-                        <option value="118">118 Pampas Tayacaja</option> 
-                        <option value="119">119 Huancayo</option> 
-                        <option value="120">120 Urubamba</option> 
-                        <option value="121">121 Combapata</option> 
-                        <option value="122">122 La Merced</option> 
-                        <option value="123">123 SJMiraflores</option> 
-                        <option value="124">124 SJLurigancho</option> 
-                        <option value="125">125 Nueva Esperanza</option> 
-                        <option value="126">126 Ocampo</option> 
-                        <option value="127">127 Cañete</option>
+                        <option value="99 Soporte Administrativo">99 Soporte Administrativo</option>
+                        <option value="101 Chalhuanca">101 Chalhuanca</option>
+                        <option value="102 Andahuaylas">102 Andahuaylas</option>
+                        <option value="103 Uripa">103 Uripa</option>
+                        <option value="104 Antabamba">104 Antabamba</option>
+                        <option value="105 Tintay">105 Tintay</option>
+                        <option value="106 Huaccana">106 Huaccana</option>
+                        <option value="107 Lima">107 Lima</option>
+                        <option value="108 Huancarama">108 Huancarama</option>
+                        <option value="109 Abancay">109 Abancay</option>
+                        <option value="110 Grau">110 Grau</option>
+                        <option value="111 Cotabambas">111 Cotabambas</option>
+                        <option value="112 Curahuasi">112 Curahuasi</option>
+                        <option value="113 Secclla">113 Secclla</option>
+                        <option value="114 Cusco">114 Cusco</option>
+                        <option value="115 Santo Tomás">115 Santo Tomás</option>
+                        <option value="116 Pampa Cangallo">116 Pampa Cangallo</option>
+                        <option value="117 Huamanga">117 Huamanga</option>
+                        <option value="118 Pampas Tayacaja">118 Pampas Tayacaja</option>
+                        <option value="119 Huancayo">119 Huancayo</option>
+                        <option value="120 Urubamba">120 Urubamba</option>
+                        <option value="121 Combapata">121 Combapata</option>
+                        <option value="122 La Merced">122 La Merced</option>
+                        <option value="123 San Juan de Miraflores">123 S.J. Miraflores</option>
+                        <option value="124 San Juan de Lurigancho">124 S.J. Lurigancho</option>
+                        <option value="125 Nueva Esperanza">125 Nueva Esperanza</option>
+                        <option value="126 Ocampo">126 Ocampo</option>
+                        <option value="127 Cañete">127 Cañete</option>
                     </select>
+
+                    <!-- CAMPO OCULTO PARA GUARDAR EL NOMBRE -->
+                    <input type="hidden" name="agencia_nombre" id="agencia_nombre">
+
                     <div class="invalid-feedback">
                         Seleccione una agencia.
                     </div>
@@ -265,34 +269,34 @@ document.addEventListener("DOMContentLoaded", () => {
        AGENCIA / SUB AGENCIA
     ==========================*/
     const subAgencias = {
-        99: ['TI', 'Operaciones', 'Contabilidad', 'logística', 'Comunicaciones'],
-        101: ['Chalhuanca', 'Huancapampa','Cotaruse', 'Chacapuente', 'Socco', 'Pachaconas', 'Tampumayu'],
-        102: ['Andahuaylas','Talavera','Champacocha','Pacucha', 'Andarapa','Kaquiabamba', 'Soras','Pampachiri','Jose María Arguedas','Turpo','Huancaray'],
-        103: ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'Ranracancha'],
-        104: ['Antabamba', 'Mollebamba', 'Huaquirca'],
-        105: ['Tintay', 'Casinchihua'],
-        106: ['Huaccana','Chungui','Rocchacc','Ocobamba'],
-        107: ['San Isidro'],
-        108: ['Huancarama','Pacobamba','Kishuara','Matapuquio','San Fernando','San Martin','Amaybamba','Pucyura'],
-        109: ['Abancay','Huanipaca','Tacmara'],
-        110: ['Chuquibambilla','Vilcabamba','Totora Oropesa'],
-        111: ['Challhuahuacho','Haquira','Mara','Tambobamba','Cotabambas','Coyllurqui','Progreso'],
-        112: ['Curahuasi','Cachora','Limatambo','Mollepata'],
-        113: ['Secclla','Congalla','Lircay','Acobamba','Antaparco'],
-        114: ['Cusco','Ocongate','Pillcopata','Anta'],
-        115: ['Santo Tomás','Velille','Pulpera','Colquemarca','Quiñota'],
-        116: ['Pampa Cangallo','Vilcas Huamán','Chuschi','Huanca Sancos','Huancapi'],
-        117: ['Huamanga','Tambo La Mar','Tambillo','Acos Vinchos','Vinchos','Pampamarca','Ccayarpachi'],
-        118: ['Pampas Tayacaja','Paucarbamba','Colcabamba','Inyac'],
-        119: ['Huancayo','Lampa','S.M. de Rocchacc','Pichus'],
-        120: ['Urubamba','Chinchero','Calca'],
-        121: ['Combapata','Pomacanchi','Acomayo', 'Accha'],
-        122: ['La Merced','Yurinaki'],
-        123: ['S.J. Miraflores'],
-        124: ['S.J. de Lurigancho'],
-        125: ['Nueva Esperanza','Cascabamba'],
-        126: ['Ocampo','Lambrama','Paccaypata'],
-        127: ['Cañete']
+        "99 Soporte Administrativo": ['TI', 'Operaciones', 'Contabilidad', 'logística', 'Comunicaciones'],
+        "101 Chalhuanca": ['Chalhuanca', 'Huancapampa','Cotaruse', 'Chacapuente', 'Socco', 'Pachaconas', 'Tampumayu'],
+        "102 Andahuaylas": ['Andahuaylas','Talavera','Champacocha','Pacucha', 'Andarapa','Kaquiabamba', 'Soras','Pampachiri','Jose María Arguedas','Turpo','Huancaray'],
+        "103 Uripa": ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'Ranracancha'],
+        "104 Antabamba": ['Antabamba', 'Mollebamba', 'Huaquirca'],
+        "105 Tintay": ['Tintay', 'Casinchihua'],
+        "106 Huaccana": ['Huaccana','Chungui','Rocchacc','Ocobamba'],
+        "107 Lima": ['San Isidro'],
+        "108 Huancarama": ['Huancarama','Pacobamba','Kishuara','Matapuquio','San Fernando','San Martin','Amaybamba','Pucyura'],
+        "109 Abancay": ['Abancay','Huanipaca','Tacmara'],
+        "110 Grau": ['Chuquibambilla','Vilcabamba','Totora Oropesa'],
+        "111 Cotabambas": ['Challhuahuacho','Haquira','Mara','Tambobamba','Cotabambas','Coyllurqui','Progreso'],
+        "112 Curahuasi": ['Curahuasi','Cachora','Limatambo','Mollepata'],
+        "113 Secclla": ['Secclla','Congalla','Lircay','Acobamba','Antaparco'],
+        "114 Cusco": ['Cusco','Ocongate','Pillcopata','Anta'],
+        "115 Santo Tomás": ['Santo Tomás','Velille','Pulpera','Colquemarca','Quiñota'],
+        "116 Pampa Cangallo": ['Pampa Cangallo','Vilcas Huamán','Chuschi','Huanca Sancos','Huancapi'],
+        "117 Huamanga": ['Huamanga','Tambo La Mar','Tambillo','Acos Vinchos','Vinchos','Pampamarca','Ccayarpachi'],
+        "118 Pampas Tayacaja": ['Pampas Tayacaja','Paucarbamba','Colcabamba','Inyac'],
+        "119 Huancayo": ['Huancayo','Lampa','S.M. de Rocchacc','Pichus'],
+        "120 Urubamba": ['Urubamba','Chinchero','Calca'],
+        "121 Combapata": ['Combapata','Pomacanchi','Acomayo', 'Accha'],
+        "122 La Merced": ['La Merced','Yurinaki'],
+        "123 San Juan de Miraflores": ['S.J. Miraflores'],
+        "124 San Juan de Lurigancho": ['S.J. de Lurigancho'],
+        "125 Nueva Esperanza": ['Nueva Esperanza','Cascabamba'],
+        "126 Ocampo": ['Ocampo','Lambrama','Paccaypata'],
+        "127 Cañete": ['Cañete']
     };
 
     const agenciaSelect = document.getElementById('agencia');
