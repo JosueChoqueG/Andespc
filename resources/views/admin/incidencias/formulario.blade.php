@@ -151,9 +151,9 @@
                     <label class="form-label">Prioridad</label>
                     <select name="prioridad" class="form-select" required>
                         <option value="">Seleccione</option>
-                        <option>Alta</option>
-                        <option>Media</option>
-                        <option>Baja</option>
+                        <option value="Alta" selected>Alta</option>
+                        <option value="Media">Media</option>
+                        <option value="Baja">Baja</option>
                     </select>
                     <div class="invalid-feedback">
                         Seleccione la prioridad.
@@ -164,9 +164,9 @@
                     <label class="form-label">Estado</label>
                     <select name="estado" class="form-select" required>
                         <option value="">Seleccione</option>
-                        <option>Atendido</option>
-                        <option>Pendiente</option>
-                        <option>Derivado</option>
+                        <option value="Atendido" selected>Atendido</option>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Derivado">Derivado</option>
                     </select>
                     <div class="invalid-feedback">
                         Seleccione el estado.
@@ -269,7 +269,7 @@ document.addEventListener("DOMContentLoaded", () => {
        AGENCIA / SUB AGENCIA
     ==========================*/
     const subAgencias = {
-        "99 Soporte Administrativo": ['TI', 'Operaciones', 'Contabilidad', 'logística', 'Comunicaciones'],
+        "99 Soporte Administrativo": ['TI', 'Operaciones', 'Contabilidad', 'Logística', 'Comunicaciones','Asesría Legal','Riesgos','Procesos','Planificación','Tesorería','Subgerencia', 'Servicios Financieros', 'Talento Humano','Servicios Complementarios','Financial','Auditoría Interna'],
         "101 Chalhuanca": ['Chalhuanca', 'Huancapampa','Cotaruse', 'Chacapuente', 'Socco', 'Pachaconas', 'Tampumayu'],
         "102 Andahuaylas": ['Andahuaylas','Talavera','Champacocha','Pacucha', 'Andarapa','Kaquiabamba', 'Soras','Pampachiri','Jose María Arguedas','Turpo','Huancaray'],
         "103 Uripa": ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'Ranracancha'],
