@@ -16,7 +16,7 @@
 
     <div class="row">
         <div class="col-md-6 mb-3">
-            <label>Error / Falla</label>
+            <label>Incidencia</label>
             <input type="text" name="tipo_error" class="form-control" required>
         </div>
 
@@ -28,10 +28,19 @@
         <div class="col-md-3 mb-3">
             <label>Estado Garantía</label>
             <select name="estado_garantia" class="form-select">
-                <option value="">Seleccione</option>
-                <option>Vigente</option>
-                <option>Finalizado</option>
-                <option>No tiene</option>
+                @php
+                    $estado = old('estado_garantia', $mantenimiento->estado_garantia ?? 'Vigente');
+                @endphp
+
+                <option value="Vigente" {{ $estado == 'Vigente' ? 'selected' : '' }}>
+                    Vigente
+                </option>
+                <option value="Finalizado" {{ $estado == 'Finalizado' ? 'selected' : '' }}>
+                    Finalizado
+                </option>
+                <option value="No tiene" {{ $estado == 'No tiene' ? 'selected' : '' }}>
+                    No tiene
+                </option>
             </select>
         </div>
 

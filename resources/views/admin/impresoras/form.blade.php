@@ -1,27 +1,50 @@
 <div class="row">
-    <div class="col-md-6 mb-3">
-        <label>Oficina</label>
-        <select name="oficina_id" class="form-select" required>
-            <option value="">Seleccione</option>
+    <div class="col-md-6">
+        <label for="oficina_id" class="form-label">Oficina *</label>
+
+        <select name="oficina_id"
+                id="oficina_id"
+                class="form-select select2 @error('oficina_id') is-invalid @enderror"
+                required>
+            <option value="">Seleccionar oficina</option>
+
             @foreach($oficinas as $oficina)
                 <option value="{{ $oficina->id }}"
                     {{ old('oficina_id', $impresora->oficina_id ?? '') == $oficina->id ? 'selected' : '' }}>
-                    {{ $oficina->agencia->nombre_agencia }} - {{ $oficina->nombre_oficina }}
+                    {{ $oficina->nombre_oficina }} ({{ $oficina->agencia->nombre_agencia }})
                 </option>
             @endforeach
         </select>
+
+        @error('oficina_id')
+            <div class="invalid-feedback d-block">{{ $message }}</div>
+        @enderror
     </div>
 
     <div class="col-md-6 mb-3">
         <label>Marca</label>
-        <input type="text" name="marca" class="form-control"
-               value="{{ old('marca', $impresora->marca ?? '') }}" required>
+        <select name="marca" class="form-select" required>
+            @php
+                $marcaActual = old('marca', $impresora->marca ?? 'KYOCERA ECOSYS');
+            @endphp
+
+            <option value="KYOCERA ECOSYS" {{ $marcaActual == 'KYOCERA ECOSYS' ? 'selected' : '' }}>KYOCERA ECOSYS</option>
+            <option value="HP" {{ $marcaActual == 'HP' ? 'selected' : '' }}>HP</option>
+            <option value="BROTHER" {{ $marcaActual == 'BROTHER' ? 'selected' : '' }}>BROTHER</option>
+        </select>
     </div>
 
     <div class="col-md-6 mb-3">
         <label>Modelo</label>
-        <input type="text" name="modelo" class="form-control"
-               value="{{ old('modelo', $impresora->modelo ?? '') }}" required>
+        <select name="modelo" class="form-select" required>
+            @php
+                $modeloActual = old('modelo', $impresora->modelo ?? 'M2640');
+            @endphp
+            <option value="M2640idw" {{ $modeloActual == 'M2640' ? 'selected' : '' }}>M2640</option>
+            <option value="M3655idn" {{ $modeloActual == 'M3655' ? 'selected' : '' }}>M3655</option>
+            <option value="MA4500IFX" {{ $modeloActual == 'MA4500IFX' ? 'selected' : '' }}>MA4500IFX</option>
+            <option value="MA5500IFX" {{ $modeloActual == 'M5500IFX' ? 'selected' : '' }}>M5500IFX</option>
+        </select>
     </div>
 
     <div class="col-md-6 mb-3">
