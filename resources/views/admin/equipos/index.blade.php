@@ -87,10 +87,15 @@
                                 <a href="{{ route('equipos.edit', $equipo) }}" class="btn btn-sm btn-warning" title="Editar">
                                     <i class="bi bi-pencil"></i>
                                 </a>
-                                <form action="{{ route('equipos.destroy', $equipo) }}" method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar este equipo?')">
+                                <form action="{{ route('equipos.destroy', $equipo) }}"
+                                    method="POST" class="d-inline-block"
+                                    onsubmit="return confirm('¿Está seguro de eliminar este equipo? Esta acción no se puede deshacer.')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-danger"
+                                            aria-label="Eliminar equipo">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>

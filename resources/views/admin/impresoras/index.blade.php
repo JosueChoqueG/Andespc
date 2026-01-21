@@ -58,14 +58,23 @@
                             </span>
                         </td>
                         <td class="text-center">
-                            <a href="{{ route('admin.impresoras.show',$i) }}" 
-                            class="btn btn-sm btn-info">
+                            <a href="{{ route('admin.impresoras.show', $i) }}" class="btn btn-sm btn-info">
                                 <i class="bi bi-eye"></i>
                             </a>
-                            <a href="{{ route('admin.impresoras.edit',$i) }}" 
-                            class="btn btn-sm btn-warning">
+
+                            <a href="{{ route('admin.impresoras.edit', $i) }}" class="btn btn-sm btn-warning">
                                 <i class="bi bi-pencil"></i>
                             </a>
+
+                            <form action="{{ route('admin.impresoras.destroy', $i) }}"
+                                method="POST" class="d-inline" onsubmit="return confirm('¿Está seguro de eliminar esta impresora?')">
+                                @csrf
+                                @method('DELETE')
+
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                     @empty
