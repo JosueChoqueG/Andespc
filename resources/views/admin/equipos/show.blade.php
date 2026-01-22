@@ -16,15 +16,13 @@
                     <tr><th>Dirección IP</th><td>{{ $equipo->direccion_ip ?? 'N/A' }}</td></tr>
                     <tr><th>Oficina</th>
                         <td>
-                            {{ optional($equipo->oficina)->nombre_oficina ?? 'N/A' }} 
-                            ({{ optional($equipo->oficina?->agencia)->nombre_agencia ?? 'N/A' }})
+                            {{ optional($equipo->oficina)->nombre_oficina ?? 'N/A' }}
                         </td>
                     </tr>
-                    <tr><th>Tipo de Equipo</th><td>{{ optional($equipo->tipo)->nombre_tipo ?? 'N/A' }}</td></tr>
+                    <tr><th>Tipo de Equipo</th><td>{{ optional($equipo->tipoequipo)->nombre_tipo ?? 'N/A' }}</td></tr>
                     <tr><th>Modelo</th>
                         <td>
-                            {{ optional($equipo->modelo)->nombre_modelo ?? 'N/A' }} 
-                            ({{ optional($equipo->modelo?->marca)->nombre_marca ?? 'N/A' }})
+                            {{ optional($equipo->modelo)->nombre_modelo ?? 'N/A' }}
                         </td>
                     </tr>
                     <tr><th>Hardware</th>
