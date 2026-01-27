@@ -4,12 +4,14 @@
 <div class="container py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Incidencias Registradas</h2>
-        <div>
-            <a href="{{ route('admin.incidencias.formulario') }}" class="btn btn-primary">Nueva Incidencia</a>
-            <!-- <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                @csrf
-                <button type="submit" class="btn btn-outline-danger">Salir</button>
-            </form> -->
+        <div class="d-flex gap-2">
+            <a href="{{ route('admin.incidencias.formulario') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nueva Incidencia
+            </a>
+            <a href="{{ route('admin.incidencias.exportar', ['estado' => request('estado')]) }}" 
+               class="btn btn-success">
+                <i class="fas fa-file-excel"></i> Exportar Excel
+            </a>
         </div>
     </div>
 
@@ -19,6 +21,41 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
     @endif
+
+    <!-- Filtros -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ route('admin.incidencias.listado') }}" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Filtrar por Estado</label>
+                    <select name="estado" class="form-select">
+                        <option value="">Todos los estados</option>
+                        <option value="Pendiente" {{ request('estado') == 'Pendiente' ? 'selected' : '' }}>Pendiente</option>
+                        <option value="Derivado" {{ request('estado') == 'Derivado' ? 'selected' : '' }}>Derivado</option>
+                        <option value="Atendido" {{ request('estado') == 'Atendido' ? 'selected' : '' }}>Atendido</option>
+                    </select>
+                </div>
+                <div class="col-md-2 align-self-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-filter"></i> Filtrar
+                    </button>
+                </div>
+                <div class="col-md-2 align-self-end">
+                    <a href="{{ route('admin.incidencias.listado') }}" class="btn btn-secondary w-100">
+                        <i class="fas fa-times"></i> Limpiar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Total de incidencias -->
+    <div class="mb-3">
+        <strong>Total:</strong> {{ $incidencias->count() }} incidencia(s)
+        @if(request('estado'))
+            <span class="badge bg-info">Filtrado: {{ request('estado') }}</span>
+        @endif
+    </div>
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
@@ -52,9 +89,9 @@
                         <td>{{ $inc->agencia }}</td>
                         <td>{{ $inc->sub_agencia }}</td>
                         <td>
-                            <span class="badge bg-{{ 
-                                $inc->prioridad === 'Alta' ? 'danger' : 
-                                ($inc->prioridad === 'Media' ? 'warning' : 'info') 
+                            <span class="badge bg-{{
+                                $inc->prioridad === 'Alta' ? 'danger' :
+                                ($inc->prioridad === 'Media' ? 'warning' : 'info')
                             }} text-dark">
                                 {{ $inc->prioridad }}
                             </span>
@@ -77,7 +114,10 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="10" class="text-center text-muted">No hay incidencias registradas.</td>
+                        <td colspan="13" class="text-center text-muted py-4">
+                            <i class="fas fa-inbox fa-2x mb-2"></i>
+                            <p class="mb-0">No hay incidencias registradas.</p>
+                        </td>
                     </tr>
                 @endforelse
             </tbody>
