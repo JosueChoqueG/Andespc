@@ -67,13 +67,6 @@
                             <li><a class="dropdown-item" href="{{ route('admin.impresoras.index') }}">Listado de impresoras</a></li>
                         </ul>
                     </li>
-                   
-                    <!-- BITÁCORA -->
-                    <li class="nav-item">
-                        <a href="{{ route('admin.incidencias.formulario') }}" class="btn btn-outline-info btn-sm ms-2">
-                            <i class="bi bi-journal-text me-1"></i> Bitácora
-                        </a>
-                    </li>
                 </ul>
 
                 <!-- RIGHT USER SECTION -->

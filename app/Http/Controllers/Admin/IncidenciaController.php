@@ -15,6 +15,12 @@ class IncidenciaController extends Controller
         // Puedes agregar más middlewares si necesitas, ej:
         // $this->middleware('verified'); // si usas verificación de email
     }
+    public function index()
+    {
+        $totalIncidencias = Incidencia::count();
+
+        return view('admin.dashboard', compact('totalIncidencias'));
+    }
 
     public function formulario()
     {
