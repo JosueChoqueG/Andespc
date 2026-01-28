@@ -45,7 +45,11 @@ class IncidenciaController extends Controller
         $data['atendido_por'] = Auth::id();
         Incidencia::create($data);
 
-        return redirect()->route('admin.incidencias.listado')->with('success', 'Incidencia registrada.');
+        // ✅ Redirección con sesión
+        return redirect()->route('admin.incidencias.listado')->with([
+            'success' => 'Incidencia registrada.',
+            'show_loading' => true
+        ]);
     }
 
     public function listado(Request $request)

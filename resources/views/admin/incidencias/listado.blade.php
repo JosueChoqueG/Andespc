@@ -117,4 +117,26 @@
         </table>
     </div>
 </div>
+<!-- ✅ SWEET ALERT 2 - LOADING AL CARGAR -->
+@if(session('show_loading'))
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    Swal.fire({
+        title: 'Registrando incidencia...',
+        html: 'Por favor espera',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+    
+    // Cerrar el loading cuando la página cargue completamente
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            Swal.close();
+        }, 1000);
+    });
+});
+</script>
+@endif
 @endsection
