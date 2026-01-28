@@ -72,7 +72,7 @@
             <tbody>
                 @forelse ($incidencias as $i => $inc)
                     <tr>
-                        <td>{{ $i + 1 }}</td>
+                        <td><strong>{{ $inc->id }}</strong></td>
                         <td>{{ ucfirst($inc->tipo) }}</td>
                         <td>{{ ucfirst($inc->modulo) }}</td>
                         <td>{{ Str::limit($inc->problema, 25) }}</td>

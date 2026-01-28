@@ -41,12 +41,6 @@
 
                 <!-- LEFT MENU -->
                 <ul class="navbar-nav me-auto gap-2">
-                   <!--  <li class="nav-item">
-                        <a class="nav-link" href="{{ route('dashboard') }}">
-                            <i class="bi bi-speedometer2 me-1"></i> Inicio
-                        </a>
-                    </li> -->
-
                     <!-- DROPDOWN -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
@@ -109,12 +103,12 @@
         </div>
     </nav>
     <div class="container mt-4">
-        @if (session('success'))
+      <!--   @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
-        @endif
+        @endif -->
 
         @yield('content')
     </div>

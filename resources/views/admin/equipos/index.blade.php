@@ -39,9 +39,9 @@
                         <th>Marca</th>
                         <th>Modelo</th>
                         <th>Tipo</th>
-                        <th>IP</th>
+                        <!-- <th>IP</th> -->
                         <th>Fecha Compra</th>
-                        <th>Fecha Mantenimiento</th>
+                        <!-- <th>Fecha Mantenimiento</th> -->
                         <th>Oficina</th>
                         <th>Responsable</th>
                         <th class="text-center">Estado</th>
@@ -62,11 +62,11 @@
                             <!-- Tipo de equipo -->
                             <td>{{ $equipo->tipoequipo?->nombre_tipo ?? 'N/A' }}</td>
                             <!-- Dirección IP -->
-                            <td>{{ $equipo->direccion_ip ?? 'N/A' }}</td>
+                            <!-- <td>{{ $equipo->direccion_ip ?? 'N/A' }}</td> -->
                             <!-- Fecha de adquisición (compra) -->
                             <td>{{ $equipo->fecha_adquisicion ? \Carbon\Carbon::parse($equipo->fecha_adquisicion)->format('d/m/Y') : 'N/A' }}</td>
                             <!-- Fecha de mantenimiento -->
-                            <td>{{ $equipo->fecha_mantenimiento ? \Carbon\Carbon::parse($equipo->fecha_mantenimiento)->format('d/m/Y') : 'N/A' }}</td>
+                            <!-- <td>{{ $equipo->fecha_mantenimiento ? \Carbon\Carbon::parse($equipo->fecha_mantenimiento)->format('d/m/Y') : 'N/A' }}</td> -->
                             <!-- Oficina -->
                             <td>{{ $equipo->oficina?->nombre_oficina ?? 'N/A' }}</td>
                             <!-- Responsable -->
