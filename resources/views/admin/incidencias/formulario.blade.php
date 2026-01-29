@@ -216,7 +216,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "USUARIO CLOUD BLOQUEADO",
             "USUARIO SE OLVIDO CONTRASEÑA CLOUD",
             "ERROR DE FUNCIONALIDAD CLOUD",
-            "ERROR DE INICIO SESION CLOUD"
+            "ERROR DE INICIO SESION CLOUD",
+            "NAVEGADOR DE INTERNET"
         ],
         hardware: [
             "ATASCO PAPEL IMPRESORA",
@@ -226,7 +227,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "ERROR DE CONFIGURACION BIOMETRICO",
             "ERROR DE CONFIGURACION TOTEM",
             "IMPRESORA TERMICA",
-            "ALMACENAMIENTO LLENO"
+            "ALMACENAMIENTO LLENO",
+            "PUERTO USB BLOQUEADO"
         ],
         conectividad: [
             "DESCONFIGURACION DE TOTEM",

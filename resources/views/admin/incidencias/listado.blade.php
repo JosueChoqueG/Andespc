@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('load', function() {
         setTimeout(() => {
             Swal.close();
-        }, 1000);
+        }, 700);
     });
 });
 </script>
