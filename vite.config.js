@@ -8,9 +8,9 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    /* server: {
+    server: {
         host: '192.168.99.134',
         port: 5173,
         strictPort: true,
-    }, */
+    },
 });
