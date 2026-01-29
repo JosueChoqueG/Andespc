@@ -24,7 +24,7 @@
     </div>
 
     <div class="col-md-2 mb-3">
-        <div class="card text-white bg-warning">
+        <div class="card text-white bg-success">
             <div class="card-body">
                 <h5 class="card-title">
                     <i class="bi bi-printer"></i> Impresoras
@@ -58,10 +58,10 @@
         </div>
     </div>
     <div class="col-md-2 mb-3">
-        <div class="card text-white bg-warning">
+        <div class="card text-white bg-primary">
             <div class="card-body">
                 <h5 class="card-title">
-                    <i class="bi bi-printer"></i> Servicio Internet
+                    <i class="bi bi-diagram-3"></i> Servicio Internet
                 </h5>
                 <p class="card-text">
                     {{ \App\Models\ServicioInternet::count() }}
