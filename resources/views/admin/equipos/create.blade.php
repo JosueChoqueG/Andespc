@@ -230,23 +230,5 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-        // Para el select de oficinas
-        $('#oficina_id').select2({
-            theme: "bootstrap-5",
-            placeholder: "Seleccionar oficina",
-            width: '100%'
-        });
-
-        // Para el select de responsables
-        $('#responsable_id').select2({
-            theme: "bootstrap-5",
-            placeholder: "Seleccionar responsable",
-            width: '100%'
-        });
-    });
-</script>
-
 @endsection
 

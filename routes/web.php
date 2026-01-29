@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\EquipoController;
 use App\Http\Controllers\Admin\IncidenciaController;
 use App\Http\Controllers\Admin\ImpresoraController;
 use App\Http\Controllers\Admin\MantenimientoController;
+use App\Http\Controllers\Admin\ServicioInternetController;
 // Página de inicio (pública)
 Route::get('/', function () {
     return view('welcome');
@@ -42,22 +43,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('responsables', ResponsableController::class);
     Route::resource('equipos', EquipoController::class);
 
-    Route::get('admin/incidencias/exportar', [IncidenciaController::class, 'exportarExcel'])
-    ->name('admin.incidencias.exportar');
-
     // 🔹 Panel de administración: rutas bajo /admin
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/incidencias/nueva', [IncidenciaController::class, 'formulario'])->name('incidencias.formulario');
         Route::post('/incidencias', [IncidenciaController::class, 'guardar'])->name('incidencias.guardar');
         Route::get('/incidencias', [IncidenciaController::class, 'listado'])->name('incidencias.listado');
         Route::get('/incidencias/exportar', [IncidenciaController::class, 'exportarExcel'])->name('incidencias.exportar');
-        
+
         // CRUD IMPRESORAS
         Route::resource('impresoras', ImpresoraController::class);
 
         // MANTENIMIENTOS (relacionados a impresoras)
         Route::get('impresoras/{impresora}/mantenimientos/create',[MantenimientoController::class, 'create'])->name('mantenimientos.create');
         Route::post('mantenimientos',[MantenimientoController::class, 'store'])->name('mantenimientos.store');
+
+        // 🌐 SERVICIOS DE INTERNET
+        Route::resource('servicios-internet', ServicioInternetController::class)->parameters(['servicios-internet' => 'servicio']);
+        Route::get('servicios-internet-export/excel',[ServicioInternetController::class, 'exportExcel'])->name('servicios-internet.excel');
     });
 });
 

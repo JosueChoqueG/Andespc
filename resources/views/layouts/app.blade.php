@@ -5,19 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('favicon.ico') }}">
     <title>@yield('title', 'Andes PC Admin')</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <!-- CSS de Select2 -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-
-    <!-- JS de Select2 (requiere jQuery) -->
+    <!-- jQuery (PRIMERO) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Select2 (DESPUÉS de jQuery) -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
-    <!-- SweetAlert2 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 @include('auth.register')
 
@@ -103,13 +101,6 @@
         </div>
     </nav>
     <div class="container mt-4">
-      <!--   @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif -->
-
         @yield('content')
     </div>
 </body>

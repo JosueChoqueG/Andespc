@@ -18,7 +18,7 @@
             <div class="card-body">
                 <h5 class="card-title"><i class="bi bi-pc-display"></i> Equipos</h5>
                 <p class="card-text">{{ \App\Models\Equipo::count() }} dispositivos registrados</p>
-                <a href="{{ route('equipos.index') }}" class="btn btn-light btn-sm">Ver todos</a>
+                <a href="{{ route('equipos.index') }}" class="btn btn-light btn-sm">Ver Computadoras</a>
             </div>
         </div>
     </div>
@@ -53,6 +53,21 @@
                 <a href="{{ route('admin.incidencias.listado') }}"
                 class="btn btn-light btn-sm mt-3">
                     Ver bitácora
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 mb-3">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-printer"></i> Servicio Internet
+                </h5>
+                <p class="card-text">
+                    {{ \App\Models\ServicioInternet::count() }}
+                </p>
+                <a href="{{ route('admin.servicios-internet.index') }}" class="btn btn-light btn-sm">
+                    Ver Servicio Internet
                 </a>
             </div>
         </div>

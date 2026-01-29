@@ -23,7 +23,7 @@
 
                     <div class="mb-3">
                         <label for="agencia_id" class="form-label">Agencia *</label>
-                        <select name="agencia_id" id="agencia_id" class="form-select @error('agencia_id') is-invalid @enderror" required>
+                        <select name="agencia_id" id="agencia_id" class="form-select select2 @error('agencia_id') is-invalid @enderror" required>
                             <option value="">Seleccionar agencia</option>
                             @foreach($agencias as $agencia)
                                 <option value="{{ $agencia->id }}" {{ old('agencia_id') == $agencia->id ? 'selected' : '' }}>
