@@ -170,7 +170,12 @@
                 </div>
 
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary w-100">
+                    <button type="submit"
+                            class="btn btn-primary w-100"
+                            data-swal
+                            data-title="¿Guardar incidencia?"
+                            data-text="Verifica que la información sea correcta"
+                            data-confirm="Sí, guardar">
                         Guardar Incidencia
                     </button>
                 </div>
