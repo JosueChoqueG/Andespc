@@ -41,15 +41,33 @@ class ServicioInternetController extends Controller
     {
         $request->validate([
             'oficina_id'        => 'required|exists:oficinas,id',
-            'nombre_proveedor' => 'required|string|max:100',
-            'megas_contratado' => 'required',
-            'tipo_instalacion' => 'required',
+            'direccion'         => 'nullable|string',
+            'coordenada'         => 'nullable|string|max:100',
+            'megas_contratado'   => 'required|string|max:50',
+            'tipo_instalacion'   => 'required|in:Fibra óptica,Radio enlace,RPC,Starlink',
+            'nombre_proveedor'   => 'required|string|max:100',
+            'telefono_proveedor' => 'nullable|string|max:15',
+            'contrasena_router'  => 'nullable|string|max:100',
+            'nombre_wifi'        => 'nullable|string|max:100',
+            'contrasena_wifi'    => 'nullable|string|max:100',
+            'direccion_ip'       => 'nullable|ip',
         ]);
 
-        ServicioInternet::create($request->all());
+        ServicioInternet::create($request->only([
+            'oficina_id',
+            'direccion',
+            'coordenada',
+            'megas_contratado',
+            'tipo_instalacion',
+            'nombre_proveedor',
+            'telefono_proveedor',
+            'contrasena_router',
+            'nombre_wifi',
+            'contrasena_wifi',
+            'direccion_ip',
+        ]));
 
-        return redirect()
-            ->route('admin.servicios-internet.index')
+        return redirect()->route('admin.servicios-internet.index')
             ->with('success', 'Servicio registrado correctamente');
     }
 
@@ -61,10 +79,27 @@ class ServicioInternetController extends Controller
 
     public function update(Request $request, ServicioInternet $servicio)
     {
-        $servicio->update($request->all());
+        $request->validate([
+            'oficina_id'        => 'required|exists:oficinas,id',
+            'tipo_instalacion'  => 'required|in:Fibra óptica,Radio enlace,RPC,Starlink',
+            'direccion_ip'      => 'nullable|ip',
+        ]);
 
-        return redirect()
-            ->route('admin.servicios-internet.index')
+        $servicio->update($request->only([
+            'oficina_id',
+            'direccion',
+            'coordenada',
+            'megas_contratado',
+            'tipo_instalacion',
+            'nombre_proveedor',
+            'telefono_proveedor',
+            'contrasena_router',
+            'nombre_wifi',
+            'contrasena_wifi',
+            'direccion_ip',
+        ]));
+
+        return redirect()->route('admin.servicios-internet.index')
             ->with('success', 'Servicio actualizado correctamente');
     }
 

@@ -8,9 +8,10 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    /* server: {
-        host: '192.168.99.134',
+    server: {
+        host: '192.168.99.135',
         port: 5173,
         strictPort: true,
-    }, */
+        cors: true,
+    },
 });

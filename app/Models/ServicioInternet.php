@@ -11,17 +11,9 @@ class ServicioInternet extends Model
     protected $table = 'servicios_internet';
 
     protected $fillable = [
-        'oficina_id',
-        'direccion',
-        'coordenada',
-        'megas_contratado',
-        'tipo_instalacion',
-        'nombre_proveedor',
-        'telefono_proveedor',
-        'contrasena_router',
-        'nombre_wifi',
-        'contrasena_wifi',
-        'direccion_ip',
+    'oficina_id','direccion','coordenada','megas_contratado',
+    'tipo_instalacion','nombre_proveedor','telefono_proveedor',
+    'contrasena_router','nombre_wifi','contrasena_wifi','direccion_ip'
     ];
 
     public function oficina()

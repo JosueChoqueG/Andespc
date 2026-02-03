@@ -84,13 +84,14 @@
                     <th>Tipo</th>
                     <th>IP</th>
                     <th>WiFi</th>
-                    <th width="120">Acciones</th>
+                    <th width="90">Acciones</th>
                 </tr>
             </thead>
             <tbody>
+                @php $i = 1; @endphp
                 @forelse ($servicios as $s)
                     <tr>
-                        <td><strong>{{ $s->id }}</strong></td>
+                        <td>{{ $i++ }}</td>
                         <td>{{ $s->oficina->nombre_oficina }}</td>
                         <td>{{ $s->nombre_proveedor }}</td>
                         <td>{{ $s->telefono_proveedor ?? '—' }}</td>
