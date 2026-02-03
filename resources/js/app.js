@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 window.Swal = Swal;
 
 import './modules/swal-global';
-
+import './modules/incidencias';
 window.Alpine = Alpine;
 Alpine.start();
 
