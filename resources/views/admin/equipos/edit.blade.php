@@ -45,7 +45,7 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="oficina_id" class="form-label">Oficina *</label>
-                            <select name="oficina_id" id="oficina_id" class="form-select" required>
+                            <select name="oficina_id" id="oficina_id" class="form-select select2" required>
                                 <option value="">Seleccionar oficina</option>
                                 @foreach($oficinas as $oficina)
                                     <option value="{{ $oficina->id }}" {{ old('oficina_id', $equipo->oficina_id) == $oficina->id ? 'selected' : '' }}>
@@ -108,7 +108,7 @@
                         </div>
                         <div class="col-md-6">
                             <label for="responsable_id" class="form-label">Responsable *</label>
-                            <select name="responsable_id" id="responsable_id" class="form-select">
+                            <select name="responsable_id" id="responsable_id" class="form-select select2">
                                 <option value="">Seleccionar responsable</option>
                                 @foreach($responsables as $responsable)
                                     <option value="{{ $responsable->id }}" {{ old('responsable_id', $equipo->responsable_id) == $responsable->id ? 'selected' : '' }}>

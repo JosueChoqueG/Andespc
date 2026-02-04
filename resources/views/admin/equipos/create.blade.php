@@ -61,7 +61,7 @@
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label for="oficina_id" class="form-label">Oficina *</label>
-                            <select name="oficina_id" id="oficina_id" class="form-select @error('oficina_id') is-invalid @enderror" required>
+                            <select name="oficina_id" id="oficina_id" class="form-select select2 @error('oficina_id') is-invalid @enderror" required>
                                 <option value="">Seleccionar oficina</option>
                                 @foreach($oficinas as $oficina)
                                     <option value="{{ $oficina->id }}" {{ old('oficina_id') == $oficina->id ? 'selected' : '' }}>
@@ -142,7 +142,7 @@
                         <div class="col-md-6">
                             <label for="responsable_id" class="form-label">Responsable *</label>
                             <select name="responsable_id" id="responsable_id"
-                                    class="form-select @error('responsable_id') is-invalid @enderror" required>
+                                    class="form-select select2 @error('responsable_id') is-invalid @enderror" required>
                                 <option value="">Seleccionar responsable</option>
                                 @foreach($responsables as $responsable)
                                     <option value="{{ $responsable->id }}" {{ old('responsable_id') == $responsable->id ? 'selected' : '' }}>
