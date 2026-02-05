@@ -103,12 +103,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function cargarOpciones(select, opciones = []) {
-        select.innerHTML = '<option value="">Seleccione</option>';
-        opciones.forEach(op => {
-            select.insertAdjacentHTML(
-                "beforeend",
-                `<option value="${op}">${op}</option>`
-            );
+        // Limpiar opciones
+        select.innerHTML = "";
+
+        opciones.forEach((op, index) => {
+            const option = document.createElement("option");
+            option.value = op;
+            option.textContent = op; // textContent evita XSS
+
+            // Seleccionar el primer valor
+            if (index === 0) option.selected = true;
+
+            select.appendChild(option);
         });
     }
 });
