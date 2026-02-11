@@ -9,7 +9,7 @@ export default defineConfig({
         }),
     ],
     server: {
-        host: '192.168.99.135',
+        host: '192.168.99.133',
         port: 5173,
         strictPort: true,
         cors: true,
