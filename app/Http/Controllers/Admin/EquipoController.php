@@ -13,10 +13,38 @@ use Illuminate\Http\Request;
 
 class EquipoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $equipos = Equipo::with(['oficina', 'tipoequipo', 'hardware', 'modelo', 'sistemaoperativo', 'responsable'])->paginate(13);
-        return view('admin.equipos.index', compact('equipos'));
+        $query = Equipo::with([
+            'oficina',
+            'tipoequipo',
+            'hardware',
+            'modelo.marca',
+            'sistemaoperativo',
+            'responsable'
+        ]);
+
+        // 🔎 Buscar por nombre del dispositivo
+        if ($request->filled('search')) {
+            $query->where('nombre_dispositivo', 'like', '%' . $request->search . '%');
+        }
+
+        // 🔎 Buscar por número de serie
+        if ($request->filled('serie')) {
+            $query->where('numero_serie', 'like', '%' . $request->serie . '%');
+        }
+
+        // 🏢 Filtrar por oficina
+        if ($request->filled('oficina')) {
+            $query->where('oficina_id', $request->oficina);
+        }
+
+        $equipos = $query->paginate(13)->withQueryString();
+
+        // Necesario para el select del filtro
+        $oficinas = Oficina::all();
+
+        return view('admin.equipos.index', compact('equipos', 'oficinas'));
     }
 
     public function create()

@@ -21,12 +21,45 @@
         <div class="card-header bg-light d-flex justify-content-between align-items-center">
             <strong><i class="bi bi-list-check"></i> Lista de Computadoras</strong>
             <!-- Buscador -->
-            <form action="{{ route('equipos.index') }}" method="GET" class="d-flex">
-                <input type="text" name="search" class="form-control form-control-sm me-2" placeholder="Buscar..."
-                    value="{{ request('search') }}">
-                <button class="btn btn-sm btn-outline-primary" type="submit">
-                    <i class="bi bi-search"></i>
-                </button>
+            <form action="{{ route('equipos.index') }}" method="GET" class="row g-2">
+
+                {{-- Buscar por texto --}}
+                <div class="col-md-4">
+                    <input type="text" 
+                        name="search" 
+                        class="form-control form-control-sm"
+                        placeholder="Buscar por nombre..."
+                        value="{{ request('search') }}">
+                </div>
+
+                {{-- Buscar por número de serie --}}
+                <div class="col-md-3">
+                    <input type="text" 
+                        name="serie" 
+                        class="form-control form-control-sm"
+                        placeholder="Buscar por serie..."
+                        value="{{ request('serie') }}">
+                </div>
+
+                {{-- Filtro por oficina --}}
+                <div class="col-md-3">
+                    <select name="oficina" class="form-select form-select-sm select2">
+                        <option value="">-- Todas las oficinas --</option>
+                        @foreach ($oficinas as $oficina)
+                            <option value="{{ $oficina->id }}" 
+                                {{ request('oficina') == $oficina->id ? 'selected' : '' }}>
+                                {{ $oficina->nombre_oficina }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <button class="btn btn-sm btn-outline-primary w-100" type="submit">
+                        <i class="bi bi-search"></i> Filtrar
+                    </button>
+                </div>
+
             </form>
         </div>
 
