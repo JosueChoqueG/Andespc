@@ -24,20 +24,14 @@
             <form action="{{ route('equipos.index') }}" method="GET" class="row g-2">
 
                 {{-- Buscar por texto --}}
-                <div class="col-md-4">
-                    <input type="text" 
-                        name="search" 
-                        class="form-control form-control-sm"
-                        placeholder="Buscar por nombre..."
+                <div class="col-md-3">
+                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Buscar por nombre..."
                         value="{{ request('search') }}">
                 </div>
 
                 {{-- Buscar por número de serie --}}
                 <div class="col-md-3">
-                    <input type="text" 
-                        name="serie" 
-                        class="form-control form-control-sm"
-                        placeholder="Buscar por serie..."
+                    <input type="text" name="serie" class="form-control form-control-sm" placeholder="Buscar por serie..."
                         value="{{ request('serie') }}">
                 </div>
 
@@ -46,136 +40,81 @@
                     <select name="oficina" class="form-select form-select-sm select2">
                         <option value="">-- Todas las oficinas --</option>
                         @foreach ($oficinas as $oficina)
-                            <option value="{{ $oficina->id }}" 
-                                {{ request('oficina') == $oficina->id ? 'selected' : '' }}>
+                            <option value="{{ $oficina->id }}" {{ request('oficina') == $oficina->id ? 'selected' : '' }}>
                                 {{ $oficina->nombre_oficina }}
                             </option>
                         @endforeach
                     </select>
                 </div>
 
-                <div class="col-md-2">
-                    <button class="btn btn-sm btn-outline-primary w-100" type="submit">
+                <div class="col-md-3 d-flex gap-2">
+                    <button class="btn btn-sm btn-outline-primary flex-fill" type="submit">
                         <i class="bi bi-search"></i> Filtrar
                     </button>
+                    <a href="{{ route('equipos.index') }}" class="btn btn-sm btn-outline-secondary flex-fill">
+                        <i class="bi bi-arrow-clockwise"></i> Limpiar
+                    </a>
                 </div>
 
             </form>
         </div>
 
         <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Dispositivo</th>
-                            <th>Serie</th>
-                            <th>Marca</th>
-                            <th>Modelo</th>
-                            <th>Tipo</th>
-                            <!-- <th>IP</th> -->
-                            <th>Fecha Compra</th>
-                            <!-- <th>Fecha Mantenimiento</th> -->
-                            <th>Oficina</th>
-                            <th>Responsable</th>
-                            <th class="text-center">Estado</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($equipos as $equipo)
-                            <tr>
-                                <td>{{ $equipo->nombre_dispositivo }}</td>
-                                <td>{{ $equipo->numero_serie ?? 'N/A' }}</td>
-                                <td>{{ $equipo->modelo?->marca?->nombre_marca ?? 'N/A' }}</td>
-                                <td>{{ $equipo->modelo?->nombre_modelo ?? 'N/A' }}</td>
-                                <td>{{ $equipo->tipoequipo?->nombre_tipo ?? 'N/A' }}</td>
-                                <td>{{ $equipo->fecha_adquisicion ? \Carbon\Carbon::parse($equipo->fecha_adquisicion)->format('d/m/Y') : 'N/A' }}</td>
-                                <td>{{ $equipo->oficina?->nombre_oficina ?? 'N/A' }}</td>
-                                <td>{{ $equipo->responsable?->nombre_responsable ?? 'Sin asignar' }}</td>
-                                <td class="text-center">
-                                    <span class="badge bg-{{ 
-                                            $equipo->estado_equipo == 'Activo' ? 'success' :
-                            ($equipo->estado_equipo == 'Inactivo' ? 'warning' : 'danger') 
-                                                    }}">
-                                                    {{ $equipo->estado_equipo }}
-                                                </span>
-                                </td>
-                                <td class="text-center">
-                                    <a href="{{ route('equipos.show', $equipo) }}" class="btn btn-sm btn-info" title="Ver">
-                                        <i class="bi bi-eye"></i>
-                                    </a>
-                                    <a href="{{ route('equipos.edit', $equipo) }}" class="btn btn-sm btn-warning"
-                                        title="Editar">
-                                        <i class="bi bi-pencil"></i>
-                                    </a>
-                                    <form action="{{ route('equipos.destroy', $equipo) }}" method="POST" class="d-inline-block"
-                                        onsubmit="return confirm('¿Está seguro de eliminar este equipo? Esta acción no se puede deshacer.')">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="submit" class="btn btn-sm btn-danger" aria-label="Eliminar equipo">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>               
-                        @empty
-                            <tr>
-                                <td colspan="7" class="text-center text-muted">
-                                    <i class="bi bi-exclamation-circle"></i> No hay equipos registrados.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Paginación Bootstrap -->
-            <div class="d-flex justify-content-center mt-3">
-                @if ($equipos->hasPages())
-                    <nav>
-                        <ul class="pagination">
-
-                            {{-- Flecha izquierda --}}
-                            @if ($equipos->onFirstPage())
-                                <li class="page-item disabled">
-                                    <span class="page-link">&laquo;</span>
-                                </li>
-                            @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $equipos->previousPageUrl() }}" rel="prev">&laquo;</a>
-                                </li>
-                            @endif
-
-                            {{-- Números --}}
-                            @foreach ($equipos->getUrlRange(1, $equipos->lastPage()) as $page => $url)
-                                @if ($page == $equipos->currentPage())
-                                    <li class="page-item active">
-                                        <span class="page-link">{{ $page }}</span>
-                                    </li>
-                                @else
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-                                    </li>
-                                @endif
-                            @endforeach
-
-                            {{-- Flecha derecha --}}
-                            @if ($equipos->hasMorePages())
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $equipos->nextPageUrl() }}" rel="next">&raquo;</a>
-                                </li>
-                            @else
-                                <li class="page-item disabled">
-                                    <span class="page-link">&raquo;</span>
-                                </li>
-                            @endif
-
-                        </ul>
-                    </nav>
-                @endif
+            <div id="equipos-table">
+                @include('admin.equipos.partials.table')
             </div>
         </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            function fetchEquipos(page = 1) {
+                let search = $('input[name="search"]').val();
+                let serie = $('input[name="serie"]').val();
+                let oficina = $('select[name="oficina"]').val();
+
+                $.ajax({
+                    url: "{{ route('equipos.index') }}",
+                    type: "GET",
+                    data: {
+                        search: search,
+                        serie: serie,
+                        oficina: oficina,
+                        page: page
+                    },
+                    success: function (response) {
+                        $('#equipos-table').html(response);
+                    },
+                    error: function (xhr) {
+                        console.error("Error al filtrar equipos:", xhr);
+                    }
+                });
+            }
+
+            // Evento para inputs de búsqueda con debounce
+            let typingTimer;
+            $('input[name="search"], input[name="serie"]').on('input', function () {
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(function () {
+                    fetchEquipos();
+                }, 500);
+            });
+
+            // Evento para el select de oficinas
+            $('select[name="oficina"]').on('change', function () {
+                fetchEquipos();
+            });
+
+            // Interceptar clics en la paginación para cargar vía AJAX
+            $(document).on('click', '.pagination a', function (e) {
+                e.preventDefault();
+                let page = $(this).attr('href').split('page=')[1];
+                fetchEquipos(page);
+            });
+
+            // Manejar el botón de limpiar para que no recargue TODO, si se desea
+            // Por ahora, el botón "Limpiar" es un enlace normal, así que recargará la página, lo cual está bien para resetear todo limpio.
+        });
+    </script>
     </div>
 @endsection

@@ -44,6 +44,10 @@ class EquipoController extends Controller
         // Necesario para el select del filtro
         $oficinas = Oficina::all();
 
+        if ($request->ajax()) {
+            return view('admin.equipos.partials.table', compact('equipos'))->render();
+        }
+
         return view('admin.equipos.index', compact('equipos', 'oficinas'));
     }
 
@@ -56,9 +60,9 @@ class EquipoController extends Controller
         $sistemas = Sistemaoperativo::all();
         $responsables = Responsable::all();
 
-        return view('admin.equipos.create', compact('oficinas','tipos','hardwares','modelos','sistemas','responsables'));
+        return view('admin.equipos.create', compact('oficinas', 'tipos', 'hardwares', 'modelos', 'sistemas', 'responsables'));
     }
-    
+
 
     public function store(Request $request)
     {
@@ -77,7 +81,7 @@ class EquipoController extends Controller
 
         Equipo::create($request->all());
 
-        return redirect()->route('equipos.index')->with('success','Equipo creado correctamente.');
+        return redirect()->route('equipos.index')->with('success', 'Equipo creado correctamente.');
     }
 
     public function show(Equipo $equipo)
@@ -94,7 +98,7 @@ class EquipoController extends Controller
         $sistemas = Sistemaoperativo::all();
         $responsables = Responsable::all();
 
-        return view('admin.equipos.edit', compact('equipo','oficinas','tipoequipos','hardwares','modelos','sistemas','responsables'));
+        return view('admin.equipos.edit', compact('equipo', 'oficinas', 'tipoequipos', 'hardwares', 'modelos', 'sistemas', 'responsables'));
     }
 
     public function update(Request $request, Equipo $equipo)
@@ -114,12 +118,12 @@ class EquipoController extends Controller
 
         $equipo->update($request->all());
 
-        return redirect()->route('equipos.index')->with('success','Equipo actualizado correctamente.');
+        return redirect()->route('equipos.index')->with('success', 'Equipo actualizado correctamente.');
     }
 
     public function destroy(Equipo $equipo)
     {
         $equipo->delete();
-        return redirect()->route('equipos.index')->with('success','Equipo eliminado correctamente.');
+        return redirect()->route('equipos.index')->with('success', 'Equipo eliminado correctamente.');
     }
 }
