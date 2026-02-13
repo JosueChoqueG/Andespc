@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="{{ asset('favicon.ico') }}">
     <title>@yield('title', 'Andes PC Admin')</title>
-    
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -14,7 +15,8 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css"
+        rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 @include('auth.register')
@@ -49,9 +51,11 @@
                             <li><a class="dropdown-item" href="{{ route('oficinas.index') }}">Oficinas</a></li>
                             <li><a class="dropdown-item" href="{{ route('marcas.index') }}">Marcas</a></li>
                             <li><a class="dropdown-item" href="{{ route('modelos.index') }}">Modelos</a></li>
-                            <li><a class="dropdown-item" href="{{ route('tipoequipos.index') }}">Tipos de Equipo</a></li>
+                            <li><a class="dropdown-item" href="{{ route('tipoequipos.index') }}">Tipos de Equipo</a>
+                            </li>
                             <li><a class="dropdown-item" href="{{ route('hardwares.index') }}">Hardware</a></li>
-                            <li><a class="dropdown-item" href="{{ route('sistemaoperativos.index') }}">Sistemas Operativos</a></li>
+                            <li><a class="dropdown-item" href="{{ route('sistemaoperativos.index') }}">Sistemas
+                                    Operativos</a></li>
                             <li><a class="dropdown-item" href="{{ route('responsables.index') }}">Responsables</a></li>
                             <li><a class="dropdown-item" href="{{ route('equipos.index') }}">Equipos</a></li>
                         </ul>
@@ -61,7 +65,8 @@
                             <i class="bi bi-printer me-1"></i> Gestión Impresoras
                         </a>
                         <ul class="dropdown-menu dropdown-menu-dark shadow-lg">
-                            <li><a class="dropdown-item" href="{{ route('admin.impresoras.index') }}">Listado de impresoras</a></li>
+                            <li><a class="dropdown-item" href="{{ route('admin.impresoras.index') }}">Listado de
+                                    impresoras</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -78,10 +83,10 @@
 
                     <!-- USER INFO -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                            data-bs-toggle="dropdown">
                             <img src="{{ auth()->user()->avatar ?? asset('img/user-default.png') }}"
-                                class="user-avatar me-2"
-                                alt="Usuario">
+                                class="user-avatar me-2" alt="Usuario">
                             <span class="d-none d-lg-inline">{{ auth()->user()->name }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow">
@@ -100,9 +105,9 @@
             </div>
         </div>
     </nav>
-    <div class="container mt-4">
+    <div class="container-fluid mt-4">
         @yield('content')
     </div>
 </body>
-</html>
 
+</html>

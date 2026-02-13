@@ -39,7 +39,7 @@ class EquipoController extends Controller
             $query->where('oficina_id', $request->oficina);
         }
 
-        $equipos = $query->paginate(13)->withQueryString();
+        $equipos = $query->paginate(5)->withQueryString();
 
         // Necesario para el select del filtro
         $oficinas = Oficina::all();
