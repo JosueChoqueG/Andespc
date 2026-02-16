@@ -17,7 +17,7 @@
 <table class="table table-striped table-hover align-middle">
     <thead class="table-light">
         <tr>
-            <th>ID</th>
+            <!-- <th>ID</th> -->
             <th>Nombre</th>
             <th>Edición</th>
             <th>Versión</th>
@@ -27,7 +27,7 @@
     <tbody>
         @forelse($sistemaoperativos as $so)
             <tr>
-                <td>{{ $so->id_so }}</td>
+                <!-- <td>{{ $so->id_so }}</td> -->
                 <td>{{ $so->nombre_so }}</td>
                 <td>{{ $so->edicion ?? 'N/A' }}</td>
                 <td>{{ $so->version ?? 'N/A' }}</td>

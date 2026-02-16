@@ -20,7 +20,7 @@
 <table class="table table-striped table-hover align-middle">
     <thead class="table-light">
         <tr>
-            <th>ID</th>
+            <!-- <th>ID</th> -->
             <th>Nombre</th>
             <th>Agencia</th>
             <th>Acciones</th>
@@ -29,7 +29,7 @@
     <tbody>
         @forelse($oficinas as $oficina)
             <tr>
-                <td>{{ $oficina->id_oficina }}</td>
+                <!-- <td>{{ $oficina->id_oficina }}</td> -->
                 <td>{{ $oficina->nombre_oficina }}</td>
                 <td>{{ $oficina->agencia->nombre_agencia ?? 'N/A' }}</td>
                 <td>

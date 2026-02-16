@@ -21,7 +21,7 @@
     <table class="table table-striped table-hover align-middle">
         <thead class="table-light">
             <tr>
-                <th>ID</th>
+                <!-- <th>ID</th> -->
                 <th>Procesador</th>
                 <th>RAM</th>
                 <th>Almacenamiento</th>

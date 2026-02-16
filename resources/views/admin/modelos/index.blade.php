@@ -17,7 +17,7 @@
 <table class="table table-striped table-hover align-middle">
     <thead class="table-light">
         <tr>
-            <th>ID</th>
+            <!-- <th>ID</th> -->
             <th>Modelo</th>
             <th>Marca</th>
             <th>Acciones</th>
@@ -26,7 +26,7 @@
     <tbody>
         @forelse($modelos as $m)
             <tr>
-                <td>{{ $m->id_modelo }}</td>
+                <!-- <td>{{ $m->id_modelo }}</td> -->
                 <td>{{ $m->nombre_modelo }}</td>
                 <td>{{ $m->marca->nombre_marca ?? 'N/A' }}</td>
                 <td>

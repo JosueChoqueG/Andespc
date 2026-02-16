@@ -17,7 +17,7 @@
 <table class="table table-striped table-hover">
     <thead class="table-light">
         <tr>
-            <th>ID</th>
+            <!-- <th>ID</th> -->
             <th>Nombre</th>
             <th>Acciones</th>
         </tr>
@@ -25,7 +25,7 @@
     <tbody>
         @forelse($responsables as $resp)
             <tr>
-                <td>{{ $resp->id_responsable }}</td>
+                <!-- <td>{{ $resp->id_responsable }}</td> -->
                 <td>{{ $resp->nombre_responsable }}</td>
                 <td>
                     <a href="{{ route('responsables.show', $resp) }}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>

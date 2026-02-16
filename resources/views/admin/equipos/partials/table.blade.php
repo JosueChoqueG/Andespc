@@ -2,7 +2,7 @@
     <table class="table table-bordered table-hover align-middle">
         <thead class="table-light">
             <tr>
-                <th>Dispositivo</th>
+                <th>Nombre</th>
                 <th>Serie</th>
                 <th>Marca</th>
                 <th>Modelo</th>
