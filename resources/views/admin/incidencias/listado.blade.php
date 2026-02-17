@@ -61,7 +61,7 @@
                     <th>Descripción</th>
                     <th>Solución</th>
                     <th>Usuario</th>
-                    <th>Agencia</th>
+                    <!-- <th>Agencia</th> -->
                     <th>Oficina</th>
                     <th>Prioridad</th>
                     <th>Estado</th>
@@ -79,7 +79,7 @@
                         <td>{{ Str::limit($inc->descripcion, 50) }}</td>
                         <td>{{ Str::limit($inc->solucion, 50) }}</td>
                         <td>{{ $inc->usuario_afectado }}</td>
-                        <td>{{ $inc->agencia }}</td>
+                        <!-- <td>{{ $inc->agencia }}</td> -->
                         <td>{{ $inc->sub_agencia }}</td>
                         <td>
                             <span class="badge bg-{{
