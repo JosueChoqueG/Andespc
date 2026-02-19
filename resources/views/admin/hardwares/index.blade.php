@@ -32,7 +32,7 @@
         <tbody>
             @forelse($hardwares as $hw)
                 <tr>
-                    <td>{{ $hw->id_hardware }}</td>
+                    <!-- <td>{{ $hw->id_hardware }}</td> -->
                     <td>{{ $hw->procesador ?? 'N/A' }}</td>
                     <td>{{ $hw->ram_gb }} GB</td>
                     <td>{{ $hw->almacenamiento_gb }} GB</td>
