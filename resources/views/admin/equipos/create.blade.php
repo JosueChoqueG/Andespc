@@ -184,8 +184,8 @@
                         <div class="col-md-4">
                             <label for="vpn_abancay" class="form-label">VPN Abancay</label>
                             <select name="vpn_abancay" class="form-select">
-                                <option value="Sí" {{ old('vpn_abancay') == 'Sí' ? 'selected' : '' }}>Sí</option>
-                                <option value="No" {{ old('vpn_abancay') == 'No' ? 'selected' : '' }}>No</option>
+                                <option value="Sí" {{ old('vpn_abancay', 'No') == 'Sí' ? 'selected' : '' }}>Sí</option>
+                                <option value="No" {{ old('vpn_abancay', 'No') == 'No' ? 'selected' : '' }}>No</option>
                             </select>
                         </div>
                         <div class="col-md-4">
@@ -197,22 +197,22 @@
                     {{-- Observaciones y extras --}}
                     <div class="mb-3">
                         <label for="depreciacion_anual" class="form-label">Depreciación Anual (%)</label>
-                        <input type="number" step="0.01" name="depreciacion_anual" class="form-control" value="{{ old('depreciacion_anual') }}" placeholder="5.00">
+                        <input type="number" step="0.01" name="depreciacion_anual" class="form-control" value="{{ old('depreciacion_anual',20) }}" placeholder="5.00">
                     </div>
 
                     <div class="mb-3">
                         <label for="programas_instalados" class="form-label">Programas Instalados</label>
-                        <textarea name="programas_instalados" class="form-control" rows="3">{{ old('programas_instalados') }}</textarea>
+                        <textarea name="programas_instalados" class="form-control" rows="3">{{ old('programas_instalados', 'ESET Endpoint Security, Office Profesional Plus 2021, AnyDesk, 7zip, Zoom, PDF24, navegadores, LibreOffice, accesos unificados, Financial 2.5') }}</textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="licencias" class="form-label">Licencias</label>
-                        <textarea name="licencias" class="form-control" rows="2">{{ old('licencias') }}</textarea>
+                        <textarea name="licencias" class="form-control" rows="2">{{ old('licencias', 'Windows, ESET Endpoint Security') }}</textarea>
                     </div>
 
                     <div class="mb-3">
                         <label for="copias_seguridad" class="form-label">Copias de Seguridad</label>
-                        <textarea name="copias_seguridad" class="form-control" rows="2">{{ old('copias_seguridad') }}</textarea>
+                        <textarea name="copias_seguridad" class="form-control" rows="2">{{ old('copias_seguridad', 'La información se almacena en la partición disco local D.') }}</textarea>
                     </div>
 
                     <div class="mb-3">
