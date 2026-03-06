@@ -9,15 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const problemas = { 
         software: [
-            "USUARIO SFI BLOQUEADO",
-            "USUARIO SE OLVIDO LA CONTRASEÑA SFI",
-            "DESCONFIGURACION SFI",
-            "USUARIO SFI LOGGEADO",
-            "ERROR DE INCIO SESION SFI",
-            "ERROR DE FUNCIONALIDAD SFI",
-            "CAIDA DEL SERVICIO SFI",
-            "FINANCIAL",
-            "DESCONFIGURACIÓN FINANCIAL",
+            "USUARIO FINANCIAL BLOQUEADO",
+            "USUARIO SE OLVIDO LA CONTRASEÑA FINANCIAL",
+            "DESCONFIGURACION FINANCIAL",
+            "ERROR DE INCIO SESION FINANCIAL",
+            "ERROR DE FUNCIONALIDAD FINANCIAL",
+            "CAIDA DEL SERVICIO FINANCIAL",
+            "NO ACTUALIZA FINANCIAL",
             "USUARIO SIEPA BLOQUEADO",
             "USUARIO SE OLVIDO LA CONTRASEÑA SIEPA",
             "ERROR DE INICIO SESION SIEPA",
@@ -31,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "ERROR AL CARGAR BAUCHER DIGITALIZADO",
             "USUARIO CORREO BLOQUEADO",
             "USUARIO SE OLVIDO CONTRASEÑA CORREO",
+            "FIRMA DE USUARIO SIN CONFIGURAR EN CORREO",
+            "ALMACENAMIENTO DE CORREO",
             "ERROR DE FUNCIONALIDAD CORREO",       
             "ERROR DE INICIO SESION CORREO",
             "ERROR DE ACTIVCACION ANTIVIRUS ESET",
@@ -48,8 +48,10 @@ document.addEventListener("DOMContentLoaded", () => {
             "ERROR DE CONFIGURACION BIOMETRICO",
             "ERROR DE CONFIGURACION TOTEM",
             "IMPRESORA TERMICA",
+            "ESCANEADOR DE VOUCHERS",
             "ALMACENAMIENTO LLENO",
-            "PUERTO USB BLOQUEADO"
+            "PUERTO USB BLOQUEADO",
+            "LECTOR DE HUELLAS"
         ],
         conectividad: [
             "DESCONFIGURACION DE TOTEM",
@@ -64,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "CLOUD LA NUBE"
         ] };
     const subAgencias = {
-        "99 Soporte Administrativo": ['TI', 'Operaciones', 'Contabilidad', 'Logística', 'Comunicaciones','Asesría Legal','Riesgos','Procesos','Planificación','Tesorería','Subgerencia', 'Servicios Financieros', 'Talento Humano','Servicios Complementarios','Financial','Auditoría Interna'],
+        "99 Soporte Administrativo": ['TI', 'Operaciones', 'Contabilidad', 'Logística', 'Comunicaciones','Asesoría Legal','Riesgos','Procesos','Planificación','Tesorería','Subgerencia', 'Servicios Financieros', 'Talento Humano','Servicios Complementarios','Financial','Auditoría Interna'],
         "101 Chalhuanca": ['Chalhuanca', 'Huancapampa','Cotaruse', 'Chacapuente', 'Socco', 'Pachaconas', 'Tampumayu'],
         "102 Andahuaylas": ['Andahuaylas','Talavera','Champacocha','Pacucha', 'Andarapa','Kaquiabamba', 'Soras','Pampachiri','Jose María Arguedas','Turpo','Huancaray'],
         "103 Uripa": ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'Ranracancha'],
