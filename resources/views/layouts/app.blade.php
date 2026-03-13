@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-
+@include('auth.register')
 <body>
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -23,6 +23,11 @@
                 <i class="bi bi-cpu-fill me-2 text-info"></i> Andes Admin
             </a>
             <div class="ms-auto d-flex align-items-center">
+                <!-- REGISTER -->
+                <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#registerModal">
+                    <i class="bi bi-person-plus"></i>
+                </button>
+                <!-- Fin REGISTER --> 
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
                         <img src="{{ auth()->user()->avatar ?? asset('img/user-default.png') }}" class="rounded-circle me-2" width="35">
@@ -79,10 +84,10 @@
                 <span class="text-secondary">Impresoras</span>
             </a>
 
-            <div class="section-title">Configuración</div>
-            <a href="{{ route('agencias.index') }}" class="nav-link-main {{ Request::routeIs('agencias.index') ? 'active-section' : '' }} bg-transparent shadow-none border-0">
-                <div class="icon-box-white"><i class="bi bi-geo-alt text-success"></i></div>
-                <span class="text-secondary">Agencias</span>
+            <div class="section-title">Conectividad</div>
+            <a href="{{ route('admin.servicios-internet.index') }}" class="nav-link-main {{ Request::routeIs('admin.servicios-internet.index') ? 'active-section' : '' }} bg-transparent shadow-none border-0">
+                <div class="icon-box-white"><i class="bi bi-diagram-3 text-primary"></i></div>
+                <span class="text-secondary">Internet</span>
             </a>
             <a href="{{ route('sistemaoperativos.index') }}" class="nav-link-main {{ Request::routeIs('sistemaoperativos.index') ? 'active-section' : '' }} bg-transparent shadow-none border-0">
                 <div class="icon-box-white"><i class="bi bi-window text-primary"></i></div>

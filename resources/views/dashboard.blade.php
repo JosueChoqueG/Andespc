@@ -46,14 +46,13 @@
                         <i class="bi bi-journal-text me-1"></i> Bitácora
                     </h5>
                     <p class="card-text">
-                        {{ \App\Models\Incidencia::count() }}
+                        {{ \App\Models\Incidencia::count() }} Incidencias registradas
                     </p>
-                    <small>Incidencias registradas</small>
+                    <a href="{{ route('admin.incidencias.listado') }}"class="btn btn-light btn-sm">
+                        Ver bitácora
+                    </a>
                 </div>
-                <a href="{{ route('admin.incidencias.listado') }}"
-                class="btn btn-light btn-sm">
-                    Ver bitácora
-                </a>
+                
             </div>
         </div>
     </div>
