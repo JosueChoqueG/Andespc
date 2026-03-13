@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
+<div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Incidencias Registradas</h2>
         <div class="d-flex gap-2">
@@ -16,7 +16,7 @@
     </div>
 
     <!-- Filtros -->
-    <div class="card mb-4">
+<!--     <div class="card mb-4">
         <div class="card-body">
             <form method="GET" action="{{ route('admin.incidencias.listado') }}" class="row g-3">
                 <div class="col-md-3">
@@ -40,7 +40,7 @@
                 </div>
             </form>
         </div>
-    </div>
+    </div> -->
 
     <!-- Total de incidencias -->
     <div class="mb-3">
@@ -50,68 +50,72 @@
         @endif
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover">
+    <div class="table-responsive" style="max-height:600px; overflow:auto;">
+        <table class="table table-bordered table-hover mb-0">
             <thead class="table-dark">
                 <tr>
-                    <th>#</th>
-                    <th>Tipo</th>
-                    <th>Módulo</th>
-                    <th>Problema</th>
-                    <th>Descripción</th>
-                    <th>Solución</th>
-                    <th>Usuario</th>
-                    <!-- <th>Agencia</th> -->
-                    <th>Oficina</th>
-                    <th>Prioridad</th>
-                    <th>Estado</th>
-                    <th>Fecha</th>
-                    <th>Atendió</th>
+                    <th class="position-sticky top-0 bg-dark text-white">#</th>
+                    <th class="position-sticky top-0 bg-dark text-white">Tipo</th>
+                    <th class="position-sticky top-0 bg-dark text-white">Módulo</th>
+                    <th class="position-sticky top-0 bg-dark text-white">Problema</th>
+                    <th class="position-sticky top-0 bg-dark text-white">Descripción</th>
+                    <th class="position-sticky top-0 bg-dark text-white">Solución</th>
+                    <th class="position-sticky top-0 bg-dark text-white">Usuario</th>
+                    <th class="position-sticky top-0 bg-dark text-white">Oficina</th>
+                    <th class="position-sticky top-0 bg-dark text-white">Prioridad</th>
+                    <th class="position-sticky top-0 bg-dark text-white">Estado</th>
+                    <th class="position-sticky top-0 bg-dark text-white">Fecha</th>
+                    <th class="position-sticky top-0 bg-dark text-white">Atendió</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($incidencias as $i => $inc)
-                    <tr>
-                        <td><strong>{{ $inc->id }}</strong></td>
-                        <td>{{ ucfirst($inc->tipo) }}</td>
-                        <td>{{ ucfirst($inc->modulo) }}</td>
-                        <td>{{ Str::limit($inc->problema, 25) }}</td>
-                        <td>{{ Str::limit($inc->descripcion, 50) }}</td>
-                        <td>{{ Str::limit($inc->solucion, 50) }}</td>
-                        <td>{{ $inc->usuario_afectado }}</td>
-                        <!-- <td>{{ $inc->agencia }}</td> -->
-                        <td>{{ $inc->sub_agencia }}</td>
-                        <td>
-                            <span class="badge bg-{{
-                                $inc->prioridad === 'Alta' ? 'danger' :
-                                ($inc->prioridad === 'Media' ? 'warning' : 'info')
-                            }} text-dark">
-                                {{ $inc->prioridad }}
-                            </span>
-                        </td>
-                        <td>
-                            @php
-                                $badge = match(strtolower($inc->estado)) {
-                                    'pendiente' => 'danger',
-                                    'derivado' => 'warning',
-                                    'atendido' => 'success',
-                                    default => 'secondary'
-                                };
-                            @endphp
-                            <span class="badge bg-{{ $badge }}">
-                                {{ $inc->estado }}
-                            </span>
-                        </td>
-                        <td>{{ $inc->created_at->format('d/m/Y H:i') }}</td>
-                        <td>{{ $inc->atendidoPor?->name ?? '—' }}</td>
-                    </tr>
+                <tr>
+                    <td><strong>{{ $inc->id }}</strong></td>
+                    <td>{{ ucfirst($inc->tipo) }}</td>
+                    <td>{{ ucfirst($inc->modulo) }}</td>
+                    <td>{{ Str::limit($inc->problema, 25) }}</td>
+                    <td>{{ Str::limit($inc->descripcion, 50) }}</td>
+                    <td>{{ Str::limit($inc->solucion, 50) }}</td>
+                    <td>{{ $inc->usuario_afectado }}</td>
+                    <td>{{ $inc->sub_agencia }}</td>
+
+                    <td>
+                        <span class="badge bg-{{
+                            $inc->prioridad === 'Alta' ? 'danger' :
+                            ($inc->prioridad === 'Media' ? 'warning' : 'info')
+                        }}">
+                            {{ $inc->prioridad }}
+                        </span>
+                    </td>
+
+                    <td>
+                        @php
+                            $badge = match(strtolower($inc->estado)) {
+                                'pendiente' => 'danger',
+                                'derivado' => 'warning',
+                                'atendido' => 'success',
+                                default => 'secondary'
+                            };
+                        @endphp
+
+                        <span class="badge bg-{{ $badge }}">
+                            {{ $inc->estado }}
+                        </span>
+                    </td>
+
+                    <td>{{ $inc->created_at->format('d/m/Y H:i') }}</td>
+                    <td>{{ $inc->atendidoPor?->name ?? '—' }}</td>
+                </tr>
+
                 @empty
-                    <tr>
-                        <td colspan="13" class="text-center text-muted py-4">
-                            <i class="fas fa-inbox fa-2x mb-2"></i>
-                            <p class="mb-0">No hay incidencias registradas.</p>
-                        </td>
-                    </tr>
+
+                <tr>
+                    <td colspan="12" class="text-center text-muted py-4">
+                        No hay incidencias registradas
+                    </td>
+                </tr>
+
                 @endforelse
             </tbody>
         </table>

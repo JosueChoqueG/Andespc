@@ -1,7 +1,7 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
 @import "select2/dist/css/select2.css";
 @import "select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.css";
-/* @import "tom-select/dist/css/tom-select.bootstrap5.css"; */
+
 
 .futuristic-navbar {
     background: linear-gradient(135deg, #0b132b, #1c2541, #3a506b);
@@ -9,6 +9,7 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     position: sticky;
     top: 0;
+    height: 70px;
     z-index: 1050; /* Bootstrap usa 1050+ */
 }
 
@@ -53,3 +54,97 @@
     border: 2px solid #5bc0eb;
 }
 
+
+/* Sidebar Flotante Soft UI */
+.sidebar-soft {
+    width: 250px;
+    height: calc(100vh - 110px); 
+    position: fixed;
+    top: 90px;
+    left: 20px;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 1rem;
+    z-index: 1040;
+    transition: all 0.3s ease;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+.sidebar-soft::-webkit-scrollbar { display: none; }
+
+/* Estilo de los botones principales */
+.nav-link-main {
+    background: transparent;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #344767;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
+    border: none;
+}
+
+/* Resaltado cuando la sección está activa o expandida */
+.nav-link-main.active-section, 
+.nav-link-main[aria-expanded="true"] {
+    background: #fff !important;
+    box-shadow: 0 20px 27px 0 rgba(0,0,0,0.05) !important;
+}
+
+.icon-box-pink {
+    width: 32px; height: 32px;
+    background: linear-gradient(310deg, #7928ca, #ff0080);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-right: 12px; color: #fff;
+}
+
+.icon-box-white {
+    width: 32px; height: 32px;
+    background: #fff; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin-right: 12px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    color: #344767; border: 0.5px solid #ececec;
+}
+
+/* Sub-items (Links con punto) */
+.nav-sub-item {
+    display: flex; align-items: center;
+    padding: 0.6rem 1rem; color: #67748e;
+    text-decoration: none; font-size: 0.85rem;
+    position: relative; margin-left: 1.5rem;
+    transition: all 0.2s;
+}
+.nav-sub-item::before {
+    content: ""; width: 5px; height: 5px;
+    background: #adb5bd; border-radius: 50%;
+    position: absolute; left: -10px;
+}
+
+/* Sub-item activo */
+.nav-sub-item.active {
+    color: #344767 !important;
+    font-weight: 700;
+}
+.nav-sub-item.active::before {
+    background: #344767 !important;
+    width: 6px; height: 6px;
+}
+
+.section-title {
+    font-size: 0.7rem; font-weight: 700;
+    text-transform: uppercase; color: #8392ab;
+    margin: 25px 0 10px 15px;
+    letter-spacing: 1px;
+}
+
+.main-content { margin-left: 300px; width: calc(100% - 300px); padding: 2rem; margin-top: 20px; transition: all 0.3s ease; }
+
+@media (max-width: 991.98px) {
+    .sidebar-soft { left: -300px; }
+    .sidebar-soft.show { left: 15px; width: 280px; }
+    .main-content { margin-left: 0; width: 100%; }
+}

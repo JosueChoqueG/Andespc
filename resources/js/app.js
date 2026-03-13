@@ -19,3 +19,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Select2
     initSelect2();
 });
+
+// Sidebar Toggle
+document.addEventListener('DOMContentLoaded', () => {
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarMenu = document.getElementById('sidebarMenu');
+
+    if (sidebarToggle && sidebarOverlay && sidebarMenu) {
+        [sidebarToggle, sidebarOverlay].forEach(el => {
+            el.addEventListener('click', () => {
+                sidebarMenu.classList.toggle('show');
+                sidebarOverlay.classList.toggle('show');
+            });
+        });
+    }
+});
