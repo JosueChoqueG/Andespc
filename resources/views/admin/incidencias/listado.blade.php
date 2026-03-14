@@ -6,11 +6,11 @@
         <h2>Incidencias Registradas</h2>
         <div class="d-flex gap-2">
             <a href="{{ route('admin.incidencias.formulario') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Nueva Incidencia
+                <i class="bi bi-plus-circle"></i>
             </a>
             <a href="{{ route('admin.incidencias.exportar', ['estado' => request('estado')]) }}" 
                class="btn btn-success">
-                <i class="fas fa-file-excel"></i> Exportar Excel
+                <i class="bi bi-filetype-xlsx"></i>
             </a>
         </div>
     </div>
