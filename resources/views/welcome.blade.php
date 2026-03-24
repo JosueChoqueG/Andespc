@@ -69,7 +69,7 @@
             </div>
 
             <!-- Título -->
-            <h1 class="text-instrument">Andes PC Admin</h1>
+            <h1 class="text-instrument">Infraestructura TI</h1>
 
             <!-- Descripción -->
             <p class="text-muted">
