@@ -1,3 +1,15 @@
+import $ from 'jquery';
+window.$ = window.jQuery = $;
+
+// 🔥 IMPORTAR ASÍ (CLAVE)
+import select2 from 'select2/dist/js/select2.full.min.js';
+
+// 🔥 REGISTRAR MANUALMENTE (MUY IMPORTANTE)
+select2($);
+
+import 'select2/dist/css/select2.min.css';
+import 'select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css';
+// --- resto de tu código ---
 import './bootstrap';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Alpine from 'alpinejs';
@@ -8,6 +20,7 @@ window.Swal = Swal;
 
 import './modules/swal-global';
 import './modules/incidencias';
+
 window.Alpine = Alpine;
 Alpine.start();
 
