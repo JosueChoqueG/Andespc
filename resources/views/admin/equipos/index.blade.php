@@ -6,7 +6,7 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h5 class="mb-0"><i class="bi bi-pc-display"></i> Equipos Registrados</h5>
         <a href="{{ route('equipos.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Nueva Computadora
+            <i class="bi bi-plus-circle"></i>
         </a>
     </div>
 
@@ -23,36 +23,50 @@
             <!-- Buscador -->
             <form action="{{ route('equipos.index') }}" method="GET" class="row g-2">
 
-                {{-- Buscar por texto --}}
+                <!-- {{-- Buscar por texto --}}
                 <div class="col-md-3">
-                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Buscar por nombre..."
+                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Por nombre..."
                         value="{{ request('search') }}">
-                </div>
+                </div> -->
 
                 {{-- Buscar por número de serie --}}
                 <div class="col-md-3">
-                    <input type="text" name="serie" class="form-control form-control-sm" placeholder="Buscar por serie..."
+                    <input type="text" name="serie" class="form-control form-control-sm" placeholder="Por serie..."
                         value="{{ request('serie') }}">
                 </div>
 
-                {{-- Filtro por oficina --}}
-                <div class="col-md-3">
-                    <select name="oficina" class="form-select form-select-sm select2">
-                        <option value="">-- Todas las oficinas --</option>
-                        @foreach ($oficinas as $oficina)
-                            <option value="{{ $oficina->id }}" {{ request('oficina') == $oficina->id ? 'selected' : '' }}>
-                                {{ $oficina->nombre_oficina }}
+                {{-- Filtro por Agencia --}}
+               <div class="col-md-4">
+                    <select name="agencia" class="form-select form-select-sm select2">
+                        <option value="">Agencias  </option>
+                        @foreach ($agencias as $agencia)
+                            <option value="{{ $agencia->id }}" {{ request('agencia') == $agencia->id ? 'selected' : '' }}>
+                                {{ $agencia->nombre_agencia }}
                             </option>
                         @endforeach
                     </select>
                 </div>
 
-                <div class="col-md-3 d-flex gap-2">
-                    <button class="btn btn-sm btn-outline-primary flex-fill" type="submit">
-                        <i class="bi bi-search"></i> Filtrar
+                {{-- Filtro por Oficina --}}
+                <div class="col-md-3">
+                    <select name="oficina" id="filtroOficina" class="form-select form-select-sm select2">
+                        <option value="">Oficinas </option>
+                        @foreach ($oficinas as $oficina)
+                            <option value="{{ $oficina->id }}" 
+                                    {{ request('oficina') == $oficina->id ? 'selected' : '' }}
+                                    data-agencia="{{ $oficina->id_agencia }}">
+                                {{ $oficina->nombre_oficina }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex gap-2 align-items-center">
+                    <button class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center">
+                        <i class="bi bi-search"></i>
                     </button>
-                    <a href="{{ route('equipos.index') }}" class="btn btn-sm btn-outline-secondary flex-fill">
-                        <i class="bi bi-arrow-clockwise"></i> Limpiar
+
+                    <a href="{{ route('equipos.index') }}" class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center">
+                        <i class="bi bi-arrow-clockwise"></i>
                     </a>
                 </div>
 
@@ -112,8 +126,6 @@
                 fetchEquipos(page);
             });
 
-            // Manejar el botón de limpiar para que no recargue TODO, si se desea
-            // Por ahora, el botón "Limpiar" es un enlace normal, así que recargará la página, lo cual está bien para resetear todo limpio.
         });
     </script>
     </div>

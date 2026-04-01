@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Equipo;
 use App\Models\Oficina;
+use App\Models\Agencia;
 use App\Models\Tipoequipo;
 use App\Models\Hardware;
 use App\Models\Modelo;
@@ -17,6 +18,7 @@ class EquipoController extends Controller
     {
         $query = Equipo::with([
             'oficina',
+            'oficina.agencia',
             'tipoequipo',
             'hardware',
             'modelo.marca',
@@ -38,17 +40,24 @@ class EquipoController extends Controller
         if ($request->filled('oficina')) {
             $query->where('oficina_id', $request->oficina);
         }
+        // Filtrar por agencia
+         if ($request->filled('agencia')) {
+                $query->whereHas('oficina', function ($q) use ($request) {
+                    $q->where('id_agencia', $request->agencia);
+                });
+            }
 
-        $equipos = $query->paginate(5)->withQueryString();
+        $equipos = $query->paginate(12)->withQueryString();
 
         // Necesario para el select del filtro
         $oficinas = Oficina::all();
+        $agencias = Agencia::all();
 
         if ($request->ajax()) {
             return view('admin.equipos.partials.table', compact('equipos'))->render();
         }
 
-        return view('admin.equipos.index', compact('equipos', 'oficinas'));
+        return view('admin.equipos.index', compact('equipos', 'oficinas', 'agencias'));
     }
 
     public function create()

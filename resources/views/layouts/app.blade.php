@@ -20,7 +20,7 @@
                 <i class="bi bi-list fs-3"></i>
             </button>
             <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ route('dashboard') }}">
-                <i class="bi bi-cpu-fill me-2 text-info"></i> Andes Admin
+                <i class="bi bi-cpu-fill me-2 text-info"></i> Inicio
             </a>
             <div class="ms-auto d-flex align-items-center">
                 <!-- REGISTER -->
@@ -54,7 +54,7 @@
                 <span class="text-secondary">Bitácora</span>
             </a>
 
-            <div class="section-title">Inventario</div>
+            <div class="section-title">Inventarios</div>
             @php 
                 $isPcOpen = Request::routeIs([
                     'responsables.*', 'marcas.*', 'hardwares.*', 'agencias.*',
@@ -89,10 +89,7 @@
                 <div class="icon-box-white"><i class="bi bi-diagram-3 text-primary"></i></div>
                 <span class="text-secondary">Internet</span>
             </a>
-            <a href="{{ route('sistemaoperativos.index') }}" class="nav-link-main {{ Request::routeIs('sistemaoperativos.index') ? 'active-section' : '' }} bg-transparent shadow-none border-0">
-                <div class="icon-box-white"><i class="bi bi-window text-primary"></i></div>
-                <span class="text-secondary">Sistemas Op.</span>
-            </a>
+            
         </aside>
 
         <main class="main-content">
