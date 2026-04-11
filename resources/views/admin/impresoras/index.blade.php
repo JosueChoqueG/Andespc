@@ -7,7 +7,7 @@
     </h5>
 
     <a href="{{ route('admin.impresoras.create') }}" class="btn btn-primary">
-        <i class="bi bi-plus-circle"></i> Nueva Impresora
+        <i class="bi bi-plus-circle"></i>
     </a>
 </div>
 <div class="card shadow-sm">

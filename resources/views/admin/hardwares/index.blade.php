@@ -7,7 +7,7 @@
 <div>
     <h2>Características de Hardware</h2>
     <a href="{{ route('hardwares.create') }}" class="btn btn-primary mb-3">
-        <i class="bi bi-plus-circle"></i> Nuevo Hardware
+        <i class="bi bi-plus-circle"></i>
     </a>
 </div>
 

@@ -7,7 +7,7 @@
 <div>
     <h2>Tipos de Equipo</h2>
     <a href="{{ route('tipoequipos.create') }}" class="btn btn-primary mb-3">
-        <i class="bi bi-plus-circle"></i> Nuevo Tipo
+        <i class="bi bi-plus-circle"></i>
     </a>
 </div>
 

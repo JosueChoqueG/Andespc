@@ -7,7 +7,7 @@
 <div>
     <h2>Oficinas</h2>
     <a href="{{ route('oficinas.create') }}" class="btn btn-primary mb-3">
-        <i class="bi bi-plus-circle"></i> Nueva Oficina 
+        <i class="bi bi-plus-circle"></i>
     </a>
 </div>
 <div class="card shadow-sm d-inline-block">

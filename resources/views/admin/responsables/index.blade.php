@@ -7,7 +7,7 @@
 <div>
     <h2>Responsables</h2>
     <a href="{{ route('responsables.create') }}" class="btn btn-primary mb-3">
-        <i class="bi bi-plus-circle"></i> Nuevo Responsable
+        <i class="bi bi-plus-circle"></i>
     </a>
 </div>
 

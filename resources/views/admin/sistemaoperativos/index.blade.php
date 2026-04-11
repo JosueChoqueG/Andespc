@@ -7,7 +7,7 @@
 <div>
     <h2>Sistemas Operativos</h2>
     <a href="{{ route('sistemaoperativos.create') }}" class="btn btn-primary mb-3">
-        <i class="bi bi-plus-circle"></i> Nuevo SO
+        <i class="bi bi-plus-circle"></i>
     </a>
 </div>
 

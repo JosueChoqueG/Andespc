@@ -6,7 +6,7 @@
 <div>
     <h2>Marcas</h2>
     <a href="{{ route('marcas.create') }}" class="btn btn-primary mb-3">
-        <i class="bi bi-plus-circle"></i> Nueva Marca
+        <i class="bi bi-plus-circle"></i>
     </a>
 </div>
 <div class="card shadow-sm d-inline-block">

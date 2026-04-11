@@ -7,7 +7,7 @@
 <div>
     <h2>Agencias</h2>
     <a href="{{ route('agencias.create') }}" class="btn btn-success mb-3">
-        <i class="bi bi-plus-circle"></i> Nueva Agencia
+        <i class="bi bi-plus-circle"></i>
     </a>
 </div>
 <div class="card shadow-sm d-inline-block">

@@ -8,12 +8,12 @@
         <h2>Servicios de Internet</h2>
         <div class="d-flex gap-2">
             <a href="{{ route('admin.servicios-internet.create') }}" class="btn btn-primary">
-                <i class="fas fa-plus"></i> Nuevo Servicio
+                <i class="bi-plus-circle"></i>
             </a>
 
             <a href="{{ route('admin.servicios-internet.excel') }}"
                class="btn btn-success">
-                <i class="fas fa-file-excel"></i> Exportar Excel
+                <i class="bi bi-filetype-xlsx"></i> 
             </a>
         </div>
     </div>

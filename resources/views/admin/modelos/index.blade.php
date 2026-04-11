@@ -7,7 +7,7 @@
 <div>
     <h2>Modelo de Equipos</h2>
     <a href="{{ route('modelos.create') }}" class="btn btn-primary mb-3">
-        <i class="bi bi-plus-circle"></i> Nuevo Modelo
+        <i class="bi bi-plus-circle"></i>
     </a>
 </div>
 
