@@ -41,11 +41,11 @@ class EquipoController extends Controller
             $query->where('oficina_id', $request->oficina);
         }
         // Filtrar por agencia
-         if ($request->filled('agencia')) {
-                $query->whereHas('oficina', function ($q) use ($request) {
-                    $q->where('id_agencia', $request->agencia);
-                });
-            }
+        if ($request->filled('agencia')) {
+            $query->whereHas('oficina', function ($q) use ($request) {
+                $q->where('agencia_id', $request->agencia);
+            });
+        }
 
         $equipos = $query->paginate(12)->withQueryString();
 

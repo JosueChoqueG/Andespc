@@ -35,10 +35,9 @@
                         value="{{ request('serie') }}">
                 </div>
 
-                {{-- Filtro por Agencia --}}
-               <div class="col-md-4">
-                    <select name="agencia" class="form-select form-select-sm select2">
-                        <option value="">Agencias  </option>
+                <div class="col-md-4">
+                    <select name="agencia" id="filtroAgencia" class="form-select form-select-sm select2">
+                        <option value="">Agencias</option>
                         @foreach ($agencias as $agencia)
                             <option value="{{ $agencia->id }}" {{ request('agencia') == $agencia->id ? 'selected' : '' }}>
                                 {{ $agencia->nombre_agencia }}
@@ -47,14 +46,12 @@
                     </select>
                 </div>
 
-                {{-- Filtro por Oficina --}}
                 <div class="col-md-3">
                     <select name="oficina" id="filtroOficina" class="form-select form-select-sm select2">
-                        <option value="">Oficinas </option>
+                        <option value="">Oficinas</option>
                         @foreach ($oficinas as $oficina)
                             <option value="{{ $oficina->id }}" 
-                                    {{ request('oficina') == $oficina->id ? 'selected' : '' }}
-                                    data-agencia="{{ $oficina->id_agencia }}">
+                                data-agencia="{{ $oficina->agencia_id }}">
                                 {{ $oficina->nombre_oficina }}
                             </option>
                         @endforeach
