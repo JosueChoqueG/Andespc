@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const problemas = { 
         software: [
+            "USUARIO SFI BLOQUEADO",
             "USUARIO FINANCIAL BLOQUEADO",
             "USUARIO SE OLVIDO LA CONTRASEÑA FINANCIAL",
             "DESCONFIGURACION FINANCIAL",
@@ -23,8 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "CAIDA DEL SERVICIO SIEPA",  
             "USUARIO BLOQUEADO SENTINEL",
             "USUARIO SE OLVIDO CONTRASEÑA SENTINEL",
-            "ERROR DE FUNCIONALIDAD SENTINEL",
-            "ERROR DE INICIO SESION SENTINEL",
             "ERROR DE INICIO SESION CARPETA COMPARTIDA",
             "ERROR AL CARGAR BAUCHER DIGITALIZADO",
             "USUARIO CORREO BLOQUEADO",
@@ -38,11 +37,14 @@ document.addEventListener("DOMContentLoaded", () => {
             "USUARIO SE OLVIDO CONTRASEÑA CLOUD",
             "ERROR DE FUNCIONALIDAD CLOUD",
             "ERROR DE INICIO SESION CLOUD",
-            "NAVEGADOR DE INTERNET"
+            "NAVEGADOR DE INTERNET",
+            "ANYDESK",
+            "WINDOWS"
         ],
         hardware: [
-            "ATASCO PAPEL IMPRESORA",
-            "PROBLEMA CONFIGURACION IMPRESORA",
+            "TECLADO",
+            "IMPRESORA",
+            "MINI IMPRESORA",
             "ERROR DE ESCANEO IMPRESORA",
             "ERROR DE COMPONENTE EQUIPO COMPUTO",
             "ERROR DE CONFIGURACION BIOMETRICO",
@@ -55,12 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
         ],
         conectividad: [
             "DESCONFIGURACION DE TOTEM",
-            "ERROR DE CONEXION CERTIFICADO VPN",
-            "ERROR DE CONECTIVIDAD RED",
-            "ACTIVACION O CONFIGURACION DE VPN",
+            "CERTIFICADO VPN",
+            "CONECTIVIDAD RED",
+            "CONFIGURACION DE VPN",
             "CONECTIVIDAD GENERAL",
-            "SIN ENERGÍA ELÉCTRICA",
-            "SIN ACCESO A INTERNET",
+            "ENERGÍA ELÉCTRICA",
+            "ACCESO A INTERNET",
             "INTALACION/ERROR DE ANTIVIRUS",
             "CARPETAS COMPARTIDAS",
             "CLOUD LA NUBE"
@@ -79,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "110 Grau": ['Chuquibambilla','Vilcabamba','Totora Oropesa'],
         "111 Cotabambas": ['Challhuahuacho','Haquira','Mara','Tambobamba','Cotabambas','Coyllurqui','Progreso'],
         "112 Curahuasi": ['Curahuasi','Cachora','Limatambo','Mollepata'],
-        "113 Secclla": ['Secclla','Congalla','Lircay','Acobamba','Antaparco'],
+        "113 Secclla": ['Secclla','Congalla','Lircay','Acobamba','Paucará'],
         "114 Cusco": ['Cusco','Ocongate','Pillcopata','Anta'],
         "115 Santo Tomás": ['Santo Tomás','Velille','Pulpera','Colquemarca','Quiñota'],
         "116 Pampa Cangallo": ['Pampa Cangallo','Vilcas Huamán','Chuschi','Huanca Sancos','Huancapi'],
@@ -91,8 +93,8 @@ document.addEventListener("DOMContentLoaded", () => {
         "122 La Merced": ['La Merced','Yurinaki'],
         "123 San Juan de Miraflores": ['S.J. Miraflores'],
         "124 San Juan de Lurigancho": ['S.J. de Lurigancho'],
-        "125 Nueva Esperanza": ['Nueva Esperanza','Cascabamba'],
-        "126 Ocampo": ['Ocampo','Lambrama','Paccaypata'],
+        "125 Nueva Esperanza": ['Nueva Esperanza','Cascabamba','Chicmo'],
+        "126 Ocampo": ['Ocampo','Lambrama','Paccaypata','Tamburco'],
         "127 Cañete": ['Cañete']
     };
 
