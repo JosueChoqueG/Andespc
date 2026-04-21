@@ -36,7 +36,29 @@
                         {{ $equipo->estado_equipo }}
                     </span>
                 </td>
-                <td class="text-center">
+                <td>
+                    <div class="btn-group" role="group">
+                        <a href="{{ route('equipos.show', $equipo) }}" class="btn btn-sm btn-info" title="Ver detalles">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{{ route('equipos.edit', $equipo) }}" class="btn btn-sm btn-warning" title="Editar">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{{ route('admin.mantenimientos-pc.create', $equipo) }}" 
+                        class="btn btn-sm btn-success" title="Nuevo Mantenimiento">
+                            <i class="bi bi-tools"></i>
+                        </a>
+                        <a href="{{ route('admin.mantenimientos-pc.historial', $equipo) }}" 
+                        class="btn btn-sm btn-secondary" title="Historial">
+                            <i class="bi bi-clock-history"></i>
+                        </a>
+                        <a href="{{ route('admin.equipos.hoja-vida', $equipo) }}" 
+                        class="btn btn-sm btn-primary" title="Hoja de Vida" target="_blank">
+                            <i class="bi bi-file-pdf"></i>
+                        </a>
+                    </div>
+                </td>
+             <!--  <td class="text-center">
                     <a href="{{ route('equipos.show', $equipo) }}" class="btn btn-sm btn-info" title="Ver">
                         <i class="bi bi-eye"></i>
                     </a>
@@ -52,7 +74,7 @@
                             <i class="bi bi-trash"></i>
                         </button>
                     </form>
-                </td>
+                </td> -->
             </tr>
             @empty
                 <tr>

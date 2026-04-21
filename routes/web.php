@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\IncidenciaController;
 use App\Http\Controllers\Admin\ImpresoraController;
 use App\Http\Controllers\Admin\MantenimientoController;
 use App\Http\Controllers\Admin\ServicioInternetController;
+use App\Http\Controllers\Admin\MantenimientoPcController;
 // Página de inicio (pública)
 Route::get('/', function () {
     return view('welcome');
@@ -60,6 +61,37 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // 🌐 SERVICIOS DE INTERNET
         Route::resource('servicios-internet', ServicioInternetController::class)->parameters(['servicios-internet' => 'servicio']);
         Route::get('servicios-internet-export/excel',[ServicioInternetController::class, 'exportExcel'])->name('servicios-internet.excel');
+            
+        // ============================================
+        // MANTENIMIENTOS DE EQUIPOS
+        // ============================================
+        // MANTENIMIENTOS DE PCs
+        Route::get('equipos/{equipo}/mantenimientos/create', [MantenimientoPcController::class, 'create'])
+            ->name('mantenimientos-pc.create');
+        
+        Route::post('equipos/{equipo}/mantenimientos', [MantenimientoPcController::class, 'store'])
+            ->name('mantenimientos-pc.store');
+        
+        Route::get('mantenimientos/{mantenimiento}', [MantenimientoPcController::class, 'show'])
+            ->name('mantenimientos-pc.show');
+        
+        Route::get('equipos/{equipo}/mantenimientos/historial', [MantenimientoPcController::class, 'historial'])
+            ->name('mantenimientos-pc.historial');
+        
+        // HOJAS DE VIDA
+        Route::get('equipos/{equipo}/hoja-vida', [MantenimientoPcController::class, 'generarHojaVidaEquipo'])
+            ->name('equipos.hoja-vida');
+        
+        Route::get('mantenimientos/{mantenimiento}/hoja-vida', [MantenimientoPcController::class, 'generarHojaVida'])
+            ->name('equipos.hoja-vida-mantenimiento');
+        
+        // DESCARGAS PDF
+        Route::get('equipos/{equipo}/hoja-vida/pdf', [MantenimientoPcController::class, 'descargarHojaVidaPDF'])
+            ->name('equipos.hoja-vida.pdf');
+        
+        Route::get('mantenimientos/{mantenimiento}/hoja-vida/pdf', [MantenimientoPcController::class, 'descargarHojaVidaMantenimientoPDF'])
+            ->name('equipos.hoja-vida-mantenimiento.pdf');
+            
     });
 });
 
