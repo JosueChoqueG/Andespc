@@ -10,11 +10,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const problemas = { 
         software: [
             "USUARIO SFI BLOQUEADO",
-            "USUARIO FINANCIAL BLOQUEADO",
             "USUARIO SE OLVIDO LA CONTRASEÑA FINANCIAL",
             "DESCONFIGURACION FINANCIAL",
             "ERROR DE INCIO SESION FINANCIAL",
             "ERROR DE FUNCIONALIDAD FINANCIAL",
+            "PARAMETROS DE SEGURIDAD FINANCIAL",
+            "USUARIO FINANCIAL",
             "CAIDA DEL SERVICIO FINANCIAL",
             "NO ACTUALIZA FINANCIAL",
             "USUARIO SIEPA BLOQUEADO",
@@ -68,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "CLOUD LA NUBE"
         ] };
     const subAgencias = {
-        "99 Soporte Administrativo": ['TI', 'Operaciones', 'Contabilidad', 'Logística', 'Comunicaciones','Asesoría Legal','Riesgos','Procesos','Planificación','Tesorería','Subgerencia', 'Servicios Financieros', 'Talento Humano','Servicios Complementarios','Financial','Auditoría Interna'],
+        "99 Soporte Administrativo": ['TI', 'Operaciones', 'Contabilidad', 'Logística', 'Comunicaciones','Asesoría Legal','Riesgos','Procesos','Planificación','Tesorería','Subgerencia', 'Servicios Financieros', 'Talento Humano','Servicios Complementarios','Financial','Auditoría Interna','Oficial de Cumplimiento'],
         "101 Chalhuanca": ['Chalhuanca', 'Huancapampa','Cotaruse', 'Chacapuente', 'Socco', 'Pachaconas', 'Tampumayu'],
         "102 Andahuaylas": ['Andahuaylas','Talavera','Champacocha','Pacucha', 'Andarapa','Kaquiabamba', 'Soras','Pampachiri','Jose María Arguedas','Turpo','Huancaray'],
         "103 Uripa": ['Uripa', 'Ahuayro', 'Cocharcas', 'Uranmarca', 'Chumbes' ,'Ranracancha'],

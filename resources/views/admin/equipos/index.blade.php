@@ -10,24 +10,11 @@
         </a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    @endif
-
     <div class="card shadow-sm">
         <div class="card-header bg-light d-flex justify-content-between align-items-center">
             <strong><i class="bi bi-list-check"></i> Lista de Computadoras</strong>
             <!-- Buscador -->
             <form action="{{ route('equipos.index') }}" method="GET" class="row g-2">
-
-                <!-- {{-- Buscar por texto --}}
-                <div class="col-md-3">
-                    <input type="text" name="search" class="form-control form-control-sm" placeholder="Por nombre..."
-                        value="{{ request('search') }}">
-                </div> -->
 
                 {{-- Buscar por número de serie --}}
                 <div class="col-md-3">
