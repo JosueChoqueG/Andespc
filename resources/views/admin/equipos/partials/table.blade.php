@@ -28,11 +28,18 @@
                 </td>
                 <td>{{ $equipo->oficina?->nombre_oficina ?? 'N/A' }}</td>
                 <td>{{ $equipo->responsable?->nombre_responsable ?? 'Sin asignar' }}</td>
+                @php
+                    $colores = [
+                        'Operativo' => 'success',
+                        'Operativo con observaciones' => 'primary',
+                        'En mantenimiento' => 'warning',
+                        'Fuera de servicio' => 'danger',
+                        'De baja' => 'dark',
+                    ];
+                @endphp
+
                 <td class="text-center">
-                    <span class="badge bg-{{ 
-                            $equipo->estado_equipo == 'Activo' ? 'success' :
-                            ($equipo->estado_equipo == 'Inactivo' ? 'warning' : 'danger') 
-                            }}">
+                    <span class="badge bg-{{ $colores[$equipo->estado_equipo] ?? 'secondary' }}">
                         {{ $equipo->estado_equipo }}
                     </span>
                 </td>

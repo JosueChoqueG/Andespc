@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hoja de Vida - {{ $equipo->nombre_dispositivo }}</title>
     <style>
-        @page { size: A4; margin: 10mm; }
+        @page { size: A4; margin: 8mm; }
         body {
             font-family: Arial, sans-serif;
-            font-size: 11px;
+            font-size: 11.5px;
             margin: 0;
             padding: 0;
             background-color: #f0f0f0;
@@ -94,14 +94,15 @@
 <body>
     <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
     <a href="{{ isset($mantenimiento) ? route('admin.equipos.hoja-vida-mantenimiento.pdf', $mantenimiento) : route('admin.equipos.hoja-vida.pdf', $equipo) }}" 
-       class="btn-pdf">📥 Descargar PDF</a>
+       class="btn-pdf">📥 Descargar PDF
+    </a>
 
     <div class="page">
         {{-- Encabezado --}}
         <table>
             <tr>
-                <td style="width: 20%; text-align: center;">
-                    <div style="font-weight:900; font-size:11px;">LOS ANDES</div>
+                <td style="width: 20%; padding: 0;">
+                    <img src="{{ asset('logo.jpeg') }}" alt="LOS ANDES" style="width: 100%; height: 100%; object-fit: cover;">
                 </td>
                 <td style="width: 55%; text-align: center; font-size: 13px; font-weight: bold;">
                     HOJA DE VIDA DE EQUIPOS INFORMÁTICOS
@@ -157,6 +158,12 @@
                 <td class="text-center">{{ $equipo->oficina->nombre_oficina ?? 'Abancay' }}</td>
                 <th>Estado</th>
                 <td class="text-center">{{ $equipo->estado_equipo }}</td>
+            </tr>
+        </table>
+        <table>
+            <tr>
+                <td style="width: 40%;" class="text-center">Responsable / Area</td>
+                <td style="width: 60%;" class="text-center">{{ $equipo->responsable->nombre_responsable }} - {{ $equipo->oficina->nombre_oficina }}</td>
             </tr>
         </table>
 
@@ -246,30 +253,103 @@
                 @endforelse
             </tbody>
         </table>
+        {{-- 5. ESTADO ACTUAL DE EQUIPO --}}
+        <div class="section-title">5. ESTADO ACTUAL DE EQUIPO</div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="25%">Descripción</th>
+                    <th width="10%" class="text-center">Estado</th>
+                    <th width="65%">Observaciones Generales</th>
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                    $estados = [
+                        'Operativo',
+                        'Operativo con observaciones',
+                        'En mantenimiento',
+                        'Fuera de servicio',
+                        'De baja'
+                    ];
+                @endphp
 
-        {{-- 5. RECOMENDACIONES --}}
-        <div class="section-title">5. RECOMENDACIONES Y/O OBSERVACIONES</div>
-        <div style="border: 1px solid #000; padding: 8px; min-height: 40px;">
-            {{ $ultimoMantenimiento->observaciones ?? $mantenimiento->observaciones ?? 'No instalar aplicaciones de internet o sitios no confiables. No manipular la configuración de IP.' }}
-        </div>
+                <tr>
+                    <!-- Descripción -->
+                    <td>
+                        @foreach($estados as $estado)
+                            <label style="display:block; margin-bottom: 8px;">
+                                {{ $estado }}
+                            </label>
+                        @endforeach
+                    </td>
+
+                    <!-- Radio buttons -->
+                    <td class="text-center">
+                        @foreach($estados as $estado)
+                            <label style="display:block; ">
+                                <input type="radio" name="estado_equipo" value="{{ $estado }}"
+                                    {{ $equipo->estado_equipo == $estado ? 'checked' : '' }}>
+                            </label>
+                        @endforeach
+                    </td>
+
+                    <!-- Observaciones -->
+                    <td>
+                        {{ $ultimoMantenimiento->observaciones 
+                            ?? $mantenimiento->observaciones 
+                            ?? 'No instalar aplicaciones de internet o sitios no confiables. No manipular la configuración de IP.' }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
         {{-- 6. CONFORMIDAD --}}
         <div class="section-title">6. CONFORMIDAD DE TRABAJO</div>
-        <div style="border: 1px solid #000; padding: 10px; margin-top: -1px;">
-            <table style="border: none; margin-top: 20px;">
-                <tr style="border: none;">
-                    <td style="border: none; text-align: center;">
-                        <div class="signature-line">{{ $tecnico }}<br>Ejecutivo TI</div>
-                    </td>
-                    <td style="border: none; text-align: center;">
-                        <div class="signature-line">{{ $equipo->responsable->nombre_responsable ?? '_________________' }}<br>Usuario Asignado</div>
-                    </td>
-                    <td style="border: none; text-align: center; vertical-align: bottom;">
-                        <strong>Fecha Conformidad:</strong> {{ isset($mantenimiento) ? $mantenimiento->fecha_mantenimiento->format('d/m/Y') : date('d/m/Y') }}
-                    </td>
+        <table>
+            <thead>
+                <tr>
+                    <th width="20%"></th>
+                    <th width="30%">NOMBRE Y APELLIDO</th>
+                    <th>CARGO</th>
+                    <th>FIRMA</th>
                 </tr>
-            </table>
-        </div>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="height: 30px;">
+                        6.1 Ejecutivo TI
+                    </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td style="height: 30px;">
+                        6.2 Usuario Asignado
+                    </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td style="height: 30px;">
+                        6.3 Ejecutivo TI
+                    </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td style="height: 30px;">
+                        6.4 Usuario Asignado
+                    </td>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
