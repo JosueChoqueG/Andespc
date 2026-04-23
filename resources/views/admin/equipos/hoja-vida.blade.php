@@ -92,7 +92,7 @@
     </style>
 </head>
 <body>
-    <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+    <button class="btn-print no-print" onclick="window.print()">🖨️ Imprimir</button>
     <a href="{{ isset($mantenimiento) ? route('admin.equipos.hoja-vida-mantenimiento.pdf', $mantenimiento) : route('admin.equipos.hoja-vida.pdf', $equipo) }}" 
        class="btn-pdf">📥 Descargar PDF
     </a>

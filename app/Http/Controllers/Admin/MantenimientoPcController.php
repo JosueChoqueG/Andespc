@@ -112,7 +112,6 @@ class MantenimientoPcController extends Controller
             'ultimoMantenimiento'
         ));
     }
-
     public function descargarHojaVidaPDF(Equipo $equipo)
     {
         $tecnico = Auth::user()->name ?? 'Josue Choque Gomez';
@@ -139,6 +138,11 @@ class MantenimientoPcController extends Controller
         ));
         
         $pdf->setPaper('A4', 'portrait');
+        $pdf->setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => false,
+            'defaultFont' => 'DejaVu Sans'
+        ]);
         
         return $pdf->download("Hoja-Vida-{$equipo->nombre_dispositivo}-" . date('Y-m-d') . ".pdf");
     }
@@ -168,6 +172,11 @@ class MantenimientoPcController extends Controller
         ));
         
         $pdf->setPaper('A4', 'portrait');
+        $pdf->setOptions([
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => false,
+            'defaultFont' => 'DejaVu Sans'
+        ]);
         
         return $pdf->download("Hoja-Vida-{$equipo->nombre_dispositivo}-" . $mantenimiento->fecha_mantenimiento->format('Y-m-d') . ".pdf");
     }
