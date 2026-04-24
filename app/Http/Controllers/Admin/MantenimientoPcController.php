@@ -9,17 +9,59 @@ use App\Models\MantenimientoPc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\File;
 
 class MantenimientoPcController extends Controller
 {
+    /**
+     * Opciones comunes para DomPDF
+     */
+    private function getPdfOptions()
+    {
+        return [
+            'dpi' => 96,
+            'defaultFont' => 'DejaVu Sans', // Soporta tildes, ñ, etc.
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true,
+            'isPhpEnabled' => false,
+            'isJavascriptEnabled' => false,
+        ];
+    }
+
+    /**
+     * Obtener ruta absoluta del logo compatible con DomPDF
+     */
+    private function getLogoPath()
+    {
+        $logoPath = public_path('logo.jpeg');
+        
+        // Si no existe en public/, buscar en storage/
+        if (!File::exists($logoPath)) {
+            $logoPath = storage_path('app/public/logo.jpeg');
+        }
+        
+        // Fallback: retornar ruta base64 si la imagen no existe
+        if (!File::exists($logoPath)) {
+            return null;
+        }
+        
+        return $logoPath;
+    }
+
+    /**
+     * Mostrar formulario para crear un nuevo mantenimiento
+     */
     public function create(Equipo $equipo)
     {
-        $ultimoMantenimiento = $equipo->ultimoMantenimiento;
+        $ultimoMantenimiento = $equipo->mantenimientos()->latest()->first();
         $tecnico = Auth::user()->name ?? 'Josue Choque Gomez';
         
         return view('admin.mantenimientos-pc.create', compact('equipo', 'ultimoMantenimiento', 'tecnico'));
     }
 
+    /**
+     * Guardar un nuevo mantenimiento
+     */
     public function store(Request $request, Equipo $equipo)
     {
         $validated = $request->validate([
@@ -36,7 +78,6 @@ class MantenimientoPcController extends Controller
 
         $mantenimiento = MantenimientoPc::create($validated);
 
-        // Actualizar la fecha de último mantenimiento en el equipo
         $equipo->update([
             'fecha_mantenimiento' => $request->fecha_mantenimiento,
             'observacion' => $request->observaciones
@@ -50,18 +91,27 @@ class MantenimientoPcController extends Controller
             ->with('success', 'Mantenimiento registrado exitosamente.');
     }
 
+    /**
+     * Mostrar detalles de un mantenimiento
+     */
     public function show(MantenimientoPc $mantenimiento)
     {
         $equipo = $mantenimiento->equipo;
         return view('admin.mantenimientos-pc.show', compact('mantenimiento', 'equipo'));
     }
 
+    /**
+     * Mostrar historial de mantenimientos de un equipo
+     */
     public function historial(Equipo $equipo)
     {
         $mantenimientos = $equipo->mantenimientos()->paginate(10);
         return view('admin.mantenimientos-pc.historial', compact('equipo', 'mantenimientos'));
     }
 
+    /**
+     * Generar hoja de vida basada en un mantenimiento específico (Vista HTML)
+     */
     public function generarHojaVida(MantenimientoPc $mantenimiento)
     {
         $equipo = $mantenimiento->equipo;
@@ -87,6 +137,9 @@ class MantenimientoPcController extends Controller
         ));
     }
 
+    /**
+     * Generar hoja de vida general del equipo (Vista HTML)
+     */
     public function generarHojaVidaEquipo(Equipo $equipo)
     {
         $tecnico = Auth::user()->name ?? 'Josue Choque Gomez';
@@ -102,7 +155,7 @@ class MantenimientoPcController extends Controller
             ->take(10)
             ->get();
             
-        $ultimoMantenimiento = $equipo->ultimoMantenimiento;
+        $ultimoMantenimiento = $equipo->mantenimientos()->latest()->first();
 
         return view('admin.equipos.hoja-vida', compact(
             'equipo', 
@@ -112,6 +165,10 @@ class MantenimientoPcController extends Controller
             'ultimoMantenimiento'
         ));
     }
+
+    /**
+     * Descargar hoja de vida en PDF (Equipo general)
+     */
     public function descargarHojaVidaPDF(Equipo $equipo)
     {
         $tecnico = Auth::user()->name ?? 'Josue Choque Gomez';
@@ -127,26 +184,27 @@ class MantenimientoPcController extends Controller
             ->take(10)
             ->get();
             
-        $ultimoMantenimiento = $equipo->ultimoMantenimiento;
+        $ultimoMantenimiento = $equipo->mantenimientos()->latest()->first();
+        $logoPath = $this->getLogoPath();
 
         $pdf = PDF::loadView('admin.equipos.hoja-vida-pdf', compact(
             'equipo', 
             'tecnico', 
             'historialMantenimientos',
             'fallasHistorial',
-            'ultimoMantenimiento'
+            'ultimoMantenimiento',
+            'logoPath'
         ));
         
         $pdf->setPaper('A4', 'portrait');
-        $pdf->setOptions([
-            'isHtml5ParserEnabled' => true,
-            'isRemoteEnabled' => false,
-            'defaultFont' => 'DejaVu Sans'
-        ]);
+        $pdf->setOptions($this->getPdfOptions());
         
         return $pdf->download("Hoja-Vida-{$equipo->nombre_dispositivo}-" . date('Y-m-d') . ".pdf");
     }
 
+    /**
+     * Descargar hoja de vida de mantenimiento específico en PDF
+     */
     public function descargarHojaVidaMantenimientoPDF(MantenimientoPc $mantenimiento)
     {
         $equipo = $mantenimiento->equipo;
@@ -162,21 +220,20 @@ class MantenimientoPcController extends Controller
             ->orderBy('fecha_mantenimiento', 'desc')
             ->take(10)
             ->get();
+            
+        $logoPath = $this->getLogoPath();
 
         $pdf = PDF::loadView('admin.equipos.hoja-vida-pdf', compact(
             'equipo', 
             'mantenimiento', 
             'tecnico', 
             'historialMantenimientos',
-            'fallasHistorial'
+            'fallasHistorial',
+            'logoPath'
         ));
         
         $pdf->setPaper('A4', 'portrait');
-        $pdf->setOptions([
-            'isHtml5ParserEnabled' => true,
-            'isRemoteEnabled' => false,
-            'defaultFont' => 'DejaVu Sans'
-        ]);
+        $pdf->setOptions($this->getPdfOptions());
         
         return $pdf->download("Hoja-Vida-{$equipo->nombre_dispositivo}-" . $mantenimiento->fecha_mantenimiento->format('Y-m-d') . ".pdf");
     }

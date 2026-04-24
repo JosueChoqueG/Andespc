@@ -9,10 +9,10 @@
         @page { size: A4; margin: 8mm; }
         body {
             font-family: Arial, sans-serif;
-            font-size: 11.5px;
+            font-size: 11px;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
+            background-color: #272525ff;
             -webkit-print-color-adjust: exact;
         }
         .page {
@@ -37,7 +37,6 @@
             word-wrap: break-word;
         }
         th {
-            background-color: #d9d9d9;
             font-weight: bold;
             text-align: center;
         }
@@ -136,34 +135,32 @@
         <div class="section-title">1. DATOS GENERALES DEL EQUIPO</div>
         <table>
             <tr>
-                <th style="width: 15%;">Tipo de Equipo</th>
+                <th style="width: 15%;">Tipo Equipo</th>
                 <td style="width: 12%;" class="text-center">{{ $equipo->tipo_equipo_nombre }}</td>
                 <th style="width: 10%;">Marca</th>
                 <td style="width: 20%;" class="text-center">{{ $equipo->marca }}</td>
                 <th style="width: 10%;">Modelo</th>
-                <td style="width: 33%;" class="text-center">{{ $equipo->nombre_modelo }}</td>
+                <td class="text-center" >{{ $equipo->nombre_modelo }}</td>
             </tr>
             <tr>
-                <th>Fecha Adquisición</th>
-                <td class="text-center">{{ $equipo->fecha_adquisicion ? date('d/m/Y', strtotime($equipo->fecha_adquisicion)) : 'N/A' }}</td>
-                <th>Proveedor</th>
-                <td class="text-center">J&C CORP E.I.R.L</td>
-                <th>Garantía</th>
+                <th style="width: 15%;">Fecha Adquisición</th>
+                <td style="width: 12%;" class="text-center">{{ $equipo->fecha_adquisicion ? date('d/m/Y', strtotime($equipo->fecha_adquisicion)) : 'N/A' }}</td>
+                <th style="width: 10%;">Proveedor</th>
+                <td style="width: 20%;" class="text-center">J&C CORP E.I.R.L</td>
+                <th style="width: 10%;">Garantía</th>
                 <td class="text-center">Con Garantía</td>
             </tr>
             <tr>
-                <th>Número Serie</th>
-                <td class="text-center">{{ $equipo->numero_serie ?? 'N/A' }}</td>
-                <th>Ubicación</th>
-                <td class="text-center">{{ $equipo->oficina->nombre_oficina ?? 'Abancay' }}</td>
-                <th>Estado</th>
-                <td class="text-center">{{ $equipo->estado_equipo }}</td>
+                <th style="width: 15%;">Número Serie</th>
+                <td style="width: 12%;" class="text-center">{{ $equipo->numero_serie ?? 'N/A' }}</td>
+                <th style="width: 10%;">Ubicación</th>
+                <td style="width: 20%;" class="text-center">{{ $equipo->oficina->nombre_oficina ?? 'Abancay' }}</td>
             </tr>
         </table>
         <table>
             <tr>
-                <td style="width: 40%;" class="text-center">Responsable / Area</td>
-                <td style="width: 60%;" class="text-center">{{ $equipo->responsable->nombre_responsable }} - {{ $equipo->oficina->nombre_oficina }}</td>
+                <td style="width: 15%;" >Responsable / Area</td>
+                <td style="width: 40%;" class="text-center">{{ $equipo->responsable->nombre_responsable }} - {{ $equipo->oficina->nombre_oficina }}</td>
             </tr>
         </table>
 
@@ -176,23 +173,23 @@
                 <th style="width: 15%;">Procesador</th>
                 <td style="width: 20%;" class="text-center">{{ $equipo->hardware->procesador ?? 'N/A' }}</td>
                 <th style="width: 7%;">Ram</th>
-                <td style="width: 23%;" class="text-center">{{ $equipo->hardware->ram_gb ?? 'N/A' }} GB | DDR4</td>
+                <td class="text-center">{{ $equipo->hardware->ram_gb ?? 'N/A' }} GB | DDR4</td>
             </tr>
             <tr>
-                <th>Disco Principal</th>
-                <td class="text-center">{{ $equipo->hardware->tipo_almacenamiento ?? 'SSD' }} {{ $equipo->hardware->almacenamiento_gb ?? 'N/A' }} GB</td>
-                <th>Sistema Operativo</th>
-                <td class="text-center">{{ $equipo->sistema_operativo_completo }}</td>
-                <th>CPU</th>
+                <th width="15%">Disco Principal</th>
+                <td width="20%" class="text-center">{{ $equipo->hardware->tipo_almacenamiento ?? 'SSD' }} {{ $equipo->hardware->almacenamiento_gb ?? 'N/A' }} GB</td>
+                <th width="15%">Sistema Operativo</th>
+                <td width="20%" class="text-center">{{ $equipo->sistema_operativo_completo }}</td>
+                <th width="7%">CPU</th>
                 <td class="text-center">{{ $equipo->hardware->procesador ?? 'N/A' }}</td>
             </tr>
             <tr>
-                <th>Disco Secundario</th>
-                <td class="text-center">N/A</td>
-                <th>Dirección IP</th>
-                <td class="text-center">{{ $equipo->direccion_ip ?? 'N/A' }}</td>
-                <th>MAC</th>
-                <td class="text-center">N/A</td>
+                <th width="15%">Disco Secundario</th>
+                <td width="20%" class="text-center">{{ $equipo->hardware->tipo_almacenamiento ?? 'SSD' }} {{ $equipo->hardware->almacenamiento_gb ?? 'N/A' }} GB</td>
+                <th width="15%">Dirección IP</th>
+                <td width="20%" class="text-center">{{ $equipo->direccion_ip ?? 'N/A' }}</td>
+                <th width="7%">MAC</th>
+                <td width="20%" class="text-center">{{ $equipo->mac_address ?? 'N/A' }}</td>
             </tr>
         </table>
         
@@ -304,8 +301,8 @@
             </tbody>
         </table>
 
-        {{-- 6. CONFORMIDAD --}}
-        <div class="section-title">6. CONFORMIDAD DE TRABAJO</div>
+        {{-- 6. RESPONSABLES --}}
+        <div class="section-title">6. RESPONSABLES</div>
         <table>
             <thead>
                 <tr>
@@ -320,8 +317,8 @@
                     <td style="height: 30px;">
                         6.1 Ejecutivo TI
                     </td>
-                    <td> </td>
-                    <td> </td>
+                    <td> {{ $tecnico }}</td>
+                    <td> Asistente de Infraestructura Informática</td>
                     <td> </td>
                 </tr>
                 <tr>
