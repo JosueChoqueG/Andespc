@@ -160,7 +160,12 @@
             <th style="width: 10%;">Proveedor</th>
             <td style="width: 20%; text-align: center;">J&C CORP E.I.R.L</td>
             <th style="width: 10%;">Garantía</th>
-            <td style="text-align: center;">Con Garantía</td>
+            <td style="text-align: center;">
+                @php
+                    $anio = $equipo->fecha_adquisicion ? date('Y', strtotime($equipo->fecha_adquisicion)) : null;
+                @endphp
+                {{ ($anio && $anio < 2024) ? 'Sin Garantía' : 'Con Garantía' }}
+            </td>
         </tr>
         <tr>
             <th style="width: 15%;">Número Serie</th>

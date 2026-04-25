@@ -148,7 +148,12 @@
                 <th style="width: 10%;">Proveedor</th>
                 <td style="width: 20%;" class="text-center">J&C CORP E.I.R.L</td>
                 <th style="width: 10%;">Garantía</th>
-                <td class="text-center">Con Garantía</td>
+                <td class="text-center">
+                    @php
+                        $anio = $equipo->fecha_adquisicion ? date('Y', strtotime($equipo->fecha_adquisicion)) : null;
+                    @endphp
+                    {{ ($anio && $anio < 2024) ? 'Sin Garantía' : 'Con Garantía' }}
+                </td>
             </tr>
             <tr>
                 <th style="width: 15%;">Número Serie</th>
@@ -313,7 +318,7 @@
                     </td>
 
                     <!-- Observaciones -->
-                    <td style="text-align: justify;font-size: 11.5px;">
+                    <td style="font-size: 11.5px;">
                         {{ $ultimoMantenimiento->observaciones 
                             ?? $mantenimiento->observaciones 
                             ?? 'No instalar aplicaciones de internet o sitios no confiables. No manipular la configuración de IP.' }}
