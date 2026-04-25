@@ -37,7 +37,7 @@
 
                     {{-- Red e inventario --}}
                     <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="direccion_ip" class="form-label">Dirección IP</label>
                             <input type="text" name="direccion_ip" id="direccion_ip"
                                    class="form-control @error('direccion_ip') is-invalid @enderror"
@@ -46,7 +46,16 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <label for="direccion_mac" class="form-label">Dirección MAC</label>
+                            <input type="text" name="direccion_mac" id="direccion_mac"
+                                   class="form-control @error('direccion_mac') is-invalid @enderror"
+                                   value="{{ old('direccion_mac') }}" placeholder="00:00:00:00:00:00">
+                            @error('direccion_mac')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-4">
                             <label for="fecha_adquisicion" class="form-label">Fecha de Adquisición</label>
                             <input type="date" name="fecha_adquisicion" id="fecha_adquisicion"
                                    class="form-control @error('fecha_adquisicion') is-invalid @enderror"

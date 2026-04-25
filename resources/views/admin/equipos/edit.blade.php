@@ -31,11 +31,15 @@
 
                     <!-- IP y fecha -->
                     <div class="row mb-3">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <label for="direccion_ip" class="form-label">Dirección IP</label>
                             <input type="text" name="direccion_ip" id="direccion_ip" class="form-control" value="{{ old('direccion_ip', $equipo->direccion_ip) }}">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
+                            <label for="direccion_mac" class="form-label">Dirección MAC</label>
+                            <input type="text" name="direccion_mac" id="direccion_mac" class="form-control" value="{{ old('direccion_mac', $equipo->direccion_mac) }}">
+                        </div>
+                        <div class="col-md-4">
                             <label for="fecha_adquisicion" class="form-label">Fecha de Adquisición</label>
                             <input type="date" name="fecha_adquisicion" id="fecha_adquisicion" class="form-control" value="{{ old('fecha_adquisicion', optional($equipo->fecha_adquisicion)->format('Y-m-d')) }}">
                         </div>

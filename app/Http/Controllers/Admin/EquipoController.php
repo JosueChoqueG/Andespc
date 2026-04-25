@@ -86,6 +86,7 @@ class EquipoController extends Controller
             'modelo_id' => 'required|exists:modelos,id',
             'sistemaoperativo_id' => 'required|exists:sistemaoperativos,id',
             'responsable_id' => 'nullable|exists:responsables,id',
+            'direccion_mac' => 'nullable|string|max:17',
         ]);
 
         Equipo::create($request->all());
@@ -123,6 +124,7 @@ class EquipoController extends Controller
             'modelo_id' => 'required|exists:modelos,id',
             'sistemaoperativo_id' => 'required|exists:sistemaoperativos,id',
             'responsable_id' => 'nullable|exists:responsables,id',
+            'direccion_mac' => 'nullable|string|max:17',
         ]);
 
         $equipo->update($request->all());

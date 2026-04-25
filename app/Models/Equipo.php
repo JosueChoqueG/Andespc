@@ -36,6 +36,7 @@ class Equipo extends Model
         'modelo_id',
         'sistemaoperativo_id',
         'responsable_id',
+        'direccion_mac',
     ];
 
     // Relaciones

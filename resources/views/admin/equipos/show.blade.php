@@ -12,14 +12,15 @@
             <div class="card-body">
                 <table class="table table-bordered">
                     <tr><th>Nombre</th><td>{{ $equipo->nombre_dispositivo }}</td></tr>
-                    <tr><th>Número de Serie</th><td>{{ $equipo->numero_serie ?? 'N/A' }}</td></tr>
+                    <tr><th>Serie</th><td>{{ $equipo->numero_serie ?? 'N/A' }}</td></tr>
                     <tr><th>Dirección IP</th><td>{{ $equipo->direccion_ip ?? 'N/A' }}</td></tr>
+                    <tr><th>Dirección MAC</th><td>{{ $equipo->direccion_mac ?? 'N/A' }}</td></tr>
                     <tr><th>Oficina</th>
                         <td>
                             {{ optional($equipo->oficina)->nombre_oficina ?? 'N/A' }}
                         </td>
                     </tr>
-                    <tr><th>Tipo de Equipo</th><td>{{ optional($equipo->tipoequipo)->nombre_tipo ?? 'N/A' }}</td></tr>
+                    <tr><th>Tipo</th><td>{{ optional($equipo->tipoequipo)->nombre_tipo ?? 'N/A' }}</td></tr>
                     <tr><th>Modelo</th>
                         <td>
                             {{ optional($equipo->modelo)->nombre_modelo ?? 'N/A' }}

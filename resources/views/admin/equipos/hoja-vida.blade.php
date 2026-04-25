@@ -157,10 +157,31 @@
                 <td style="width: 20%;" class="text-center">{{ $equipo->oficina->nombre_oficina ?? 'Abancay' }}</td>
             </tr>
         </table>
+        @php
+            // Normalizamos a mayúsculas para búsqueda insensible
+            $host = strtoupper($equipo->nombre_dispositivo ?? '');
+
+            // Evaluamos las palabras clave en el orden que indicaste
+            if (strpos($host, 'ADMIN') !== false) {
+                $area = 'ADMINISTRACIÓN';
+            } elseif (strpos($host, 'CAJA') !== false) {
+                $area = 'CAJA';
+            } elseif (strpos($host, 'PLAT') !== false) {
+                $area = 'PLATAFORMA';
+            } elseif (strpos($host, 'CRED') !== false) {
+                $area = 'CRÉDITOS';
+            } else {
+                // Si no coincide ninguna, usa el nombre de oficina o 'N/A'
+                $area = $equipo->oficina->nombre_oficina ?? 'N/A';
+            }
+        @endphp
+
         <table>
             <tr>
-                <td style="width: 15%;" >Responsable / Area</td>
-                <td style="width: 40%;" class="text-center">{{ $equipo->responsable->nombre_responsable }} - {{ $equipo->oficina->nombre_oficina }}</td>
+                <td style="width: 15%;">Responsable / Área</td>
+                <td style="width: 40%;" class="text-center">
+                    {{ $equipo->responsable->nombre_responsable ?? 'N/A' }} - {{ $area }}
+                </td>
             </tr>
         </table>
 
@@ -189,7 +210,7 @@
                 <th width="15%">Dirección IP</th>
                 <td width="20%" class="text-center">{{ $equipo->direccion_ip ?? 'N/A' }}</td>
                 <th width="7%">MAC</th>
-                <td width="20%" class="text-center">{{ $equipo->mac_address ?? 'N/A' }}</td>
+                <td width="20%" class="text-center">{{ $equipo->direccion_mac ?? 'N/A' }}</td>
             </tr>
         </table>
         
@@ -292,7 +313,7 @@
                     </td>
 
                     <!-- Observaciones -->
-                    <td>
+                    <td style="text-align: justify;font-size: 11.5px;">
                         {{ $ultimoMantenimiento->observaciones 
                             ?? $mantenimiento->observaciones 
                             ?? 'No instalar aplicaciones de internet o sitios no confiables. No manipular la configuración de IP.' }}
@@ -326,7 +347,25 @@
                         6.2 Usuario Asignado
                     </td>
                     <td> </td>
-                    <td> </td>
+                    @php
+                        $host = strtoupper($equipo->nombre_dispositivo ?? '');
+                        
+                        if (strpos($host, 'ADMIN') !== false) {
+                            $cargo = 'Administrador';
+                        } elseif (strpos($host, 'CAJA') !== false) {
+                            $cargo = 'Asistente de Operaciones';
+                        } elseif (strpos($host, 'PLAT') !== false) {
+                            $cargo = 'Asistente Admisión y Plataforma';
+                        } elseif (strpos($host, 'CRED') !== false) {
+                            $cargo = 'Asesor de Créditos';
+                        } else {
+                            $cargo = $equipo->oficina->nombre_oficina ?? 'N/A';
+                        }
+                    @endphp
+
+                    <td style="width: 40%; text-align: center;">
+                        {{ $cargo }}
+                    </td>
                     <td> </td>
                 </tr>
                 <tr>
