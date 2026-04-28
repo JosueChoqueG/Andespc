@@ -22,7 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "USUARIO SE OLVIDO LA CONTRASEÑA SIEPA",
             "ERROR DE INICIO SESION SIEPA",
             "ERROR DE FUNCIONALIDAD SIEPA",
-            "CAIDA DEL SERVICIO SIEPA",  
+            "CAIDA DEL SERVICIO SIEPA", 
+            "REPORTEADOR",
             "USUARIO BLOQUEADO SENTINEL",
             "USUARIO SE OLVIDO CONTRASEÑA SENTINEL",
             "ERROR DE INICIO SESION CARPETA COMPARTIDA",
@@ -40,7 +41,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "ERROR DE INICIO SESION CLOUD",
             "NAVEGADOR DE INTERNET",
             "ANYDESK",
-            "WINDOWS"
+            "WINDOWS",
+            "ANDROID"
         ],
         hardware: [
             "TECLADO",
@@ -54,7 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
             "ESCANEADOR DE VOUCHERS",
             "ALMACENAMIENTO LLENO",
             "PUERTO USB BLOQUEADO",
-            "LECTOR DE HUELLAS"
+            "LECTOR DE HUELLAS",
+            "CELULAR RPC"
         ],
         conectividad: [
             "DESCONFIGURACION DE TOTEM",

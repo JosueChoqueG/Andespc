@@ -129,7 +129,7 @@
                             <label for="estado_equipo" class="form-label">Estado del Equipo *</label>
                             <select name="estado_equipo" id="estado_equipo" class="form-select" required>
                                 <option value="Operativo" {{ old('estado_equipo', $equipo->estado_equipo) == 'Operativo' ? 'selected' : '' }}>Operativo</option>
-                                <option value="Operativo con observaciones" {{ old('estado_equipo', $equipo->estado_equipo) == 'Operativo con observaciones' ? 'selected' : '' }}>Operativo con observaciones</option>
+                                <option value="Operativo con Observacion" {{ old('estado_equipo', $equipo->estado_equipo) == 'Operativo con Observacion' ? 'selected' : '' }}>Operativo con Observacion</option>
                                 <option value="En mantenimiento" {{ old('estado_equipo', $equipo->estado_equipo) == 'En mantenimiento' ? 'selected' : '' }}>En mantenimiento</option>
                                 <option value="Fuera de servicio" {{ old('estado_equipo', $equipo->estado_equipo) == 'Fuera de servicio' ? 'selected' : '' }}>Fuera de servicio</option>
                                 <option value="De baja" {{ old('estado_equipo', $equipo->estado_equipo) == 'De baja' ? 'selected' : '' }}>De baja</option>

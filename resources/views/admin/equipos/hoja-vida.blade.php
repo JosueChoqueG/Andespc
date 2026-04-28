@@ -351,7 +351,7 @@
                     <td style="height: 30px;">
                         6.2 Usuario Asignado
                     </td>
-                    <td> </td>
+                    <td>{{ $equipo->responsable->nombre_responsable ?? 'N/A' }}</td>
                     @php
                         $host = strtoupper($equipo->nombre_dispositivo ?? '');
                         
@@ -377,8 +377,8 @@
                     <td style="height: 30px;">
                         6.3 Ejecutivo TI
                     </td>
-                    <td> </td>
-                    <td> </td>
+                    <td> Edgar Omar Coaquira Condori</td>
+                    <td>Asistente de Infraestructura Informática </td>
                     <td> </td>
                 </tr>
                 <tr>
