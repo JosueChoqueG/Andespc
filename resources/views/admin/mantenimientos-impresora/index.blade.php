@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Mantenimientos de Impresoras')
 @section('header', 'Gestión de Mantenimientos')

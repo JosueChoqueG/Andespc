@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Impresora;
-use App\Models\Admin\Oficina;
-use App\Models\Admin\Responsable;
+use App\Models\Impresora;
+use App\Models\Oficina;
+use App\Models\Responsable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 

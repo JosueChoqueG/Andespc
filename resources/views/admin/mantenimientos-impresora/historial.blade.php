@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('title', 'Historial de Mantenimientos')
 @section('header', 'Estadísticas de Mantenimiento')
