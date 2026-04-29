@@ -95,6 +95,7 @@
                     <label class="form-label">Agencia</label>
                     <select name="agencia" id="agencia" class="form-select" required>
                         <option value="">Seleccione</option>
+                        <option value="Empresas de coopac">Empresas de coopac</option>
                         <option value="99 Soporte Administrativo">99 Soporte Administrativo</option>
                         <option value="101 Chalhuanca">101 Chalhuanca</option>
                         <option value="102 Andahuaylas">102 Andahuaylas</option>

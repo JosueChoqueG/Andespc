@@ -87,7 +87,7 @@ class MantenimientoPcController extends Controller
             return redirect()->route('admin.equipos.hoja-vida-mantenimiento', $mantenimiento);
         }
 
-        return redirect()->route('equipos.show', $equipo)
+        return redirect()->route('admin.equipos.index', $equipo)
             ->with('success', 'Mantenimiento registrado exitosamente.');
     }
 

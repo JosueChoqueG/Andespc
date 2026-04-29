@@ -3,75 +3,156 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Impresora;
-use App\Models\Oficina;
+use App\Models\Admin\Impresora;
+use App\Models\Admin\Oficina;
+use App\Models\Admin\Responsable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ImpresoraController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
-        $query = Impresora::with('oficina.agencia');
+        $query = Impresora::with(['oficina', 'responsable']);
 
-        if ($request->filled('serie')) {
-            $query->where('serie', 'like', '%' . $request->serie . '%');
+        // Filtros
+        if ($request->has('oficina_id')) {
+            $query->where('oficina_id', $request->oficina_id);
         }
 
-        $impresoras = $query->paginate(10)->withQueryString();
+        if ($request->has('estado_impresora')) {
+            $query->where('estado_impresora', $request->estado_impresora);
+        }
 
-        return view('admin.impresoras.index', compact('impresoras'));
+        if ($request->has('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('marca_impresora', 'LIKE', "%{$search}%")
+                  ->orWhere('modelo_impresora', 'LIKE', "%{$search}%")
+                  ->orWhere('serie_impresora', 'LIKE', "%{$search}%")
+                  ->orWhere('nombre_host', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $impresoras = $query->orderBy('created_at', 'desc')->paginate(15);
+        
+        $oficinas = Oficina::all();
+        $responsables = Responsable::all();
+
+        return view('admin.impresoras.index', compact('impresoras', 'oficinas', 'responsables'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        $oficinas = Oficina::with('agencia')->get();
-        return view('admin.impresoras.create', compact('oficinas'));
+        $oficinas = Oficina::all();
+        $responsables = Responsable::all();
+        
+        return view('admin.impresoras.create', compact('oficinas', 'responsables'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $request->validate([
-            'oficina_id' => 'required',
-            'marca' => 'required',
-            'modelo' => 'required',
-            'serie' => 'required|unique:impresoras',
+        $validator = Validator::make($request->all(), [
+            'oficina_id' => 'required|exists:oficinas,id',
+            'tipo_impresora' => 'required|string|max:100',
+            'marca_impresora' => 'required|string|max:100',
+            'modelo_impresora' => 'required|string|max:100',
+            'serie_impresora' => 'required|string|max:100|unique:impresoras,serie_impresora',
+            'responsable_id' => 'nullable|exists:responsables,id',
+            'tipo_conexion' => 'nullable|in:USB,WIFI,ETHERNET,WIFI-DIRECT',
+            'direccion_ip' => 'nullable|ip',
+            'estado_impresora' => 'nullable|in:OPTIMO,BUENO,REGULAR,DEFICIENTE,DE BAJA',
+            'fecha_adquisicion' => 'nullable|date',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         Impresora::create($request->all());
 
-        return redirect()
-            ->route('admin.impresoras.index')
-            ->with('success','Impresora registrada');
+        return redirect()->route('admin.impresoras.index')
+            ->with('success', 'Impresora registrada correctamente');
     }
 
-    public function show(Impresora $impresora)
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
     {
-        $impresora->load('mantenimientos');
+        $impresora = Impresora::with(['oficina', 'responsable', 'mantenimientos'])
+            ->findOrFail($id);
+
         return view('admin.impresoras.show', compact('impresora'));
     }
 
-    public function edit(Impresora $impresora)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
     {
-        $oficinas = Oficina::with('agencia')->get();
-        return view('admin.impresoras.edit', compact('impresora','oficinas'));
+        $impresora = Impresora::findOrFail($id);
+        $oficinas = Oficina::all();
+        $responsables = Responsable::all();
+
+        return view('admin.impresoras.edit', compact('impresora', 'oficinas', 'responsables'));
     }
 
-    public function update(Request $request, Impresora $impresora)
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'serie' => 'required|unique:impresoras,serie,' . $impresora->id
+        $impresora = Impresora::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'oficina_id' => 'required|exists:oficinas,id',
+            'tipo_impresora' => 'required|string|max:100',
+            'marca_impresora' => 'required|string|max:100',
+            'modelo_impresora' => 'required|string|max:100',
+            'serie_impresora' => 'required|string|max:100|unique:impresoras,serie_impresora,' . $id,
+            'responsable_id' => 'nullable|exists:responsables,id',
+            'tipo_conexion' => 'nullable|in:USB,WIFI,ETHERNET,WIFI-DIRECT',
+            'direccion_ip' => 'nullable|ip',
+            'estado_impresora' => 'nullable|in:OPTIMO,BUENO,REGULAR,DEFICIENTE,DE BAJA',
+            'fecha_adquisicion' => 'nullable|date',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $impresora->update($request->all());
 
-        return redirect()
-            ->route('admin.impresoras.index')
-            ->with('success','Actualizado');
+        return redirect()->route('admin.impresoras.index')
+            ->with('success', 'Impresora actualizada correctamente');
     }
 
-    public function destroy(Impresora $impresora)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
     {
+        $impresora = Impresora::findOrFail($id);
+        
+        // Verificar si tiene mantenimientos
+        if ($impresora->mantenimientos()->count() > 0) {
+            return redirect()->back()
+                ->with('error', 'No se puede eliminar la impresora porque tiene mantenimientos asociados');
+        }
+        
         $impresora->delete();
-        return back()->with('success','Eliminado');
+
+        return redirect()->route('admin.impresoras.index')
+            ->with('success', 'Impresora eliminada correctamente');
     }
 }
