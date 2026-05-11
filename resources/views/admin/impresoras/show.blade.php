@@ -23,8 +23,11 @@
                             <i class="bi bi-pencil"></i> Editar
                         </a>
                         <a href="{{ route('admin.mantenimientos-impresora.create', $impresora->id) }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-tools"></i> Nuevo Mantenimiento
+                            <i class="bi bi-tools"></i> Nuevo Mantenimiento
                         </a>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete()">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
                     </div>
                 </div>
                 <div class="card-body">
@@ -66,7 +69,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-network-wired"></i> Configuración de Red
+                        <i class="bi bi-ethernet"></i> Configuración de Red
                     </h3>
                 </div>
                 <div class="card-body">
@@ -76,10 +79,10 @@
                             <td>
                                 @php
                                     $iconos = [
-                                        'USB' => 'fa-usb',
-                                        'WIFI' => 'fa-wifi',
-                                        'ETHERNET' => 'fa-network-wired',
-                                        'WIFI-DIRECT' => 'fa-wifi'
+                                        'USB' => 'bi bi-usb',
+                                        'WIFI' => 'bi bi-wifi',
+                                        'ETHERNET' => 'bi bi-ethernet',
+                                        'WIFI-DIRECT' => 'bi bi-wifi'
                                     ];
                                 @endphp
                                 <i class="fas {{ $iconos[$impresora->tipo_conexion] ?? 'fa-plug' }}"></i>
@@ -98,15 +101,16 @@
                             <th>Estado:</th>
                             <td>
                                 @php
+                                    $estado = strtoupper(trim($impresora->estado_impresora));
                                     $badgeClass = [
                                         'OPTIMO' => 'success',
                                         'BUENO' => 'info',
                                         'REGULAR' => 'warning',
                                         'DEFICIENTE' => 'danger',
                                         'DE BAJA' => 'secondary'
-                                    ][$impresora->estado_impresora] ?? 'secondary';
+                                    ][$estado] ?? 'secondary';
                                 @endphp
-                                <span class="badge badge-{{ $badgeClass }} badge-lg">
+                                <span class="badge bg-{{ $badgeClass }} badge-lg">
                                     {{ $impresora->estado_impresora }}
                                 </span>
                             </td>
@@ -122,7 +126,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-chart-line"></i> Estadísticas de Uso
+                        <i class="bi bi-graph-up"></i> Estadísticas de Uso
                     </h3>
                 </div>
                 <div class="card-body">
@@ -173,7 +177,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-chart-pie"></i> Resumen de Mantenimientos
+                        <i class="bi bi-pie-chart"></i> Resumen de Mantenimientos
                     </h3>
                 </div>
                 <div class="card-body">
@@ -186,15 +190,15 @@
                     <table class="table table-bordered">
                         <tr>
                             <th width="50%">Total Mantenimientos:</th>
-                            <td><span class="badge badge-primary badge-lg">{{ $totalMant }}</span></td>
+                            <td><span class="badge bg-primary badge-lg">{{ $totalMant }}</span></td>
                         </tr>
                         <tr>
                             <th>Mantenimientos Preventivos:</th>
-                            <td><span class="badge badge-success">{{ $preventivos }}</span></td>
+                            <td><span class="badge bg-success">{{ $preventivos }}</span></td>
                         </tr>
                         <tr>
                             <th>Mantenimientos Correctivos:</th>
-                            <td><span class="badge badge-danger">{{ $correctivos }}</span></td>
+                            <td><span class="badge bg-danger">{{ $correctivos }}</span></td>
                         </tr>
                         @if($ultimoMant)
                         <tr>
@@ -221,11 +225,11 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-history"></i> Historial de Mantenimientos
+                        <i class="bi bi-clock-history"></i> Historial de Mantenimientos
                     </h3>
                     <div class="card-tools">
                         <a href="{{ route('admin.mantenimientos-impresora.historial', $impresora->id) }}" class="btn btn-info btn-sm">
-                            <i class="fas fa-chart-line"></i> Ver Estadísticas
+                            <i class="bi bi-chart-line"></i> Ver Estadísticas
                         </a>
                     </div>
                 </div>
@@ -245,7 +249,7 @@
                             <tr>
                                 <td>{{ date('d/m/Y', strtotime($mantenimiento->fecha_mantenimiento)) }}</td>
                                 <td>
-                                    <span class="badge badge-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'danger' }}">
+                                    <span class="badge bg-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'danger' }}">
                                         {{ $mantenimiento->tipo_mantenimiento }}
                                     </span>
                                 </td>
@@ -261,20 +265,26 @@
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('admin.mantenimientos-impresora.show', $mantenimiento->id) }}" 
                                            class="btn btn-info" title="Ver">
-                                            <i class="fas fa-eye"></i>
+                                            <i class="bi bi-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.mantenimientos-impresora.edit', $mantenimiento->id) }}" 
-                                           class="btn btn-warning" title="Editar">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                    </div>
-                                </tr>
+                                            class="btn btn-warning" title="Editar">
+                                             <i class="bi bi-pencil"></i>
+                                         </a>
+                                         <button type="button" 
+                                                 class="btn btn-danger" 
+                                                 title="Eliminar"
+                                                 onclick="confirmDeleteMantenimiento({{ $mantenimiento->id }})">
+                                             <i class="bi bi-trash"></i>
+                                         </button>
+                                     </div>
+                                </td>
                             </tr>
                             @empty
                             <tr>
                                 <td colspan="5" class="text-center">
                                     <div class="alert alert-info mb-0">
-                                        <i class="fas fa-info-circle"></i> No hay mantenimientos registrados para esta impresora
+                                        <i class="bi bi-info-circle"></i> No hay mantenimientos registrados para esta impresora
                                     </div>
                                 </td>
                             </tr>
@@ -286,4 +296,73 @@
         </div>
     </div>
 </div>
+@push('scripts')
+<form id="delete-form" action="{{ route('admin.impresoras.destroy', $impresora->id) }}" method="POST" style="display: none;">
+    @csrf
+    @method('DELETE')
+</form>
+
+<script>
+function confirmDelete() {
+    Swal.fire({
+        title: '¿Eliminar impresora?',
+        text: "Esta acción no se puede deshacer. Si tiene mantenimientos asociados, no podrá ser eliminada.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+            confirmButton: 'btn btn-danger me-2',
+            cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-form').submit();
+        }
+    });
+}
+
+function confirmDeleteMantenimiento(id) {
+    Swal.fire({
+        title: '¿Eliminar mantenimiento?',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+            confirmButton: 'btn btn-danger me-2',
+            cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let form = document.createElement('form');
+            form.method = 'POST';
+            form.action = "{{ route('admin.mantenimientos-impresora.destroy', ':id') }}".replace(':id', id);
+            
+            let csrf = document.createElement('input');
+            csrf.type = 'hidden';
+            csrf.name = '_token';
+            csrf.value = "{{ csrf_token() }}";
+            
+            let method = document.createElement('input');
+            method.type = 'hidden';
+            method.name = '_method';
+            method.value = 'DELETE';
+            
+            form.appendChild(csrf);
+            form.appendChild(method);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>
+@endpush
 @endsection

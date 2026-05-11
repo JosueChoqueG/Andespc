@@ -97,5 +97,23 @@
         </main>
     </div>
 
+    @stack('scripts')
+
+    @if(session('success') || session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                title: "{{ session('success') ? '¡Éxito!' : '¡Error!' }}",
+                text: "{{ session('success') ?? session('error') }}",
+                icon: "{{ session('success') ? 'success' : 'error' }}",
+                confirmButtonText: 'Aceptar',
+                customClass: {
+                    confirmButton: 'btn btn-primary'
+                },
+                buttonsStyling: false
+            });
+        });
+    </script>
+    @endif
 </body>
 </html>

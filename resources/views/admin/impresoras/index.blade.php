@@ -62,15 +62,17 @@
                                     <td>{{ $impresora->direccion_ip ?? 'N/A' }}</td>
                                     <td>
                                         @php
+                                            $estado = strtoupper(trim($impresora->estado_impresora));
                                             $badgeClass = [
                                                 'OPTIMO' => 'success',
                                                 'BUENO' => 'info',
                                                 'REGULAR' => 'warning',
                                                 'DEFICIENTE' => 'danger',
                                                 'DE BAJA' => 'secondary'
-                                            ][$impresora->estado_impresora] ?? 'secondary';
+                                            ][$estado] ?? 'dark';
                                         @endphp
-                                        <span class="badge badge-{{ $badgeClass }}">
+                                        
+                                        <span class="badge bg-{{ $badgeClass }}">
                                             {{ $impresora->estado_impresora }}
                                         </span>
                                     </td>

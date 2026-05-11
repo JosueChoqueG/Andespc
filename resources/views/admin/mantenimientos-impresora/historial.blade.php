@@ -106,7 +106,7 @@
                                 <td>{{ $mantenimiento->id }}</td>
                                 <td>{{ date('d/m/Y', strtotime($mantenimiento->fecha_mantenimiento)) }}</td>
                                 <td>
-                                    <span class="badge badge-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'danger' }}">
+                                    <span class="badge bg-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'danger' }}">
                                         {{ $mantenimiento->tipo_mantenimiento }}
                                     </span>
                                 </td>
@@ -135,6 +135,12 @@
                                            class="btn btn-warning" title="Editar">
                                             <i class="bi bi-pencil"></i>
                                         </a>
+                                        <button type="button" 
+                                                class="btn btn-danger" 
+                                                title="Eliminar"
+                                                onclick="confirmDelete({{ $mantenimiento->id }})">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -152,4 +158,47 @@
         </div>
     </div>
 </div>
+@push('scripts')
+<script>
+function confirmDelete(id) {
+    Swal.fire({
+        title: '¿Eliminar mantenimiento?',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+            confirmButton: 'btn btn-danger me-2',
+            cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Crear formulario dinámicamente
+            let form = document.createElement('form');
+            form.method = 'POST';
+            form.action = "{{ route('admin.mantenimientos-impresora.destroy', ':id') }}".replace(':id', id);
+            
+            let csrf = document.createElement('input');
+            csrf.type = 'hidden';
+            csrf.name = '_token';
+            csrf.value = "{{ csrf_token() }}";
+            
+            let method = document.createElement('input');
+            method.type = 'hidden';
+            method.name = '_method';
+            method.value = 'DELETE';
+            
+            form.appendChild(csrf);
+            form.appendChild(method);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>
+@endpush
 @endsection

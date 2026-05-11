@@ -36,7 +36,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Oficina *</label>
-                                    <select name="oficina_id" class="form-control @error('oficina_id') is-invalid @enderror" required>
+                                    <select name="oficina_id" class="form-control select2 @error('oficina_id') is-invalid @enderror" required>
                                         <option value="">Seleccione una oficina</option>
                                         @foreach($oficinas as $oficina)
                                             <option value="{{ $oficina->id }}" {{ old('oficina_id') == $oficina->id ? 'selected' : '' }}>
@@ -52,8 +52,8 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Responsable</label>
-                                    <select name="responsable_id" class="form-control @error('responsable_id') is-invalid @enderror">
-                                        <option value="">Seleccione un responsable</option>
+                                    <select name="responsable_id" class="form-control select2 @error('responsable_id') is-invalid @enderror">
+                                        <option value="">Seleccionar</option>
                                         @foreach($responsables as $responsable)
                                             <option value="{{ $responsable->id }}" {{ old('responsable_id') == $responsable->id ? 'selected' : '' }}>
                                                 {{ $responsable->nombre_responsable }}
@@ -73,11 +73,8 @@
                                     <label>Tipo de Impresora *</label>
                                     <select name="tipo_impresora" class="form-control @error('tipo_impresora') is-invalid @enderror" required>
                                         <option value="">Seleccione</option>
-                                        <option value="Laser" {{ old('tipo_impresora') == 'Laser' ? 'selected' : '' }}>Laser</option>
                                         <option value="Inyección" {{ old('tipo_impresora') == 'Inyección' ? 'selected' : '' }}>Inyección</option>
-                                        <option value="Matricial" {{ old('tipo_impresora') == 'Matricial' ? 'selected' : '' }}>Matricial</option>
-                                        <option value="Multifuncional" {{ old('tipo_impresora') == 'Multifuncional' ? 'selected' : '' }}>Multifuncional</option>
-                                        <option value="Plotter" {{ old('tipo_impresora') == 'Plotter' ? 'selected' : '' }}>Plotter</option>
+                                        <option value="Multifuncional" {{ old('tipo_impresora') == 'Multifuncional' || is_null(old('tipo_impresora')) ? 'selected' : '' }}>Multifuncional</option>
                                     </select>
                                     @error('tipo_impresora')
                                         <span class="invalid-feedback">{{ $message }}</span>
@@ -88,7 +85,7 @@
                                 <div class="form-group">
                                     <label>Marca *</label>
                                     <input type="text" name="marca_impresora" class="form-control @error('marca_impresora') is-invalid @enderror" 
-                                           value="{{ old('marca_impresora') }}" required>
+                                        value="{{ old('marca_impresora', 'KYOCERA') }}" required>
                                     @error('marca_impresora')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -100,10 +97,15 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Modelo *</label>
-                                    <input type="text" name="modelo_impresora" class="form-control @error('modelo_impresora') is-invalid @enderror" 
-                                           value="{{ old('modelo_impresora') }}" required>
+                                    <select name="modelo_impresora" class="form-control @error('modelo_impresora') is-invalid @enderror" required>
+                                        <option value="">Seleccione un modelo</option>
+                                        <option value="M2640" {{ old('modelo_impresora') == 'M2640' ? 'selected' : '' }}>M2640</option>
+                                        <option value="MA4500ix" {{ old('modelo_impresora') == 'MA4500ix' ? 'selected' : '' }}>MA4500ix</option>
+                                        <option value="MA5500ifx" {{ old('modelo_impresora') == 'MA5500ifx' ? 'selected' : '' }}>MA5500ifx</option>
+                                        <option value="HP LaserJet Tank MFP M634" {{ old('modelo_impresora') == 'HP LaserJet Tank MFP M634' ? 'selected' : '' }}>HP LaserJet Tank MFP M634</option>
+                                    </select>
                                     @error('modelo_impresora')
-                                        <span class="invalid-feedback">{{ $message }}</span>
+                                        <span class="invalid-feedback" style="display: block;">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
@@ -124,9 +126,9 @@
                                 <div class="form-group">
                                     <label>Tipo de Conexión</label>
                                     <select name="tipo_conexion" class="form-control @error('tipo_conexion') is-invalid @enderror">
+                                        <option value="ETHERNET" {{ old('tipo_conexion') == 'ETHERNET' ? 'selected' : '' }}>Ethernet</option>
                                         <option value="USB" {{ old('tipo_conexion') == 'USB' ? 'selected' : '' }}>USB</option>
                                         <option value="WIFI" {{ old('tipo_conexion') == 'WIFI' ? 'selected' : '' }}>WiFi</option>
-                                        <option value="ETHERNET" {{ old('tipo_conexion') == 'ETHERNET' ? 'selected' : '' }}>Ethernet</option>
                                         <option value="WIFI-DIRECT" {{ old('tipo_conexion') == 'WIFI-DIRECT' ? 'selected' : '' }}>WiFi Direct</option>
                                     </select>
                                     @error('tipo_conexion')
@@ -209,7 +211,7 @@
                                 <div class="form-group">
                                     <label>Tipo Consumible</label>
                                     <input type="text" name="tipo_consumible" class="form-control" 
-                                           value="{{ old('tipo_consumible') }}" placeholder="ej: Tóner">
+                                           value="{{ old('tipo_consumible', 'Tóner') }}" placeholder="ej: Tóner">
                                 </div>
                             </div>
                             <div class="col-md-4">

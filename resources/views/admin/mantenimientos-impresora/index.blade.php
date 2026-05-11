@@ -74,7 +74,7 @@
                                         {{ $mantenimiento->impresora->modelo_impresora ?? '' }}
                                     </td>
                                     <td>
-                                        <span class="badge badge-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'danger' }}">
+                                        <span class="badge bg-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'danger' }}">
                                             {{ $mantenimiento->tipo_mantenimiento }}
                                         </span>
                                     </td>
@@ -104,7 +104,7 @@
                                                     class="btn btn-danger" 
                                                     title="Eliminar"
                                                     onclick="confirmDelete({{ $mantenimiento->id }})">
-                                                <i class="fas fa-trash"></i>
+                                                <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
                                         <form id="delete-form-{{ $mantenimiento->id }}" 
@@ -144,7 +144,12 @@ function confirmDelete(id) {
         confirmButtonColor: '#d33',
         cancelButtonColor: '#3085d6',
         confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
+        cancelButtonText: 'Cancelar',
+        customClass: {
+            confirmButton: 'btn btn-danger me-2',
+            cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false
     }).then((result) => {
         if (result.isConfirmed) {
             document.getElementById('delete-form-' + id).submit();

@@ -46,7 +46,7 @@
                                 <div class="info-box-content">
                                     <span class="info-box-text text-muted">Tipo de Mantenimiento</span>
                                     <span class="info-box-number">
-                                        <span class="badge badge-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'danger' }} badge-lg">
+                                        <span class="badge bg-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'danger' }} badge-lg">
                                             {{ $mantenimiento->tipo_mantenimiento }}
                                         </span>
                                     </span>
