@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\AgenciaController;
 use App\Http\Controllers\Admin\OficinaController;
 use App\Http\Controllers\Admin\MarcaController;
 use App\Http\Controllers\Admin\ModeloController;
-use App\Http\Controllers\Admin\TipoequipoController;
+use App\Http\Controllers\Admin\TipoEquipoController;
 use App\Http\Controllers\Admin\HardwareController;
 use App\Http\Controllers\Admin\SistemaOperativoController;
 use App\Http\Controllers\Admin\ResponsableController;
@@ -39,9 +39,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('oficinas', OficinaController::class);
     Route::resource('marcas', MarcaController::class);
     Route::resource('modelos', ModeloController::class);
-    Route::resource('tipoequipos', TipoequipoController::class);
+    Route::resource('tipoequipos', TipoEquipoController::class);
     Route::resource('hardwares', HardwareController::class);
-    Route::resource('sistemaoperativos', SistemaoperativoController::class);
+    Route::resource('sistemaoperativos', SistemaOperativoController::class);
     Route::resource('responsables', ResponsableController::class);
     Route::resource('equipos', EquipoController::class);
 
@@ -58,7 +58,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // MANTENIMIENTOS DE IMPRESORAS (renombrado)
         Route::get('impresoras/{impresora}/mantenimientos/create', [MantenimientoImpresoraController::class, 'create'])
             ->name('mantenimientos-impresora.create');
-        Route::post('mantenimientos-impresora', [MantenimientoImpresoraController::class, 'store'])
+        Route::post('impresoras/{impresora}/mantenimientos', [MantenimientoImpresoraController::class, 'store'])
             ->name('mantenimientos-impresora.store');
         Route::get('mantenimientos-impresora', [MantenimientoImpresoraController::class, 'index'])
             ->name('mantenimientos-impresora.index');
@@ -72,6 +72,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('mantenimientos-impresora.destroy');
         Route::get('impresoras/{impresora}/mantenimientos/historial', [MantenimientoImpresoraController::class, 'historial'])
             ->name('mantenimientos-impresora.historial');
+
+        // HOJAS DE VIDA IMPRESORAS
+        Route::get('impresoras/{id}/hoja-vida', [ImpresoraController::class, 'hojaVida'])
+            ->name('impresoras.hoja-vida');
+        Route::get('impresoras/{id}/hoja-vida/pdf', [ImpresoraController::class, 'descargarHojaVidaPDF'])
+            ->name('impresoras.hoja-vida.pdf');
+            
+        Route::get('mantenimientos-impresora/{mantenimiento}/hoja-vida', [MantenimientoImpresoraController::class, 'generarHojaVida'])
+            ->name('impresoras.hoja-vida-mantenimiento');
+        Route::get('mantenimientos-impresora/{mantenimiento}/hoja-vida/pdf', [MantenimientoImpresoraController::class, 'descargarHojaVidaMantenimientoPDF'])
+            ->name('impresoras.hoja-vida-mantenimiento.pdf');
 
         // 🌐 SERVICIOS DE INTERNET
         Route::resource('servicios-internet', ServicioInternetController::class)->parameters(['servicios-internet' => 'servicio']);

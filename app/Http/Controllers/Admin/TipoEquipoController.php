@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Tipoequipo;
+use App\Models\TipoEquipo;
 use Illuminate\Http\Request;
 
-class TipoequipoController extends Controller
+class TipoEquipoController extends Controller
 {
     public function index()
     {
-        $tipoequipos = Tipoequipo::all();
+        $tipoequipos = TipoEquipo::all();
         return view('admin.tipoequipos.index', compact('tipoequipos'));
     }
 
@@ -25,23 +25,23 @@ class TipoequipoController extends Controller
             'nombre_tipo' => 'required|string|max:50|unique:tipoequipos,nombre_tipo',
         ]);
 
-        Tipoequipo::create($request->only('nombre_tipo'));
+        TipoEquipo::create($request->only('nombre_tipo'));
 
         return redirect()->route('tipoequipos.index')
             ->with('success', 'Tipo de equipo creado correctamente.');
     }
 
-    public function show(Tipoequipo $tipoequipo)
+    public function show(TipoEquipo $tipoequipo)
     {
         return view('admin.tipoequipos.show', compact('tipoequipo'));
     }
 
-    public function edit(Tipoequipo $tipoequipo)
+    public function edit(TipoEquipo $tipoequipo)
     {
         return view('admin.tipoequipos.edit', compact('tipoequipo'));
     }
 
-    public function update(Request $request, Tipoequipo $tipoequipo)
+    public function update(Request $request, TipoEquipo $tipoequipo)
     {
         $request->validate([
             'nombre_tipo' => 'required|string|max:50|unique:tipoequipos,nombre_tipo,' . $tipoequipo->id,
@@ -53,7 +53,7 @@ class TipoequipoController extends Controller
             ->with('success', 'Tipo de equipo actualizado correctamente.');
     }
 
-    public function destroy(Tipoequipo $tipoequipo)
+    public function destroy(TipoEquipo $tipoequipo)
     {
         $tipoequipo->delete();
 

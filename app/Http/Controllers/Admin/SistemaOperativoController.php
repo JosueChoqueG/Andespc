@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\SistemaOperativo;
 use Illuminate\Http\Request;
 
-class SistemaoperativoController extends Controller
+class SistemaOperativoController extends Controller
 {
     public function index()
     {
-        $sistemaoperativos = Sistemaoperativo::all();
+        $sistemaoperativos = SistemaOperativo::all();
         return view('admin.sistemaoperativos.index', compact('sistemaoperativos'));
     }
 
@@ -27,13 +27,13 @@ class SistemaoperativoController extends Controller
             'version' => 'nullable|string|max:20',
         ]);
 
-        Sistemaoperativo::create($request->all());
+        SistemaOperativo::create($request->all());
 
         return redirect()->route('sistemaoperativos.index')
             ->with('success', 'Sistema operativo creado correctamente.');
     }
 
-    public function show(Sistemaoperativo $sistemaoperativo)
+    public function show(SistemaOperativo $sistemaoperativo)
     {
         return view('admin.sistemaoperativos.show', compact('sistemaoperativo'));
     }
@@ -43,7 +43,7 @@ class SistemaoperativoController extends Controller
         return view('admin.sistemaoperativos.edit', compact('sistemaoperativo'));
     }
 
-    public function update(Request $request, Sistemaoperativo $sistemaoperativo)
+    public function update(Request $request, SistemaOperativo $sistemaoperativo)
     {
         $request->validate([
             'nombre_so' => 'required|string|max:50',
@@ -57,7 +57,7 @@ class SistemaoperativoController extends Controller
             ->with('success', 'Sistema operativo actualizado correctamente.');
     }
 
-    public function destroy(Sistemaoperativo $sistemaoperativo)
+    public function destroy(SistemaOperativo $sistemaoperativo)
     {
         $sistemaoperativo->delete();
 

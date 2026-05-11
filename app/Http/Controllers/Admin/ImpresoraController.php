@@ -69,9 +69,16 @@ class ImpresoraController extends Controller
             'serie_impresora' => 'required|string|max:100|unique:impresoras,serie_impresora',
             'responsable_id' => 'nullable|exists:responsables,id',
             'tipo_conexion' => 'nullable|in:USB,WIFI,ETHERNET,WIFI-DIRECT',
-            'direccion_ip' => 'nullable|ip',
+            'direccion_ip' => 'nullable|string|max:50',
+            'nombre_host' => 'nullable|string|max:100',
             'estado_impresora' => 'nullable|in:OPTIMO,BUENO,REGULAR,DEFICIENTE,DE BAJA',
             'fecha_adquisicion' => 'nullable|date',
+            'velocidad_impresion' => 'nullable|string|max:50',
+            'modelo_consumible' => 'nullable|string|max:100',
+            'tipo_consumible' => 'nullable|string|max:100',
+            'cantidad_impresion' => 'nullable|integer',
+            'capacidad_impresion' => 'nullable|integer',
+            'cantidad_escaneo' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {
@@ -122,9 +129,16 @@ class ImpresoraController extends Controller
             'serie_impresora' => 'required|string|max:100|unique:impresoras,serie_impresora,' . $id,
             'responsable_id' => 'nullable|exists:responsables,id',
             'tipo_conexion' => 'nullable|in:USB,WIFI,ETHERNET,WIFI-DIRECT',
-            'direccion_ip' => 'nullable|ip',
+            'direccion_ip' => 'nullable|string|max:50',
+            'nombre_host' => 'nullable|string|max:100',
             'estado_impresora' => 'nullable|in:OPTIMO,BUENO,REGULAR,DEFICIENTE,DE BAJA',
             'fecha_adquisicion' => 'nullable|date',
+            'velocidad_impresion' => 'nullable|string|max:50',
+            'modelo_consumible' => 'nullable|string|max:100',
+            'tipo_consumible' => 'nullable|string|max:100',
+            'cantidad_impresion' => 'nullable|integer',
+            'capacidad_impresion' => 'nullable|integer',
+            'cantidad_escaneo' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {
@@ -154,5 +168,69 @@ class ImpresoraController extends Controller
 
         return redirect()->route('admin.impresoras.index')
             ->with('success', 'Impresora eliminada correctamente');
+    }
+
+    /**
+     * Generar hoja de vida de la impresora (Vista HTML)
+     */
+    public function hojaVida($id)
+    {
+        $impresora = Impresora::with(['oficina', 'responsable', 'mantenimientos'])
+            ->findOrFail($id);
+            
+        $tecnico = \Illuminate\Support\Facades\Auth::user()->name ?? 'Josue Choque Gomez';
+        
+        $historialMantenimientos = $impresora->mantenimientos()
+            ->orderBy('fecha_mantenimiento', 'desc')
+            ->take(10)
+            ->get();
+            
+        $fallasHistorial = $impresora->mantenimientos()
+            ->whereNotNull('fallas_detectadas')
+            ->where('fallas_detectadas', '!=', '')
+            ->orderBy('fecha_mantenimiento', 'desc')
+            ->take(10)
+            ->get();
+
+        return view('admin.impresoras.hoja-vida', compact(
+            'impresora', 
+            'tecnico', 
+            'historialMantenimientos',
+            'fallasHistorial'
+        ));
+    }
+
+    /**
+     * Descargar hoja de vida en PDF
+     */
+    public function descargarHojaVidaPDF($id)
+    {
+        $impresora = Impresora::with(['oficina', 'responsable', 'mantenimientos'])
+            ->findOrFail($id);
+            
+        $tecnico = \Illuminate\Support\Facades\Auth::user()->name ?? 'Josue Choque Gomez';
+        
+        $historialMantenimientos = $impresora->mantenimientos()
+            ->orderBy('fecha_mantenimiento', 'desc')
+            ->take(10)
+            ->get();
+            
+        $fallasHistorial = $impresora->mantenimientos()
+            ->whereNotNull('fallas_detectadas')
+            ->where('fallas_detectadas', '!=', '')
+            ->orderBy('fecha_mantenimiento', 'desc')
+            ->take(10)
+            ->get();
+            
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.impresoras.hoja-vida-pdf', compact(
+            'impresora', 
+            'tecnico', 
+            'historialMantenimientos',
+            'fallasHistorial'
+        ));
+        
+        $pdf->setPaper('A4', 'portrait');
+        
+        return $pdf->download("Hoja-Vida-Impresora-{$impresora->serie_impresora}-" . date('Y-m-d') . ".pdf");
     }
 }

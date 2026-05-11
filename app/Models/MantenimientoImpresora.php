@@ -92,11 +92,23 @@ class MantenimientoImpresora extends Model
         return !empty($this->fallas_solucion);
     }
 
-    public function getDescripcionCortaAttribute(): string
+    // Accesor para obtener descripción como array
+    public function getDescripcionArrayAttribute()
     {
-        return strlen($this->descripcion_mantenimiento) > 100
-            ? substr($this->descripcion_mantenimiento, 0, 97) . '...'
-            : $this->descripcion_mantenimiento;
+        return array_filter(explode("\n", $this->descripcion_mantenimiento));
+    }
+
+    // Accesor para obtener fallas como array
+    public function getFallasArrayAttribute()
+    {
+        return array_filter(explode("\n", $this->fallas_detectadas ?? ''));
+    }
+
+    // Accesor para obtener el nombre del técnico
+    public function getTecnicoNombreAttribute()
+    {
+        // Si tuviera user_id, podríamos usar $this->user->name
+        return 'Josue Choque Gomez'; // Valor por defecto según requerimiento anterior
     }
 
     public function getTipoMantenimientoColorAttribute(): string

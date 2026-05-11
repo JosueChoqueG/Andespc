@@ -10,11 +10,17 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-info-circle"></i> Información General
+                        <i class="bi bi-info-circle"></i> Información General
                     </h3>
                     <div class="card-tools">
+                        <a href="{{ route('admin.impresoras.hoja-vida', $impresora->id) }}" class="btn btn-info btn-sm">
+                            <i class="bi bi-file-earmark-text"></i> Hoja de Vida
+                        </a>
+                        <a href="{{ route('admin.impresoras.hoja-vida.pdf', $impresora->id) }}" class="btn btn-danger btn-sm">
+                            <i class="bi bi-file-pdf"></i> PDF
+                        </a>
                         <a href="{{ route('admin.impresoras.edit', $impresora->id) }}" class="btn btn-warning btn-sm">
-                            <i class="fas fa-edit"></i> Editar
+                            <i class="bi bi-pencil"></i> Editar
                         </a>
                         <a href="{{ route('admin.mantenimientos-impresora.create', $impresora->id) }}" class="btn btn-primary btn-sm">
                             <i class="fas fa-tools"></i> Nuevo Mantenimiento

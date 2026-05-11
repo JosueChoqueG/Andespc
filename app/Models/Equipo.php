@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\TipoEquipo;
 
 class Equipo extends Model
 {
@@ -45,9 +46,9 @@ class Equipo extends Model
         return $this->belongsTo(Oficina::class);
     }
 
-    public function tipoequipo()
+    public function tipoEquipo()
     {
-        return $this->belongsTo(Tipoequipo::class);
+        return $this->belongsTo(TipoEquipo::class, 'tipoequipo_id');
     }
 
     public function hardware()
@@ -60,9 +61,9 @@ class Equipo extends Model
         return $this->belongsTo(Modelo::class);
     }
 
-    public function sistemaoperativo()
+    public function sistemaOperativo()
     {
-        return $this->belongsTo(Sistemaoperativo::class);
+        return $this->belongsTo(SistemaOperativo::class, 'sistemaoperativo_id');
     }
 
     public function responsable()
@@ -97,12 +98,12 @@ class Equipo extends Model
     // Accesor para obtener el SO completo
     public function getSistemaOperativoCompletoAttribute()
     {
-        if (!$this->sistemaoperativo) return 'N/A';
+        if (!$this->sistemaOperativo) return 'N/A';
         
         return sprintf("%s %s (%s)",
-            $this->sistemaoperativo->nombre_so ?? '',
-            $this->sistemaoperativo->edicion ?? '',
-            $this->sistemaoperativo->version ?? ''
+            $this->sistemaOperativo->nombre_so ?? '',
+            $this->sistemaOperativo->edicion ?? '',
+            $this->sistemaOperativo->version ?? ''
         );
     }
 
@@ -121,6 +122,6 @@ class Equipo extends Model
     // Accesor para el tipo de equipo
     public function getTipoEquipoNombreAttribute()
     {
-        return $this->tipoequipo->nombre_tipo ?? 'N/A';
+        return $this->tipoEquipo->nombre_tipo ?? 'N/A';
     }
 }

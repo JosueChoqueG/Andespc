@@ -10,17 +10,28 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-plus-circle"></i> Datos de la Impresora
+                        <i class="bi bi-plus-circle"></i> Datos de la Impresora
                     </h3>
                     <div class="card-tools">
                         <a href="{{ route('admin.impresoras.index') }}" class="btn btn-default btn-sm">
-                            <i class="fas fa-arrow-left"></i> Volver
+                            <i class="bi bi-arrow-left"></i> Volver
                         </a>
                     </div>
                 </div>
                 <form action="{{ route('admin.impresoras.store') }}" method="POST">
                     @csrf
                     <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <h5><i class="icon fas fa-ban"></i> ¡Error!</h5>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -206,6 +217,23 @@
                                     <label>Capacidad (páginas)</label>
                                     <input type="number" name="capacidad_impresion" class="form-control" 
                                            value="{{ old('capacidad_impresion') }}" placeholder="ej: 15000">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Cantidad Impresa Actual</label>
+                                    <input type="number" name="cantidad_impresion" class="form-control" 
+                                           value="{{ old('cantidad_impresion', 0) }}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Cantidad Escaneos Actual</label>
+                                    <input type="number" name="cantidad_escaneo" class="form-control" 
+                                           value="{{ old('cantidad_escaneo', 0) }}">
                                 </div>
                             </div>
                         </div>

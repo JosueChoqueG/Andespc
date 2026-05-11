@@ -42,25 +42,20 @@ class MantenimientoImpresoraController extends Controller
     /**
      * Show the form for creating a new maintenance record.
      */
-    public function create($impresoraId = null)
+    public function create(Impresora $impresora)
     {
-        if ($impresoraId) {
-            $impresora = Impresora::findOrFail($impresoraId);
-            $impresoras = collect([$impresora]);
-        } else {
-            $impresoras = Impresora::where('estado_impresora', '!=', 'DE BAJA')->get();
-        }
+        $ultimoMantenimiento = $impresora->mantenimientos()->latest()->first();
+        $tecnico = \Illuminate\Support\Facades\Auth::user()->name ?? 'Josue Choque Gomez';
         
-        return view('admin.mantenimientos-impresora.create', compact('impresoras', 'impresoraId'));
+        return view('admin.mantenimientos-impresora.create', compact('impresora', 'ultimoMantenimiento', 'tecnico'));
     }
 
     /**
      * Store a newly created maintenance record.
      */
-    public function store(Request $request)
+    public function store(Request $request, Impresora $impresora)
     {
         $validator = Validator::make($request->all(), [
-            'impresora_id' => 'required|exists:impresoras,id',
             'fecha_mantenimiento' => 'required|date',
             'tipo_mantenimiento' => 'required|in:Preventivo,Correctivo',
             'descripcion_mantenimiento' => 'required|string',
@@ -75,18 +70,84 @@ class MantenimientoImpresoraController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $mantenimiento = MantenimientoImpresora::create($request->all());
+        $data = $request->all();
+        $data['impresora_id'] = $impresora->id;
 
-        // Si se detectaron fallas, opcionalmente cambiar estado de la impresora
-        if ($request->filled('fallas_detectadas')) {
-            $impresora = Impresora::find($request->impresora_id);
-            if ($impresora && $impresora->estado_impresora === 'OPTIMO') {
-                $impresora->update(['estado_impresora' => 'REGULAR']);
-            }
+        $mantenimiento = MantenimientoImpresora::create($data);
+
+        // Actualizar estado de la impresora si se desea
+        $impresora->update([
+            'estado_impresora' => $request->filled('fallas_detectadas') ? 'REGULAR' : $impresora->estado_impresora
+        ]);
+
+        if ($request->has('generar_hoja_vida')) {
+            return redirect()->route('admin.impresoras.hoja-vida-mantenimiento', $mantenimiento);
         }
 
-        return redirect()->route('admin.impresoras.show', $request->impresora_id)
+        return redirect()->route('admin.impresoras.show', $impresora->id)
             ->with('success', 'Mantenimiento registrado correctamente');
+    }
+
+    /**
+     * Generar hoja de vida basada en un mantenimiento específico (Vista HTML)
+     */
+    public function generarHojaVida(MantenimientoImpresora $mantenimiento)
+    {
+        $impresora = $mantenimiento->impresora;
+        $tecnico = $mantenimiento->tecnico_nombre;
+        
+        $historialMantenimientos = $impresora->mantenimientos()
+            ->orderBy('fecha_mantenimiento', 'desc')
+            ->take(10)
+            ->get();
+            
+        $fallasHistorial = $impresora->mantenimientos()
+            ->whereNotNull('fallas_detectadas')
+            ->where('fallas_detectadas', '!=', '')
+            ->orderBy('fecha_mantenimiento', 'desc')
+            ->take(10)
+            ->get();
+
+        return view('admin.impresoras.hoja-vida', compact(
+            'impresora', 
+            'mantenimiento', 
+            'tecnico', 
+            'historialMantenimientos',
+            'fallasHistorial'
+        ));
+    }
+
+    /**
+     * Descargar hoja de vida de mantenimiento específico en PDF
+     */
+    public function descargarHojaVidaMantenimientoPDF(MantenimientoImpresora $mantenimiento)
+    {
+        $impresora = $mantenimiento->impresora;
+        $tecnico = $mantenimiento->tecnico_nombre;
+        
+        $historialMantenimientos = $impresora->mantenimientos()
+            ->orderBy('fecha_mantenimiento', 'desc')
+            ->take(10)
+            ->get();
+            
+        $fallasHistorial = $impresora->mantenimientos()
+            ->whereNotNull('fallas_detectadas')
+            ->where('fallas_detectadas', '!=', '')
+            ->orderBy('fecha_mantenimiento', 'desc')
+            ->take(10)
+            ->get();
+            
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.impresoras.hoja-vida-pdf', compact(
+            'impresora', 
+            'mantenimiento', 
+            'tecnico', 
+            'historialMantenimientos',
+            'fallasHistorial'
+        ));
+        
+        $pdf->setPaper('A4', 'portrait');
+        
+        return $pdf->download("Hoja-Vida-Impresora-{$impresora->serie_impresora}-" . $mantenimiento->fecha_mantenimiento->format('Y-m-d') . ".pdf");
     }
 
     /**

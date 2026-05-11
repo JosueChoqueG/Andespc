@@ -6,150 +6,126 @@
 @section('content')
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-10 offset-md-1">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="fas fa-tools"></i> Registrar Mantenimiento
-                    </h3>
-                    <div class="card-tools">
-                        @if($impresoraId)
-                            <a href="{{ route('admin.impresoras.show', $impresoraId) }}" class="btn btn-default btn-sm">
-                                <i class="fas fa-arrow-left"></i> Volver a Impresora
-                            </a>
-                        @else
-                            <a href="{{ route('admin.mantenimientos-impresora.index') }}" class="btn btn-default btn-sm">
-                                <i class="fas fa-arrow-left"></i> Volver
-                            </a>
-                        @endif
-                    </div>
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-tools"></i> 
+                        Mantenimiento de Impresora: {{ $impresora->serie_impresora }}
+                    </h5>
                 </div>
-                <form action="{{ route('admin.mantenimientos-impresora.store') }}" method="POST">
-                    @csrf
-                    <div class="card-body">
+                
+                <div class="card-body">
+                    {{-- Datos de la impresora --}}
+                    <div class="alert alert-info">
+                        <h6><i class="bi bi-info-circle"></i> Información de la Impresora</h6>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <strong>Marca/Modelo:</strong> {{ $impresora->marca_impresora }} {{ $impresora->modelo_impresora }}
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Serie:</strong> {{ $impresora->serie_impresora ?? 'N/A' }}
+                            </div>
+                            <div class="col-md-3">
+                                <strong>IP:</strong> {{ $impresora->direccion_ip ?? 'N/A' }}
+                            </div>
+                            <div class="col-md-3">
+                                <strong>Oficina:</strong> {{ $impresora->oficina->nombre_oficina ?? 'N/A' }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <form action="{{ route('admin.mantenimientos-impresora.store', $impresora) }}" method="POST">
+                        @csrf
+                        
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Impresora *</label>
-                                    <select name="impresora_id" class="form-control @error('impresora_id') is-invalid @enderror" required>
-                                        <option value="">Seleccione una impresora</option>
-                                        @foreach($impresoras as $impresora)
-                                            <option value="{{ $impresora->id }}" 
-                                                {{ ($impresoraId ?? old('impresora_id')) == $impresora->id ? 'selected' : '' }}>
-                                                {{ $impresora->marca_impresora }} {{ $impresora->modelo_impresora }}
-                                                ({{ $impresora->serie_impresora }}) - {{ $impresora->estado_impresora }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                    @error('impresora_id')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Fecha Mantenimiento *</label>
-                                    <input type="date" name="fecha_mantenimiento" 
-                                           class="form-control @error('fecha_mantenimiento') is-invalid @enderror" 
-                                           value="{{ old('fecha_mantenimiento', date('Y-m-d')) }}" required>
-                                    @error('fecha_mantenimiento')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Tipo Mantenimiento *</label>
-                                    <select name="tipo_mantenimiento" class="form-control @error('tipo_mantenimiento') is-invalid @enderror" required>
+                                <div class="mb-3">
+                                    <label class="form-label">Tipo de Mantenimiento <span class="text-danger">*</span></label>
+                                    <select name="tipo_mantenimiento" class="form-select @error('tipo_mantenimiento') is-invalid @enderror" required>
                                         <option value="Preventivo" {{ old('tipo_mantenimiento') == 'Preventivo' ? 'selected' : '' }}>Preventivo</option>
                                         <option value="Correctivo" {{ old('tipo_mantenimiento') == 'Correctivo' ? 'selected' : '' }}>Correctivo</option>
                                     </select>
                                     @error('tipo_mantenimiento')
-                                        <span class="invalid-feedback">{{ $message }}</span>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
+                            
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Fecha de Fallas (si aplica)</label>
-                                    <input type="date" name="fecha_fallas" 
-                                           class="form-control @error('fecha_fallas') is-invalid @enderror" 
-                                           value="{{ old('fecha_fallas') }}">
-                                    @error('fecha_fallas')
-                                        <span class="invalid-feedback">{{ $message }}</span>
+                                <div class="mb-3">
+                                    <label class="form-label">Fecha <span class="text-danger">*</span></label>
+                                    <input type="date" name="fecha_mantenimiento" class="form-control @error('fecha_mantenimiento') is-invalid @enderror" 
+                                           value="{{ old('fecha_mantenimiento', date('Y-m-d')) }}" required>
+                                    @error('fecha_mantenimiento')
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Descripción del Mantenimiento *</label>
-                            <textarea name="descripcion_mantenimiento" 
-                                      class="form-control @error('descripcion_mantenimiento') is-invalid @enderror" 
-                                      rows="4" required>{{ old('descripcion_mantenimiento') }}</textarea>
-                            <small class="form-text text-muted">
-                                Describa detalladamente los trabajos realizados, cada paso en una línea separada.
-                            </small>
+                        <div class="mb-3">
+                            <label class="form-label">Trabajos Realizados <span class="text-danger">*</span></label>
+                            <textarea name="descripcion_mantenimiento" class="form-control @error('descripcion_mantenimiento') is-invalid @enderror" rows="4" required 
+                                      placeholder="Ingrese cada trabajo en una línea nueva...">{{ old('descripcion_mantenimiento') }}</textarea>
+                            <small class="text-muted"><i class="bi bi-info-circle"></i> Presione Enter para agregar múltiples trabajos</small>
                             @error('descripcion_mantenimiento')
-                                <span class="invalid-feedback">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label>Observaciones del Mantenimiento</label>
-                            <textarea name="observacion_mantenimiento" 
-                                      class="form-control @error('observacion_mantenimiento') is-invalid @enderror" 
-                                      rows="3">{{ old('observacion_mantenimiento') }}</textarea>
-                            @error('observacion_mantenimiento')
-                                <span class="invalid-feedback">{{ $message }}</span>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Fallas Detectadas</label>
-                                    <textarea name="fallas_detectadas" 
-                                              class="form-control @error('fallas_detectadas') is-invalid @enderror" 
-                                              rows="3">{{ old('fallas_detectadas') }}</textarea>
+                                <div class="mb-3">
+                                    <label class="form-label">Fallas Encontradas</label>
+                                    <textarea name="fallas_detectadas" class="form-control @error('fallas_detectadas') is-invalid @enderror" rows="3" 
+                                              placeholder="Describa las fallas encontradas...">{{ old('fallas_detectadas') }}</textarea>
                                     @error('fallas_detectadas')
-                                        <span class="invalid-feedback">{{ $message }}</span>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Solución Aplicada</label>
-                                    <textarea name="fallas_solucion" 
-                                              class="form-control @error('fallas_solucion') is-invalid @enderror" 
-                                              rows="3">{{ old('fallas_solucion') }}</textarea>
+                                <div class="mb-3">
+                                    <label class="form-label">Soluciones Aplicadas</label>
+                                    <textarea name="fallas_solucion" class="form-control @error('fallas_solucion') is-invalid @enderror" rows="3" 
+                                              placeholder="Describa las soluciones aplicadas...">{{ old('fallas_solucion') }}</textarea>
                                     @error('fallas_solucion')
-                                        <span class="invalid-feedback">{{ $message }}</span>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label>Observaciones Generales</label>
-                            <textarea name="observacion_general" 
-                                      class="form-control @error('observacion_general') is-invalid @enderror" 
-                                      rows="3">{{ old('observacion_general') }}</textarea>
+                        <div class="mb-3">
+                            <label class="form-label">Observaciones y Recomendaciones</label>
+                            <textarea name="observacion_general" class="form-control @error('observacion_general') is-invalid @enderror" rows="3" 
+                                      placeholder="Observaciones y recomendaciones generales...">{{ old('observacion_general', $ultimoMantenimiento->observacion_general ?? '') }}</textarea>
                             @error('observacion_general')
-                                <span class="invalid-feedback">{{ $message }}</span>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
-                    <div class="card-footer text-right">
-                        <button type="reset" class="btn btn-default">Limpiar</button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save"></i> Guardar Mantenimiento
-                        </button>
-                    </div>
-                </form>
+
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" name="generar_hoja_vida" class="form-check-input" 
+                                       id="generarHojaVida" checked>
+                                <label class="form-check-label" for="generarHojaVida">
+                                    <i class="bi bi-file-pdf"></i> Generar Hoja de Vida automáticamente
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <a href="{{ route('admin.impresoras.show', $impresora->id) }}" class="btn btn-secondary">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Guardar Mantenimiento
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

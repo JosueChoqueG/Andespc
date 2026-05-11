@@ -7,17 +7,23 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-8 offset-md-2">
-            <div class="card">
+            <div class="card">  
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-tools"></i> Mantenimiento #{{ $mantenimiento->id }}
+                        <i class="bi bi-tools"></i> Mantenimiento #{{ $mantenimiento->id }}
                     </h3>
                     <div class="card-tools">
+                        <a href="{{ route('admin.impresoras.hoja-vida-mantenimiento', $mantenimiento->id) }}" class="btn btn-info btn-sm">
+                            <i class="bi bi-file-earmark-text"></i> Hoja de Vida
+                        </a>
+                        <a href="{{ route('admin.impresoras.hoja-vida-mantenimiento.pdf', $mantenimiento->id) }}" class="btn btn-danger btn-sm">
+                            <i class="bi bi-file-pdf"></i> PDF
+                        </a>
                         <a href="{{ route('admin.impresoras.show', $mantenimiento->impresora_id) }}" class="btn btn-default btn-sm">
-                            <i class="fas fa-print"></i> Ver Impresora
+                            <i class="bi bi-printer"></i> Ver Impresora
                         </a>
                         <a href="{{ route('admin.mantenimientos-impresora.edit', $mantenimiento->id) }}" class="btn btn-warning btn-sm">
-                            <i class="fas fa-edit"></i> Editar
+                            <i class="bi bi-pencil"></i> Editar
                         </a>
                     </div>
                 </div>

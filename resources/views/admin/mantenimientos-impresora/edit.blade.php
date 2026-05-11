@@ -10,11 +10,11 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-edit"></i> Editar Mantenimiento #{{ $mantenimiento->id }}
+                        <i class="bi bi-pencil"></i> Editar Mantenimiento #{{ $mantenimiento->id }}
                     </h3>
                     <div class="card-tools">
                         <a href="{{ route('admin.impresoras.show', $mantenimiento->impresora_id) }}" class="btn btn-default btn-sm">
-                            <i class="fas fa-arrow-left"></i> Volver a Impresora
+                            <i class="bi bi-arrow-left"></i> Volver a Impresora
                         </a>
                     </div>
                 </div>

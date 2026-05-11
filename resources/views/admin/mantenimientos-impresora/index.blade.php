@@ -94,11 +94,11 @@
                                         <div class="btn-group btn-group-sm">
                                             <a href="{{ route('admin.mantenimientos-impresora.show', $mantenimiento->id) }}" 
                                                class="btn btn-info" title="Ver">
-                                                <i class="fas fa-eye"></i>
+                                                <i class="bi bi-eye"></i>
                                             </a>
                                             <a href="{{ route('admin.mantenimientos-impresora.edit', $mantenimiento->id) }}" 
                                                class="btn btn-warning" title="Editar">
-                                                <i class="fas fa-edit"></i>
+                                                <i class="bi bi-pencil"></i>
                                             </a>
                                             <button type="button" 
                                                     class="btn btn-danger" 

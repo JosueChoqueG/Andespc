@@ -10,11 +10,11 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-edit"></i> Editar: {{ $impresora->marca_impresora }} {{ $impresora->modelo_impresora }}
+                        <i class="bi bi-pencil"></i> Editar: {{ $impresora->marca_impresora }} {{ $impresora->modelo_impresora }}
                     </h3>
                     <div class="card-tools">
                         <a href="{{ route('admin.impresoras.index') }}" class="btn btn-default btn-sm">
-                            <i class="fas fa-arrow-left"></i> Volver
+                            <i class="bi bi-arrow-left"></i> Volver
                         </a>
                     </div>
                 </div>
@@ -22,6 +22,17 @@
                     @csrf
                     @method('PUT')
                     <div class="card-body">
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <h5><i class="icon fas fa-ban"></i> ¡Error!</h5>
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle"></i> Serie: <strong>{{ $impresora->serie_impresora }}</strong>
                         </div>
@@ -182,21 +193,31 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Tipo Consumible</label>
                                     <input type="text" name="tipo_consumible" class="form-control" 
                                            value="{{ old('tipo_consumible', $impresora->tipo_consumible) }}">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Cantidad Impresa</label>
                                     <input type="number" name="cantidad_impresion" class="form-control" 
                                            value="{{ old('cantidad_impresion', $impresora->cantidad_impresion ?? 0) }}">
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Cantidad Escaneo</label>
+                                    <input type="number" name="cantidad_escaneo" class="form-control" 
+                                           value="{{ old('cantidad_escaneo', $impresora->cantidad_escaneo ?? 0) }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Capacidad Total</label>
                                     <input type="number" name="capacidad_impresion" class="form-control" 

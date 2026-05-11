@@ -10,7 +10,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-print"></i> Listado de Impresoras
+                        <i class="bi bi-print"></i> Listado de Impresoras
                     </h3>
                     <div class="card-tools">
                         <a href="{{ route('admin.impresoras.create') }}" class="btn btn-primary btn-sm">
@@ -85,21 +85,21 @@
                                         <div class="btn-group btn-group-sm">
                                             <a href="{{ route('admin.impresoras.show', $impresora->id) }}" 
                                                class="btn btn-info" title="Ver">
-                                                <i class="fas fa-eye"></i>
+                                                <i class="bi bi-eye"></i>
                                             </a>
                                             <a href="{{ route('admin.impresoras.edit', $impresora->id) }}" 
                                                class="btn btn-warning" title="Editar">
-                                                <i class="fas fa-edit"></i>
+                                                <i class="bi bi-pencil"></i>
                                             </a>
                                             <a href="{{ route('admin.mantenimientos-impresora.create', $impresora->id) }}" 
                                                class="btn btn-primary" title="Registrar Mantenimiento">
-                                                <i class="fas fa-tools"></i>
+                                                <i class="bi bi-tools"></i>
                                             </a>
                                             <button type="button" 
                                                     class="btn btn-danger" 
                                                     title="Eliminar"
                                                     onclick="confirmDelete({{ $impresora->id }})">
-                                                <i class="fas fa-trash"></i>
+                                                <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
                                         

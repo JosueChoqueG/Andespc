@@ -373,22 +373,7 @@
                     </td>
                     <td> </td>
                 </tr>
-                <tr>
-                    <td style="height: 30px;">
-                        6.3 Ejecutivo TI
-                    </td>
-                    <td> Edgar Omar Coaquira Condori</td>
-                    <td>Asistente de Infraestructura Informática </td>
-                    <td> </td>
-                </tr>
-                <tr>
-                    <td style="height: 30px;">
-                        6.4 Usuario Asignado
-                    </td>
-                    <td> </td>
-                    <td> </td>
-                    <td> </td>
-                </tr>
+
             </tbody>
         </table>
     </div>

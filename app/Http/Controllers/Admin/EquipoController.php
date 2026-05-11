@@ -5,10 +5,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Equipo;
 use App\Models\Oficina;
 use App\Models\Agencia;
-use App\Models\Tipoequipo;
+use App\Models\TipoEquipo;
 use App\Models\Hardware;
 use App\Models\Modelo;
-use App\Models\Sistemaoperativo;
+use App\Models\SistemaOperativo;
 use App\Models\Responsable;
 use Illuminate\Http\Request;
 
@@ -19,10 +19,10 @@ class EquipoController extends Controller
         $query = Equipo::with([
             'oficina',
             'oficina.agencia',
-            'tipoequipo',
+            'tipoEquipo',
             'hardware',
             'modelo.marca',
-            'sistemaoperativo',
+            'sistemaOperativo',
             'responsable'
         ]);
 
@@ -63,10 +63,10 @@ class EquipoController extends Controller
     public function create()
     {
         $oficinas = Oficina::all();
-        $tipos = Tipoequipo::all();
+        $tipos = TipoEquipo::all();
         $hardwares = Hardware::all();
         $modelos = Modelo::all();
-        $sistemas = Sistemaoperativo::all();
+        $sistemas = SistemaOperativo::all();
         $responsables = Responsable::all();
 
         return view('admin.equipos.create', compact('oficinas', 'tipos', 'hardwares', 'modelos', 'sistemas', 'responsables'));
@@ -79,14 +79,24 @@ class EquipoController extends Controller
             'nombre_dispositivo' => 'required|string|max:100',
             'numero_serie' => 'nullable|string|max:100|unique:equipos',
             'direccion_ip' => 'nullable|ip',
+            'direccion_mac' => 'nullable|string|max:17',
+            'fecha_adquisicion' => 'nullable|date',
             'estado_equipo' => 'required|in:Operativo,Operativo con Observacion,En mantenimiento,Fuera de servicio,De baja',
+            'fecha_mantenimiento' => 'nullable|date',
             'oficina_id' => 'required|exists:oficinas,id',
             'tipoequipo_id' => 'required|exists:tipoequipos,id',
             'hardware_id' => 'required|exists:hardwares,id',
             'modelo_id' => 'required|exists:modelos,id',
             'sistemaoperativo_id' => 'required|exists:sistemaoperativos,id',
             'responsable_id' => 'nullable|exists:responsables,id',
-            'direccion_mac' => 'nullable|string|max:17',
+            'vpn_cusco' => 'nullable|in:Sí,No',
+            'vpn_abancay' => 'nullable|in:Sí,No',
+            'antivirus' => 'nullable|string|max:100',
+            'depreciacion_anual' => 'nullable|numeric|min:0|max:100',
+            'programas_instalados' => 'nullable|string',
+            'licencias' => 'nullable|string',
+            'copias_seguridad' => 'nullable|string',
+            'observacion' => 'nullable|string',
         ]);
 
         Equipo::create($request->all());
@@ -102,10 +112,10 @@ class EquipoController extends Controller
     public function edit(Equipo $equipo)
     {
         $oficinas = Oficina::all();
-        $tipoequipos = Tipoequipo::all();
+        $tipoequipos = TipoEquipo::all();
         $hardwares = Hardware::all();
         $modelos = Modelo::all();
-        $sistemas = Sistemaoperativo::all();
+        $sistemas = SistemaOperativo::all();
         $responsables = Responsable::all();
 
         return view('admin.equipos.edit', compact('equipo', 'oficinas', 'tipoequipos', 'hardwares', 'modelos', 'sistemas', 'responsables'));
@@ -117,14 +127,24 @@ class EquipoController extends Controller
             'nombre_dispositivo' => 'required|string|max:100',
             'numero_serie' => 'nullable|string|max:100|unique:equipos,numero_serie,' . $equipo->id,
             'direccion_ip' => 'nullable|ip',
+            'direccion_mac' => 'nullable|string|max:17',
+            'fecha_adquisicion' => 'nullable|date',
             'estado_equipo' => 'required|in:Operativo,Operativo con Observacion,En mantenimiento,Fuera de servicio,De baja',
+            'fecha_mantenimiento' => 'nullable|date',
             'oficina_id' => 'required|exists:oficinas,id',
             'tipoequipo_id' => 'required|exists:tipoequipos,id',
             'hardware_id' => 'required|exists:hardwares,id',
             'modelo_id' => 'required|exists:modelos,id',
             'sistemaoperativo_id' => 'required|exists:sistemaoperativos,id',
             'responsable_id' => 'nullable|exists:responsables,id',
-            'direccion_mac' => 'nullable|string|max:17',
+            'vpn_cusco' => 'nullable|in:Sí,No',
+            'vpn_abancay' => 'nullable|in:Sí,No',
+            'antivirus' => 'nullable|string|max:100',
+            'depreciacion_anual' => 'nullable|numeric|min:0|max:100',
+            'programas_instalados' => 'nullable|string',
+            'licencias' => 'nullable|string',
+            'copias_seguridad' => 'nullable|string',
+            'observacion' => 'nullable|string',
         ]);
 
         $equipo->update($request->all());

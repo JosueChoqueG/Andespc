@@ -10,11 +10,11 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-chart-line"></i> Estadísticas de la Impresora
+                        <i class="bi bi-chart-line"></i> Estadísticas de la Impresora
                     </h3>
                     <div class="card-tools">
                         <a href="{{ route('admin.impresoras.show', $impresora->id) }}" class="btn btn-default btn-sm">
-                            <i class="fas fa-arrow-left"></i> Volver a Impresora
+                            <i class="bi bi-arrow-left"></i> Volver a Impresora
                         </a>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                                     <p>Total Mantenimientos</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-tools"></i>
+                                    <i class="bi bi-tools"></i>
                                 </div>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                                     <p>Mantenimientos Preventivos</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-check-circle"></i>
+                                    <i class="bi bi-check-circle"></i>
                                 </div>
                             </div>
                         </div>
@@ -49,7 +49,7 @@
                                     <p>Mantenimientos Correctivos</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-exclamation-triangle"></i>
+                                    <i class="bi bi-exclamation-triangle"></i>
                                 </div>
                             </div>
                         </div>
@@ -60,7 +60,7 @@
                                     <p>Con Fallas Detectadas</p>
                                 </div>
                                 <div class="icon">
-                                    <i class="fas fa-bug"></i>
+                                    <i class="bi bi-bug"></i>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
 
                     @if($estadisticas['ultimo_mantenimiento'])
                     <div class="alert alert-info">
-                        <i class="fas fa-calendar-alt"></i> 
+                        <i class="bi bi-calendar-alt"></i> 
                         <strong>Último mantenimiento:</strong> 
                         {{ date('d/m/Y', strtotime($estadisticas['ultimo_mantenimiento']->fecha_mantenimiento)) }} - 
                         {{ $estadisticas['ultimo_mantenimiento']->tipo_mantenimiento }}
@@ -84,7 +84,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
-                        <i class="fas fa-history"></i> Historial Completo
+                        <i class="bi bi-clock-history"></i> Historial Completo
                     </h3>
                 </div>
                 <div class="card-body table-responsive">
@@ -129,11 +129,11 @@
                                     <div class="btn-group btn-group-sm">
                                         <a href="{{ route('admin.mantenimientos-impresora.show', $mantenimiento->id) }}" 
                                            class="btn btn-info" title="Ver">
-                                            <i class="fas fa-eye"></i>
+                                            <i class="bi bi-eye"></i>
                                         </a>
                                         <a href="{{ route('admin.mantenimientos-impresora.edit', $mantenimiento->id) }}" 
                                            class="btn btn-warning" title="Editar">
-                                            <i class="fas fa-edit"></i>
+                                            <i class="bi bi-pencil"></i>
                                         </a>
                                     </div>
                                 </td>

@@ -62,7 +62,7 @@ class Impresora extends Model
 
     public function responsable(): BelongsTo
     {
-        return $this->belongsTo(Resposable::class, 'responsable_id');
+        return $this->belongsTo(Responsable::class, 'responsable_id');
     }
 
     public function mantenimientos(): HasMany
