@@ -345,62 +345,49 @@
     <table>
         <thead>
             <tr>
-                <th style="width: 5%;">#</th>
-                <th style="width: 15%;">ROL</th>
-                <th style="width: 30%;">NOMBRE Y APELLIDO</th>
-                <th style="width: 25%;">CARGO</th>
-                <th style="width: 25%;">FIRMA</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="firma-row">
-                <td style="text-align: center;">6.1</td>
-                <td>Ejecutivo TI</td>
-                <td>{{ $tecnico }}</td>
-                <td>Asistente de Infraestructura Informática</td>
-                <td></td>
-            </tr>
-            <tr class="firma-row">
-                <td style="text-align: center;">6.2</td>
-                <td>Usuario Asignado</td>
-                <td></td>
-                @php
-                    $host = strtoupper($equipo->nombre_dispositivo ?? '');
-                    
-                    if (strpos($host, 'ADMIN') !== false) {
-                        $cargo = 'Administrador';
-                    } elseif (strpos($host, 'CAJA') !== false) {
-                        $cargo = 'Asistente de Operaciones';
-                    } elseif (strpos($host, 'PLAT') !== false) {
-                        $cargo = 'Asistente Admisión y Plataforma';
-                    } elseif (strpos($host, 'CRED') !== false) {
-                        $cargo = 'Asesor de Créditos';
-                    } else {
-                        $cargo = $equipo->oficina->nombre_oficina ?? 'N/A';
-                    }
-                @endphp
+                <th width="20%"></th>
+                <th width="30%">NOMBRE Y APELLIDO</th>
+                <th>CARGO</th>
+                    <th>FIRMA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="height: 30px;">
+                        6.1 Ejecutivo TI
+                    </td>
+                    <td> {{ $tecnico }}</td>
+                    <td> Asistente de Infraestructura Informática</td>
+                    <td> </td>
+                </tr>
+                <tr>
+                    <td style="height: 30px;">
+                        6.2 Usuario Asignado
+                    </td>
+                    <td>{{ $equipo->responsable->nombre_responsable ?? 'N/A' }}</td>
+                    @php
+                        $host = strtoupper($equipo->nombre_dispositivo ?? '');
+                        
+                        if (strpos($host, 'ADMIN') !== false) {
+                            $cargo = 'Administrador';
+                        } elseif (strpos($host, 'CAJA') !== false) {
+                            $cargo = 'Asistente de Operaciones';
+                        } elseif (strpos($host, 'PLAT') !== false) {
+                            $cargo = 'Asistente Admisión y Plataforma';
+                        } elseif (strpos($host, 'CRED') !== false) {
+                            $cargo = 'Asesor de Créditos';
+                        } else {
+                            $cargo = $equipo->oficina->nombre_oficina ?? 'N/A';
+                        }
+                    @endphp
 
-                <td style="width: 40%; text-align: center;">
-                    {{ $cargo }}
-                </td>
-                <td></td>
-            </tr>
-            <tr class="firma-row">
-                <td style="text-align: center;">6.3</td>
-                <td>Ejecutivo TI</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr class="firma-row">
-                <td style="text-align: center;">6.4</td>
-                <td>Usuario Asignado</td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+                    <td style="width: 40%; text-align: center;">
+                        {{ $cargo }}
+                    </td>
+                    <td> </td>
+                </tr>
 
+            </tbody>
+        </table>
 </body>
 </html>

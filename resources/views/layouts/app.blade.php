@@ -58,7 +58,7 @@
             @php 
                 $isPcOpen = Request::routeIs([
                     'responsables.*', 'marcas.*', 'hardwares.*', 'agencias.*',
-                    'oficinas.*', 'modelos.*', 'tipoequipos.*', 'sistemaoperativos.*', 'equipos.*'
+                    'oficinas.*', 'modelos.*', 'tipoequipos.*', 'sistemaoperativos.*'   /*, 'equipos.*'*/
                 ]);
             @endphp
 
@@ -76,9 +76,12 @@
                 <a href="{{ route('hardwares.index') }}" class="nav-sub-item {{ Request::routeIs('hardwares.index') ? 'active' : '' }}">Hardware</a>
                 <a href="{{ route('sistemaoperativos.index') }}" class="nav-sub-item {{ Request::routeIs('sistemaoperativos.index') ? 'active' : '' }}">Sistemas Operativos</a>
                 <a href="{{ route('responsables.index') }}" class="nav-sub-item {{ Request::routeIs('responsables.index') ? 'active' : '' }}">Responsables</a>
-                <a href="{{ route('equipos.index') }}" class="nav-sub-item {{ Request::routeIs('equipos.index') ? 'active' : '' }}">Equipos</a>
+                <!-- <a href="{{ route('equipos.index') }}" class="nav-sub-item {{ Request::routeIs('equipos.index') ? 'active' : '' }}">Equipos</a> -->
             </div>
-
+            <a class="nav-link-main {{ Request::routeIs('equipos.index') ? 'active-section' : '' }} bg-transparent shadow-none border-0 mt-2" href="{{ route('equipos.index') }}">
+                <div class="icon-box-white"><i class="bi bi-display text-success"></i></div>
+                <span class="text-secondary">Computadoras</span>
+            </a>
             <a class="nav-link-main {{ Request::routeIs('admin.impresoras.index') ? 'active-section' : '' }} bg-transparent shadow-none border-0 mt-2" href="{{ route('admin.impresoras.index') }}">
                 <div class="icon-box-white"><i class="bi bi-printer text-success"></i></div>
                 <span class="text-secondary">Impresoras</span>

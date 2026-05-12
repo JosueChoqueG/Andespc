@@ -103,6 +103,7 @@
                                         <option value="MA4500ix" {{ old('modelo_impresora') == 'MA4500ix' ? 'selected' : '' }}>MA4500ix</option>
                                         <option value="MA5500ifx" {{ old('modelo_impresora') == 'MA5500ifx' ? 'selected' : '' }}>MA5500ifx</option>
                                         <option value="HP LaserJet Tank MFP M634" {{ old('modelo_impresora') == 'HP LaserJet Tank MFP M634' ? 'selected' : '' }}>HP LaserJet Tank MFP M634</option>
+                                        <option value="HP LaserJet PRO MFP M225dw" {{ old('modelo_impresora') == 'HP LaserJet PRO MFP M225dw' ? 'selected' : '' }}>HP LaserJet PRO MFP M225dw</option>
                                     </select>
                                     @error('modelo_impresora')
                                         <span class="invalid-feedback" style="display: block;">{{ $message }}</span>

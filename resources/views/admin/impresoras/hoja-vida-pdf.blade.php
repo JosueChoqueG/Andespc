@@ -95,7 +95,7 @@
                     <th style="width: 15%;">Fecha Adquisición</th>
                     <td style="width: 12%;" class="text-center">{{ $impresora->fecha_adquisicion ? $impresora->fecha_adquisicion->format('d/m/Y') : 'N/A' }}</td>
                     <th style="width: 10%;">Proveedor</th>
-                    <td style="width: 20%;" class="text-center">J&C CORP E.I.R.L</td>
+                    <td style="width: 20%;" class="text-center">JHT</td>
                     <th style="width: 10%;">Garantía</th>
                     <td class="text-center">
                         @php
