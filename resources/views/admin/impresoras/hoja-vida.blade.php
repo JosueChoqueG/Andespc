@@ -144,9 +144,11 @@
                     <th style="width: 10%;">Garantía</th>
                     <td class="text-center">
                         @php
-                            $anio = $impresora->fecha_adquisicion ? $impresora->fecha_adquisicion->format('Y') : null;
+                            $anio_compra = $impresora->fecha_adquisicion ? $impresora->fecha_adquisicion->format('Y') : null;
+                            $anio_actual = date('Y'); // 2026
                         @endphp
-                        {{ ($anio && $anio < date('Y')) ? 'Sin Garantía' : 'Con Garantía' }}
+                        
+                        {{ ($anio_compra && ($anio_actual - $anio_compra) <= 2) ? 'Con Garantía' : 'Sin Garantía' }}
                     </td>
                 </tr>
                 <tr>
