@@ -204,8 +204,12 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Modelo Consumible</label>
-                                    <input type="text" name="modelo_consumible" class="form-control" 
-                                           value="{{ old('modelo_consumible') }}" placeholder="ej: TN-123">
+                                    <select name="modelo_consumible" class="form-control">
+                                        <option value="" disabled {{ old('modelo_consumible') == '' ? 'selected' : '' }}>Seleccione</option>
+                                        <option value="TK-1175" {{ old('modelo_consumible') == 'TK-1175' ? 'selected' : '' }}>TK-1175</option>
+                                        <option value="TK-3204" {{ old('modelo_consumible') == 'TK-3204' ? 'selected' : '' }}>TK-3204</option>
+                                        <option value="TK-3432" {{ old('modelo_consumible') == 'TK-3432' ? 'selected' : '' }}>TK-3432</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-4">
