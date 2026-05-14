@@ -209,6 +209,7 @@
                                         <option value="TK-1175" {{ old('modelo_consumible') == 'TK-1175' ? 'selected' : '' }}>TK-1175</option>
                                         <option value="TK-3204" {{ old('modelo_consumible') == 'TK-3204' ? 'selected' : '' }}>TK-3204</option>
                                         <option value="TK-3432" {{ old('modelo_consumible') == 'TK-3432' ? 'selected' : '' }}>TK-3432</option>
+                                        <option value="W1105A" {{ old('modelo_consumible') == 'TK-3433' ? 'selected' : '' }}>TK-3433</option>
                                     </select>
                                 </div>
                             </div>

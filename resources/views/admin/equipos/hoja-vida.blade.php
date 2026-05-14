@@ -211,7 +211,7 @@
             </tr>
             <tr>
                 <th width="15%">Disco Secundario</th>
-                <td width="20%" class="text-center">{{ $equipo->hardware->tipo_almacenamiento ?? 'SSD' }} {{ $equipo->hardware->almacenamiento_gb ?? 'N/A' }} GB</td>
+                <td width="20%" class="text-center">N/A</td>
                 <th width="15%">Dirección IP</th>
                 <td width="20%" class="text-center">{{ $equipo->direccion_ip ?? 'N/A' }}</td>
                 <th width="7%">MAC</th>
@@ -290,7 +290,7 @@
                 @php
                     $estados = [
                         'Operativo',
-                        'Operativo con observaciones',
+                        'Operativo con Observacion',
                         'En mantenimiento',
                         'Fuera de servicio',
                         'De baja'

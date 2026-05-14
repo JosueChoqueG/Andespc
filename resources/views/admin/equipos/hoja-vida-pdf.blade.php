@@ -49,42 +49,7 @@
         ul li {
             margin-bottom: 2px;
         }
-        /* Indicadores de estado visual (reemplazan radio buttons) */
-        .estado-row {
-            padding: 2px 0;
-        }
-        .estado-label {
-            display: block;
-            padding: 2px 0;
-        }
-        .radio-checked {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border: 1px solid #000;
-            border-radius: 50%;
-            position: relative;
-            vertical-align: middle;
-        }
-        .radio-checked::after {
-            content: '';
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 4px;
-            height: 4px;
-            background-color: #000;
-            border-radius: 50%;
-        }
-        .radio-unchecked {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border: 1px solid #000;
-            border-radius: 50%;
-            vertical-align: middle;
-        }
-        /* Fila con altura mínima */
+        /* Firma row */
         .firma-row td {
             height: 35px;
         }
@@ -311,7 +276,7 @@
                     @php
                         $estados = [
                             'Operativo',
-                            'Operativo con observaciones',
+                            'Operativo con Observacion',
                             'En mantenimiento',
                             'Fuera de servicio',
                             'De baja'
@@ -319,18 +284,12 @@
                         $estadoActual = $equipo->estado_equipo ?? 'Operativo';
                     @endphp
                     @foreach($estados as $estado)
-                        <span class="estado-label">{{ $estado }}</span>
+                        {{ $estado }}<br>
                     @endforeach
                 </td>
                 <td style="text-align: center;">
                     @foreach($estados as $estado)
-                        <span class="estado-label">
-                            @if($estado == $estadoActual)
-                                <span class="radio-checked"></span>
-                            @else
-                                <span class="radio-unchecked"></span>
-                            @endif
-                        </span>
+                        [ {{ $estadoActual == $estado ? 'X' : ' ' }} ]<br>
                     @endforeach
                 </td>
                 <td style="font-size: 11px;">
