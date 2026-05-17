@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Impresora;
 use App\Models\Oficina;
 use App\Models\Responsable;
+use App\Models\Agencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,18 +17,28 @@ class ImpresoraController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Impresora::with(['oficina', 'responsable']);
+        $query = Impresora::with(['oficina.agencia', 'responsable']);
 
         // Filtros
-        if ($request->has('oficina_id')) {
+        if ($request->filled('oficina_id')) {
             $query->where('oficina_id', $request->oficina_id);
         }
 
-        if ($request->has('estado_impresora')) {
+        if ($request->filled('agencia_id')) {
+            $query->whereHas('oficina', function($q) use ($request) {
+                $q->where('agencia_id', $request->agencia_id);
+            });
+        }
+
+        if ($request->filled('serie')) {
+            $query->where('serie_impresora', 'LIKE', "%{$request->serie}%");
+        }
+
+        if ($request->filled('estado_impresora')) {
             $query->where('estado_impresora', $request->estado_impresora);
         }
 
-        if ($request->has('search')) {
+        if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
                 $q->where('marca_impresora', 'LIKE', "%{$search}%")
@@ -39,10 +50,11 @@ class ImpresoraController extends Controller
 
         $impresoras = $query->orderBy('created_at', 'desc')->paginate(15);
         
-        $oficinas = Oficina::all();
+        $oficinas = Oficina::orderBy('nombre_oficina')->get();
+        $agencias = Agencia::orderBy('nombre_agencia')->get();
         $responsables = Responsable::all();
 
-        return view('admin.impresoras.index', compact('impresoras', 'oficinas', 'responsables'));
+        return view('admin.impresoras.index', compact('impresoras', 'oficinas', 'agencias', 'responsables'));
     }
 
     /**

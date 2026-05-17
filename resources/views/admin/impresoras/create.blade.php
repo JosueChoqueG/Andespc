@@ -104,6 +104,7 @@
                                         <option value="MA5500ifx" {{ old('modelo_impresora') == 'MA5500ifx' ? 'selected' : '' }}>MA5500ifx</option>
                                         <option value="HP LaserJet Tank MFP M634" {{ old('modelo_impresora') == 'HP LaserJet Tank MFP M634' ? 'selected' : '' }}>HP LaserJet Tank MFP M634</option>
                                         <option value="HP LaserJet PRO MFP M225dw" {{ old('modelo_impresora') == 'HP LaserJet PRO MFP M225dw' ? 'selected' : '' }}>HP LaserJet PRO MFP M225dw</option>
+                                        <option value="HP LaserJet Tank MFP 2602sdw" {{ old('modelo_impresora') == 'HP LaserJet Tank MFP 2602sdw' ? 'selected' : '' }}>HP LaserJet Tank MFP 2602sdw</option>
                                     </select>
                                     @error('modelo_impresora')
                                         <span class="invalid-feedback" style="display: block;">{{ $message }}</span>
@@ -209,7 +210,8 @@
                                         <option value="TK-1175" {{ old('modelo_consumible') == 'TK-1175' ? 'selected' : '' }}>TK-1175</option>
                                         <option value="TK-3204" {{ old('modelo_consumible') == 'TK-3204' ? 'selected' : '' }}>TK-3204</option>
                                         <option value="TK-3432" {{ old('modelo_consumible') == 'TK-3432' ? 'selected' : '' }}>TK-3432</option>
-                                        <option value="W1105A" {{ old('modelo_consumible') == 'TK-3433' ? 'selected' : '' }}>TK-3433</option>
+                                        <option value="W1105A" {{ old('modelo_consumible') == 'W1105A' ? 'selected' : '' }}>W1105A</option>
+                                        <option value="HP 154A" {{ old('modelo_consumible') == 'HP 154A' ? 'selected' : '' }}>HP 154A</option>
                                     </select>
                                 </div>
                             </div>

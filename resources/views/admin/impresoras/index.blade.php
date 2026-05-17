@@ -14,10 +14,13 @@
                     </h3>
                     <div class="card-tools">
                         <a href="{{ route('admin.impresoras.create') }}" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus"></i> Nueva Impresora
+                            <i class="bi bi-plus-circle"></i>
                         </a>
-                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#modalFiltros">
-                            <i class="fas fa-filter"></i> Filtros
+                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalFiltros">
+                            <i class="bi bi-filter"></i> Filtros
+                            @if(request()->anyFilled(['search', 'oficina_id', 'agencia_id', 'serie', 'estado_impresora']))
+                                <span class="badge bg-white text-info ms-1">!</span>
+                            @endif
                         </button>
                     </div>
                 </div>
@@ -117,7 +120,7 @@
                                 <tr>
                                     <td colspan="9" class="text-center">
                                         <div class="alert alert-info mb-0">
-                                            <i class="fas fa-info-circle"></i> No hay impresoras registradas
+                                            <i class="bi bi-info-circle"></i> No hay impresoras registradas
                                         </div>
                                     </td>
                                 </tr>
@@ -136,48 +139,88 @@
 </div>
 
 <!-- Modal de Filtros -->
-<div class="modal fade" id="modalFiltros" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Filtrar Impresoras</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+<div class="modal fade" id="modalFiltros">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title"><i class="bi bi-filter"></i></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form method="GET" action="{{ route('admin.impresoras.index') }}">
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Buscar</label>
-                        <input type="text" name="search" class="form-control" 
-                               value="{{ request('search') }}" placeholder="Serie, marca, modelo...">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Búsqueda General</label>
+                                <input type="text" name="search" class="form-control" 
+                                       value="{{ request('search') }}" placeholder="Marca, modelo, host...">
+                                <small class="text-muted">Búsqueda en múltiples campos</small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Serie</label>
+                                <input type="text" name="serie" class="form-control" 
+                                       value="{{ request('serie') }}" placeholder="Ej: SN123456">
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Oficina</label>
-                        <select name="oficina_id" class="form-control">
-                            <option value="">Todas</option>
-                            @foreach($oficinas ?? [] as $oficina)
-                                <option value="{{ $oficina->id }}" 
-                                    {{ request('oficina_id') == $oficina->id ? 'selected' : '' }}>
-                                    {{ $oficina->nombre_oficina }}
-                                </option>
-                            @endforeach
-                        </select>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Agencia</label>
+                                <select name="agencia_id" class="form-select select2" id="filter_agencia_id">
+                                    <option value="">Todas las Agencias</option>
+                                    @foreach($agencias ?? [] as $agencia)
+                                        <option value="{{ $agencia->id }}" 
+                                            {{ request('agencia_id') == $agencia->id ? 'selected' : '' }}>
+                                            {{ $agencia->nombre_agencia }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Oficina</label>
+                                <select name="oficina_id" class="form-select select2" id="filter_oficina_id">
+                                    <option value="">Todas las Oficinas</option>
+                                    @foreach($oficinas ?? [] as $oficina)
+                                        <option value="{{ $oficina->id }}" 
+                                            data-agencia="{{ $oficina->agencia_id }}"
+                                            {{ request('oficina_id') == $oficina->id ? 'selected' : '' }}>
+                                            {{ $oficina->nombre_oficina }} 
+                                            @if($oficina->agencia) ({{ $oficina->agencia->nombre_agencia }}) @endif
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Estado</label>
-                        <select name="estado_impresora" class="form-control">
-                            <option value="">Todos</option>
-                            <option value="OPTIMO" {{ request('estado_impresora') == 'OPTIMO' ? 'selected' : '' }}>Óptimo</option>
-                            <option value="BUENO" {{ request('estado_impresora') == 'BUENO' ? 'selected' : '' }}>Bueno</option>
-                            <option value="REGULAR" {{ request('estado_impresora') == 'REGULAR' ? 'selected' : '' }}>Regular</option>
-                            <option value="DEFICIENTE" {{ request('estado_impresora') == 'DEFICIENTE' ? 'selected' : '' }}>Deficiente</option>
-                            <option value="DE BAJA" {{ request('estado_impresora') == 'DE BAJA' ? 'selected' : '' }}>De Baja</option>
-                        </select>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Estado</label>
+                                <select name="estado_impresora" class="form-select">
+                                    <option value="">Todos los Estados</option>
+                                    <option value="OPTIMO" {{ request('estado_impresora') == 'OPTIMO' ? 'selected' : '' }}>Óptimo</option>
+                                    <option value="BUENO" {{ request('estado_impresora') == 'BUENO' ? 'selected' : '' }}>Bueno</option>
+                                    <option value="REGULAR" {{ request('estado_impresora') == 'REGULAR' ? 'selected' : '' }}>Regular</option>
+                                    <option value="DEFICIENTE" {{ request('estado_impresora') == 'DEFICIENTE' ? 'selected' : '' }}>Deficiente</option>
+                                    <option value="DE BAJA" {{ request('estado_impresora') == 'DE BAJA' ? 'selected' : '' }}>De Baja</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Aplicar Filtros</button>
-                    <a href="{{ route('admin.impresoras.index') }}" class="btn btn-danger">Limpiar</a>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <a href="{{ route('admin.impresoras.index') }}" class="btn btn-outline-danger">Limpiar Filtros</a>
+                    <button type="submit" class="btn btn-primary shadow-sm">
+                        <i class="bi bi-search me-1"></i> Aplicar Filtros
+                    </button>
                 </div>
             </form>
         </div>
@@ -186,6 +229,56 @@
 
 @push('scripts')
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar Select2 al abrir el modal para asegurar el foco y el parent
+    $('#modalFiltros').on('shown.bs.modal', function () {
+        if (window.jQuery && $.fn.select2) {
+            $('.select2').select2({
+                theme: 'bootstrap-5',
+                dropdownParent: $('#modalFiltros'),
+                width: '100%',
+                allowClear: true
+            });
+        }
+    });
+
+    const agenciaSelect = document.getElementById('filter_agencia_id');
+    const oficinaSelect = document.getElementById('filter_oficina_id');
+    const allOficinaOptions = Array.from(oficinaSelect.options);
+
+    function filterOficinas() {
+        const selectedAgencia = agenciaSelect.value;
+        
+        // Limpiar opciones actuales
+        oficinaSelect.innerHTML = '';
+        
+        // Filtrar y añadir opciones
+        allOficinaOptions.forEach(option => {
+            if (!selectedAgencia || option.value === '' || option.getAttribute('data-agencia') === selectedAgencia) {
+                oficinaSelect.appendChild(option.cloneNode(true));
+            }
+        });
+
+        // Trigger Select2 update if it exists
+        if (window.jQuery && $(oficinaSelect).data('select2')) {
+            $(oficinaSelect).trigger('change.select2');
+        }
+    }
+
+    if (agenciaSelect && oficinaSelect) {
+        agenciaSelect.addEventListener('change', filterOficinas);
+        // Ejecutar al cargar si hay una agencia seleccionada
+        if (agenciaSelect.value) {
+            filterOficinas();
+            // Mantener la oficina seleccionada si es posible
+            const savedOficinaId = "{{ request('oficina_id') }}";
+            if (savedOficinaId) {
+                oficinaSelect.value = savedOficinaId;
+            }
+        }
+    }
+});
+
 function confirmDelete(id) {
     Swal.fire({
         title: '¿Eliminar impresora?',
