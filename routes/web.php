@@ -14,6 +14,8 @@ use App\Http\Controllers\Admin\EquipoController;
 use App\Http\Controllers\Admin\IncidenciaController;
 use App\Http\Controllers\Admin\ImpresoraController;
 use App\Http\Controllers\Admin\MantenimientoImpresoraController;
+use App\Http\Controllers\Admin\TermicaController;
+use App\Http\Controllers\Admin\MantenimientoTermicaController;
 use App\Http\Controllers\Admin\ServicioInternetController;
 use App\Http\Controllers\Admin\MantenimientoPcController;
 
@@ -83,6 +85,38 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('impresoras.hoja-vida-mantenimiento');
         Route::get('mantenimientos-impresora/{mantenimiento}/hoja-vida/pdf', [MantenimientoImpresoraController::class, 'descargarHojaVidaMantenimientoPDF'])
             ->name('impresoras.hoja-vida-mantenimiento.pdf');
+
+        // CRUD IMPRESORAS TÉRMICAS
+        Route::resource('termicas', TermicaController::class);
+
+        // MANTENIMIENTOS DE IMPRESORAS TÉRMICAS
+        Route::get('termicas/{termica}/mantenimientos/create', [MantenimientoTermicaController::class, 'create'])
+            ->name('mantenimientos-termica.create');
+        Route::post('termicas/{termica}/mantenimientos', [MantenimientoTermicaController::class, 'store'])
+            ->name('mantenimientos-termica.store');
+        Route::get('mantenimientos-termica', [MantenimientoTermicaController::class, 'index'])
+            ->name('mantenimientos-termica.index');
+        Route::get('mantenimientos-termica/{mantenimiento}', [MantenimientoTermicaController::class, 'show'])
+            ->name('mantenimientos-termica.show');
+        Route::get('mantenimientos-termica/{mantenimiento}/edit', [MantenimientoTermicaController::class, 'edit'])
+            ->name('mantenimientos-termica.edit');
+        Route::put('mantenimientos-termica/{mantenimiento}', [MantenimientoTermicaController::class, 'update'])
+            ->name('mantenimientos-termica.update');
+        Route::delete('mantenimientos-termica/{mantenimiento}', [MantenimientoTermicaController::class, 'destroy'])
+            ->name('mantenimientos-termica.destroy');
+        Route::get('termicas/{termica}/mantenimientos/historial', [MantenimientoTermicaController::class, 'historial'])
+            ->name('mantenimientos-termica.historial');
+
+        // HOJAS DE VIDA IMPRESORAS TÉRMICAS
+        Route::get('termicas/{id}/hoja-vida', [TermicaController::class, 'hojaVida'])
+            ->name('termicas.hoja-vida');
+        Route::get('termicas/{id}/hoja-vida/pdf', [TermicaController::class, 'descargarHojaVidaPDF'])
+            ->name('termicas.hoja-vida.pdf');
+            
+        Route::get('mantenimientos-termica/{mantenimiento}/hoja-vida', [MantenimientoTermicaController::class, 'generarHojaVida'])
+            ->name('termicas.hoja-vida-mantenimiento');
+        Route::get('mantenimientos-termica/{mantenimiento}/hoja-vida/pdf', [MantenimientoTermicaController::class, 'descargarHojaVidaMantenimientoPDF'])
+            ->name('termicas.hoja-vida-mantenimiento.pdf');
 
         // 🌐 SERVICIOS DE INTERNET
         Route::resource('servicios-internet', ServicioInternetController::class)->parameters(['servicios-internet' => 'servicio']);
