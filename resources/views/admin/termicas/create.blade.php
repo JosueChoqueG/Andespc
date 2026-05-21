@@ -72,7 +72,7 @@
                                 <div class="form-group">
                                     <label>Tipo de Impresora *</label>
                                     <input type="text" name="tipo_termica" class="form-control @error('tipo_termica') is-invalid @enderror" 
-                                        value="{{ old('tipo_termica', 'Térmica POS') }}" placeholder="ej: Térmica POS, Térmica de Etiquetas" required>
+                                        value="{{ old('tipo_termica', 'Térmica') }}" placeholder="ej: Térmica" required>
                                     @error('tipo_termica')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -94,8 +94,12 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Modelo *</label>
-                                    <input type="text" name="modelo_termica" class="form-control @error('modelo_termica') is-invalid @enderror" 
-                                        value="{{ old('modelo_termica') }}" placeholder="ej: TM-T20II, SRP-350III" required>
+                                    <select name="modelo_termica" class="form-control @error('modelo_termica') is-invalid @enderror">
+                                        <option value="" {{ old('modelo_termica') == '' ? 'selected' : '' }}>Seleccionar</option>
+                                        <option value="M244A" {{ old('modelo_termica') == 'M244A' ? 'selected' : '' }}>M244A</option>
+                                        <option value="M371A" {{ old('modelo_termica') == 'M371A' ? 'selected' : '' }}>M371A</option>
+                                        <option value="M267D" {{ old('modelo_termica') == 'M267D' ? 'selected' : '' }}>M267D</option>
+                                    </select>
                                     @error('modelo_termica')
                                         <span class="invalid-feedback" style="display: block;">{{ $message }}</span>
                                     @enderror

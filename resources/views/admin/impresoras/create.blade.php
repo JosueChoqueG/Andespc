@@ -84,8 +84,12 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Marca *</label>
-                                    <input type="text" name="marca_impresora" class="form-control @error('marca_impresora') is-invalid @enderror" 
-                                        value="{{ old('marca_impresora', 'KYOCERA') }}" required>
+                                    <select name="marca_impresora" class="form-control @error('marca_impresora') is-invalid @enderror" required>
+                                        <option value="">Seleccione</option>
+                                        <option value="KYOCERA" {{ old('marca_impresora') == 'KYOCERA' || is_null(old('marca_impresora')) ? 'selected' : '' }}>KYOCERA</option>
+                                        <option value="HP" {{ old('marca_impresora') == 'HP' ? 'selected' : '' }}>HP</option>
+                                        <option value="BROTHER" {{ old('marca_impresora') == 'BROTHER' ? 'selected' : '' }}>BROTHER</option>
+                                    </select>
                                     @error('marca_impresora')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
