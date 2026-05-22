@@ -1,28 +1,68 @@
 @extends('layouts.app')
 
 @section('title', 'Gestión de Impresoras')
-@section('header', 'Impresoras')
 
 @section('content')
 <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0"><i class="bi bi-printer"></i> Impresoras Registradas</h5>
+        <a href="{{ route('admin.impresoras.create') }}" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-circle"></i>
+        </a>
+    </div>
+
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="bi bi-print"></i> Listado de Impresoras
-                    </h3>
-                    <div class="card-tools">
-                        <a href="{{ route('admin.impresoras.create') }}" class="btn btn-primary btn-sm">
-                            <i class="bi bi-plus-circle"></i>
-                        </a>
-                        <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target="#modalFiltros">
-                            <i class="bi bi-filter"></i> Filtros
-                            @if(request()->anyFilled(['search', 'oficina_id', 'agencia_id', 'serie', 'estado_impresora']))
-                                <span class="badge bg-white text-info ms-1">!</span>
-                            @endif
-                        </button>
-                    </div>
+            <div class="card shadow-sm">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <strong><i class="bi bi-list-check"></i> Listado de Impresoras</strong>
+                    
+                    <!-- Buscador y Filtros Inline -->
+                    <form method="GET" action="{{ route('admin.impresoras.index') }}" class="row g-2 align-items-center flex-grow-1 justify-content-end">
+                        <div class="col-md-2 col-sm-4 col-12">
+                            <input type="text" name="serie" class="form-control form-control-sm" placeholder="Por serie..." value="{{ request('serie') }}">
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-12">
+                            <select name="agencia_id" id="filtroAgencia" class="form-select form-select-sm select2">
+                                <option value="">Agencias</option>
+                                @foreach($agencias ?? [] as $agencia)
+                                    <option value="{{ $agencia->id }}" {{ request('agencia_id') == $agencia->id ? 'selected' : '' }}>
+                                        {{ $agencia->nombre_agencia }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-4 col-12">
+                            <select name="oficina_id" id="filtroOficina" class="form-select form-select-sm select2">
+                                <option value="">Oficinas</option>
+                                @foreach($oficinas ?? [] as $oficina)
+                                    <option value="{{ $oficina->id }}" 
+                                        data-agencia="{{ $oficina->agencia_id }}"
+                                        {{ request('oficina_id') == $oficina->id ? 'selected' : '' }}>
+                                        {{ $oficina->nombre_oficina }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2 col-sm-4 col-12">
+                            <select name="estado_impresora" class="form-select form-select-sm">
+                                <option value="">Estados</option>
+                                <option value="OPTIMO" {{ request('estado_impresora') == 'OPTIMO' ? 'selected' : '' }}>Óptimo</option>
+                                <option value="BUENO" {{ request('estado_impresora') == 'BUENO' ? 'selected' : '' }}>Bueno</option>
+                                <option value="REGULAR" {{ request('estado_impresora') == 'REGULAR' ? 'selected' : '' }}>Regular</option>
+                                <option value="DEFICIENTE" {{ request('estado_impresora') == 'DEFICIENTE' ? 'selected' : '' }}>Deficiente</option>
+                                <option value="DE BAJA" {{ request('estado_impresora') == 'DE BAJA' ? 'selected' : '' }}>De Baja</option>
+                            </select>
+                        </div>
+                        <div class="col-auto d-flex gap-1">
+                            <button type="submit" class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center shadow-sm" title="Filtrar">
+                                <i class="bi bi-search"></i>
+                            </button>
+                            <a href="{{ route('admin.impresoras.index') }}" class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center shadow-sm" title="Limpiar Filtros">
+                                <i class="bi bi-arrow-clockwise"></i>
+                            </a>
+                        </div>
+                    </form>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -138,116 +178,27 @@
     </div>
 </div>
 
-<!-- Modal de Filtros -->
-<div class="modal fade" id="modalFiltros">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-info text-white">
-                <h5 class="modal-title"><i class="bi bi-filter"></i></h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form method="GET" action="{{ route('admin.impresoras.index') }}">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Búsqueda General</label>
-                                <input type="text" name="search" class="form-control" 
-                                       value="{{ request('search') }}" placeholder="Marca, modelo, host...">
-                                <small class="text-muted">Búsqueda en múltiples campos</small>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Serie</label>
-                                <input type="text" name="serie" class="form-control" 
-                                       value="{{ request('serie') }}" placeholder="Ej: SN123456">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Agencia</label>
-                                <select name="agencia_id" class="form-select select2" id="filter_agencia_id">
-                                    <option value="">Todas las Agencias</option>
-                                    @foreach($agencias ?? [] as $agencia)
-                                        <option value="{{ $agencia->id }}" 
-                                            {{ request('agencia_id') == $agencia->id ? 'selected' : '' }}>
-                                            {{ $agencia->nombre_agencia }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Oficina</label>
-                                <select name="oficina_id" class="form-select select2" id="filter_oficina_id">
-                                    <option value="">Todas las Oficinas</option>
-                                    @foreach($oficinas ?? [] as $oficina)
-                                        <option value="{{ $oficina->id }}" 
-                                            data-agencia="{{ $oficina->agencia_id }}"
-                                            {{ request('oficina_id') == $oficina->id ? 'selected' : '' }}>
-                                            {{ $oficina->nombre_oficina }} 
-                                            @if($oficina->agencia) ({{ $oficina->agencia->nombre_agencia }}) @endif
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label class="form-label fw-bold">Estado</label>
-                                <select name="estado_impresora" class="form-select">
-                                    <option value="">Todos los Estados</option>
-                                    <option value="OPTIMO" {{ request('estado_impresora') == 'OPTIMO' ? 'selected' : '' }}>Óptimo</option>
-                                    <option value="BUENO" {{ request('estado_impresora') == 'BUENO' ? 'selected' : '' }}>Bueno</option>
-                                    <option value="REGULAR" {{ request('estado_impresora') == 'REGULAR' ? 'selected' : '' }}>Regular</option>
-                                    <option value="DEFICIENTE" {{ request('estado_impresora') == 'DEFICIENTE' ? 'selected' : '' }}>Deficiente</option>
-                                    <option value="DE BAJA" {{ request('estado_impresora') == 'DE BAJA' ? 'selected' : '' }}>De Baja</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <a href="{{ route('admin.impresoras.index') }}" class="btn btn-outline-danger">Limpiar Filtros</a>
-                    <button type="submit" class="btn btn-primary shadow-sm">
-                        <i class="bi bi-search me-1"></i> Aplicar Filtros
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Inicializar Select2 al abrir el modal para asegurar el foco y el parent
-    $('#modalFiltros').on('shown.bs.modal', function () {
-        if (window.jQuery && $.fn.select2) {
-            $('.select2').select2({
-                theme: 'bootstrap-5',
-                dropdownParent: $('#modalFiltros'),
-                width: '100%',
-                allowClear: true
-            });
-        }
-    });
+    // Inicializar Select2
+    if (window.jQuery && $.fn.select2) {
+        $('.select2').select2({
+            theme: 'bootstrap-5',
+            width: '100%',
+            allowClear: true
+        });
+    }
 
-    const agenciaSelect = document.getElementById('filter_agencia_id');
-    const oficinaSelect = document.getElementById('filter_oficina_id');
+    const agenciaSelect = document.getElementById('filtroAgencia');
+    const oficinaSelect = document.getElementById('filtroOficina');
     const allOficinaOptions = Array.from(oficinaSelect.options);
 
     function filterOficinas() {
         const selectedAgencia = agenciaSelect.value;
+        
+        // Guardar selección actual de oficina para ver si se puede conservar
+        const currentOficinaVal = oficinaSelect.value;
         
         // Limpiar opciones actuales
         oficinaSelect.innerHTML = '';
@@ -258,6 +209,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 oficinaSelect.appendChild(option.cloneNode(true));
             }
         });
+
+        // Restaurar selección previa si aún existe entre las opciones filtradas
+        if (Array.from(oficinaSelect.options).some(opt => opt.value === currentOficinaVal)) {
+            oficinaSelect.value = currentOficinaVal;
+        } else {
+            oficinaSelect.value = '';
+        }
 
         // Trigger Select2 update if it exists
         if (window.jQuery && $(oficinaSelect).data('select2')) {

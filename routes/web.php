@@ -18,6 +18,8 @@ use App\Http\Controllers\Admin\TermicaController;
 use App\Http\Controllers\Admin\MantenimientoTermicaController;
 use App\Http\Controllers\Admin\ServicioInternetController;
 use App\Http\Controllers\Admin\MantenimientoPcController;
+use App\Http\Controllers\Admin\ContabilleteController;
+use App\Http\Controllers\Admin\MantenimientoContabilleteController;
 
 // Página de inicio (pública)
 Route::get('/', function () {
@@ -117,6 +119,38 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('termicas.hoja-vida-mantenimiento');
         Route::get('mantenimientos-termica/{mantenimiento}/hoja-vida/pdf', [MantenimientoTermicaController::class, 'descargarHojaVidaMantenimientoPDF'])
             ->name('termicas.hoja-vida-mantenimiento.pdf');
+
+        // CRUD CONTADORAS DE BILLETES
+        Route::resource('contabilletes', ContabilleteController::class);
+
+        // MANTENIMIENTOS DE CONTADORAS DE BILLETES
+        Route::get('contabilletes/{contabillete}/mantenimientos/create', [MantenimientoContabilleteController::class, 'create'])
+            ->name('mantenimientos-contabillete.create');
+        Route::post('contabilletes/{contabillete}/mantenimientos', [MantenimientoContabilleteController::class, 'store'])
+            ->name('mantenimientos-contabillete.store');
+        Route::get('mantenimientos-contabillete', [MantenimientoContabilleteController::class, 'index'])
+            ->name('mantenimientos-contabillete.index');
+        Route::get('mantenimientos-contabillete/{mantenimiento}', [MantenimientoContabilleteController::class, 'show'])
+            ->name('mantenimientos-contabillete.show');
+        Route::get('mantenimientos-contabillete/{mantenimiento}/edit', [MantenimientoContabilleteController::class, 'edit'])
+            ->name('mantenimientos-contabillete.edit');
+        Route::put('mantenimientos-contabillete/{mantenimiento}', [MantenimientoContabilleteController::class, 'update'])
+            ->name('mantenimientos-contabillete.update');
+        Route::delete('mantenimientos-contabillete/{mantenimiento}', [MantenimientoContabilleteController::class, 'destroy'])
+            ->name('mantenimientos-contabillete.destroy');
+        Route::get('contabilletes/{contabillete}/mantenimientos/historial', [MantenimientoContabilleteController::class, 'historial'])
+            ->name('mantenimientos-contabillete.historial');
+
+        // HOJAS DE VIDA CONTADORAS DE BILLETES
+        Route::get('contabilletes/{id}/hoja-vida', [ContabilleteController::class, 'hojaVida'])
+            ->name('contabilletes.hoja-vida');
+        Route::get('contabilletes/{id}/hoja-vida/pdf', [ContabilleteController::class, 'descargarHojaVidaPDF'])
+            ->name('contabilletes.hoja-vida.pdf');
+            
+        Route::get('mantenimientos-contabillete/{mantenimiento}/hoja-vida', [MantenimientoContabilleteController::class, 'generarHojaVida'])
+            ->name('contabilletes.hoja-vida-mantenimiento');
+        Route::get('mantenimientos-contabillete/{mantenimiento}/hoja-vida/pdf', [MantenimientoContabilleteController::class, 'descargarHojaVidaMantenimientoPDF'])
+            ->name('contabilletes.hoja-vida-mantenimiento.pdf');
 
         // 🌐 SERVICIOS DE INTERNET
         Route::resource('servicios-internet', ServicioInternetController::class)->parameters(['servicios-internet' => 'servicio']);

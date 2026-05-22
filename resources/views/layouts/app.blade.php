@@ -90,6 +90,10 @@
                 <div class="icon-box-white"><i class="bi bi-printer text-warning"></i></div>
                 <span class="text-secondary">Impresoras Térmicas</span>
             </a>
+            <a class="nav-link-main {{ Request::routeIs('admin.contabilletes.*') ? 'active-section' : '' }} bg-transparent shadow-none border-0 mt-2" href="{{ route('admin.contabilletes.index') }}">
+                <div class="icon-box-white"><i class="bi bi-cash-coin text-info"></i></div>
+                <span class="text-secondary">Contadoras de Billetes</span>
+            </a>
 
             <div class="section-title">Conectividad</div>
             <a href="{{ route('admin.servicios-internet.index') }}" class="nav-link-main {{ Request::routeIs('admin.servicios-internet.index') ? 'active-section' : '' }} bg-transparent shadow-none border-0">

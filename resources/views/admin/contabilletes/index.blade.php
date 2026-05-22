@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Gestión de Impresoras Térmicas')
+@section('title', 'Gestión de Contadoras de Billetes')
 
 @section('content')
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="mb-0"><i class="bi bi-printer text-warning"></i> Impresoras Térmicas Registradas</h5>
-        <a href="{{ route('admin.termicas.create') }}" class="btn btn-primary shadow-sm">
+        <h5 class="mb-0"><i class="bi bi-cash-coin"></i> Contadoras de Billetes Registradas</h5>
+        <a href="{{ route('admin.contabilletes.create') }}" class="btn btn-primary shadow-sm">
             <i class="bi bi-plus-circle"></i>
         </a>
     </div>
@@ -15,10 +15,10 @@
         <div class="col-12">
             <div class="card shadow-sm">
                 <div class="card-header bg-light d-flex justify-content-between align-items-center flex-wrap gap-3">
-                    <strong><i class="bi bi-list-check"></i> Listado de Impresoras Térmicas</strong>
+                    <strong><i class="bi bi-list-check"></i> Listado de Contadoras</strong>
                     
                     <!-- Buscador y Filtros Inline -->
-                    <form method="GET" action="{{ route('admin.termicas.index') }}" class="row g-2 align-items-center flex-grow-1 justify-content-end">
+                    <form method="GET" action="{{ route('admin.contabilletes.index') }}" class="row g-2 align-items-center flex-grow-1 justify-content-end">
                         <div class="col-md-2 col-sm-4 col-12">
                             <input type="text" name="serie" class="form-control form-control-sm" placeholder="Por serie..." value="{{ request('serie') }}">
                         </div>
@@ -45,25 +45,26 @@
                             </select>
                         </div>
                         <div class="col-md-2 col-sm-4 col-12">
-                            <select name="estado_termica" class="form-select form-select-sm">
+                            <select name="estado_contabilletes" class="form-select form-select-sm">
                                 <option value="">Estados</option>
-                                <option value="OPTIMO" {{ request('estado_termica') == 'OPTIMO' ? 'selected' : '' }}>Óptimo</option>
-                                <option value="BUENO" {{ request('estado_termica') == 'BUENO' ? 'selected' : '' }}>Bueno</option>
-                                <option value="REGULAR" {{ request('estado_termica') == 'REGULAR' ? 'selected' : '' }}>Regular</option>
-                                <option value="DEFICIENTE" {{ request('estado_termica') == 'DEFICIENTE' ? 'selected' : '' }}>Deficiente</option>
-                                <option value="DE BAJA" {{ request('estado_termica') == 'DE BAJA' ? 'selected' : '' }}>De Baja</option>
+                                <option value="OPTIMO" {{ request('estado_contabilletes') == 'OPTIMO' ? 'selected' : '' }}>Óptimo</option>
+                                <option value="BUENO" {{ request('estado_contabilletes') == 'BUENO' ? 'selected' : '' }}>Bueno</option>
+                                <option value="REGULAR" {{ request('estado_contabilletes') == 'REGULAR' ? 'selected' : '' }}>Regular</option>
+                                <option value="DEFICIENTE" {{ request('estado_contabilletes') == 'DEFICIENTE' ? 'selected' : '' }}>Deficiente</option>
+                                <option value="DE BAJA" {{ request('estado_contabilletes') == 'DE BAJA' ? 'selected' : '' }}>De Baja</option>
                             </select>
                         </div>
                         <div class="col-auto d-flex gap-1">
                             <button type="submit" class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center shadow-sm" title="Filtrar">
                                 <i class="bi bi-search"></i>
                             </button>
-                            <a href="{{ route('admin.termicas.index') }}" class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center shadow-sm" title="Limpiar Filtros">
+                            <a href="{{ route('admin.contabilletes.index') }}" class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center shadow-sm" title="Limpiar Filtros">
                                 <i class="bi bi-arrow-clockwise"></i>
                             </a>
                         </div>
                     </form>
                 </div>
+                
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered table-striped table-hover">
@@ -73,40 +74,30 @@
                                     <th>Serie</th>
                                     <th>Marca / Modelo</th>
                                     <th>Oficina</th>
-                                    <th>Conexión</th>
-                                    <th>IP</th>
+                                    <th>Velocidad</th>
+                                    <th>Detección</th>
+                                    <th>Pantalla</th>
                                     <th>Estado</th>
                                     <th>Últ. Mant.</th>
                                     <th width="150">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($termicas as $termica)
+                                @forelse($contabilletes as $contabillete)
                                 <tr>
-                                    <td>{{ $termica->id }}</td>
-                                    <td>{{ $termica->serie_termica }}</td>
+                                    <td>{{ $contabillete->id }}</td>
+                                    <td>{{ $contabillete->serie_contabilletes }}</td>
                                     <td>
-                                        <strong>{{ $termica->marca_termica }}</strong><br>
-                                        <small>{{ $termica->modelo_termica }}</small>
+                                        <strong>{{ $contabillete->marca_contabilletes }}</strong><br>
+                                        <small>{{ $contabillete->modelo_contabilletes }}</small>
                                     </td>
-                                    <td>{{ $termica->oficina->nombre_oficina ?? 'N/A' }}</td>
+                                    <td>{{ $contabillete->oficina->nombre_oficina ?? 'N/A' }}</td>
+                                    <td>{{ $contabillete->velocidad_contabilletes ?? 'N/A' }}</td>
+                                    <td>{{ $contabillete->tipo_deteccion ?? 'N/A' }}</td>
+                                    <td>{{ $contabillete->pantalla_contabilletes ?? 'N/A' }}</td>
                                     <td>
                                         @php
-                                            $iconos = [
-                                                'USB' => 'fab fa-usb',
-                                                'WI-FI' => 'fas fa-wifi',
-                                                'ETHERNET' => 'fas fa-network-wired',
-                                                'SERIAL' => 'fas fa-plug',
-                                                'BLUETOOTH' => 'fab fa-bluetooth'
-                                            ];
-                                        @endphp
-                                        <i class="{{ $iconos[$termica->tipo_conexion] ?? 'fas fa-plug' }}"></i>
-                                        {{ $termica->tipo_conexion }}
-                                    </td>
-                                    <td>{{ $termica->direccion_ip ?? 'N/A' }}</td>
-                                    <td>
-                                        @php
-                                            $estado = strtoupper(trim($termica->estado_termica));
+                                            $estado = strtoupper(trim($contabillete->estado_contabilletes));
                                             $badgeClass = [
                                                 'OPTIMO' => 'success',
                                                 'BUENO' => 'info',
@@ -117,40 +108,40 @@
                                         @endphp
                                         
                                         <span class="badge bg-{{ $badgeClass }}">
-                                            {{ $termica->estado_termica }}
+                                            {{ $contabillete->estado_contabilletes }}
                                         </span>
                                     </td>
                                     <td>
-                                        @if($termica->ultimoMantenimiento)
-                                            {{ date('d/m/Y', strtotime($termica->ultimoMantenimiento->fecha_mantenimiento)) }}
+                                        @if($contabillete->ultimoMantenimiento)
+                                            {{ date('d/m/Y', strtotime($contabillete->ultimoMantenimiento->fecha_mantenimiento)) }}
                                         @else
                                             <span class="text-muted">Sin registro</span>
                                         @endif
                                     </td>
                                     <td>
                                         <div class="btn-group btn-group-sm">
-                                            <a href="{{ route('admin.termicas.show', $termica->id) }}" 
+                                            <a href="{{ route('admin.contabilletes.show', $contabillete->id) }}" 
                                                class="btn btn-info" title="Ver">
                                                 <i class="bi bi-eye"></i>
                                             </a>
-                                            <a href="{{ route('admin.termicas.edit', $termica->id) }}" 
+                                            <a href="{{ route('admin.contabilletes.edit', $contabillete->id) }}" 
                                                class="btn btn-warning" title="Editar">
                                                 <i class="bi bi-pencil"></i>
                                             </a>
-                                            <a href="{{ route('admin.mantenimientos-termica.create', $termica->id) }}" 
+                                            <a href="{{ route('admin.mantenimientos-contabillete.create', $contabillete->id) }}" 
                                                class="btn btn-primary" title="Registrar Mantenimiento">
                                                 <i class="bi bi-tools"></i>
                                             </a>
                                             <button type="button" 
                                                     class="btn btn-danger" 
                                                     title="Eliminar"
-                                                    onclick="confirmDelete({{ $termica->id }})">
+                                                    onclick="confirmDelete({{ $contabillete->id }})">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </div>
                                         
-                                        <form id="delete-form-{{ $termica->id }}" 
-                                              action="{{ route('admin.termicas.destroy', $termica->id) }}" 
+                                        <form id="delete-form-{{ $contabillete->id }}" 
+                                              action="{{ route('admin.contabilletes.destroy', $contabillete->id) }}" 
                                               method="POST" style="display: none;">
                                             @csrf
                                             @method('DELETE')
@@ -159,9 +150,9 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td colspan="9" class="text-center">
+                                    <td colspan="10" class="text-center">
                                         <div class="alert alert-info mb-0">
-                                            <i class="bi bi-info-circle"></i> No hay impresoras térmicas registradas
+                                            <i class="bi bi-info-circle"></i> No hay contadoras de billetes registradas
                                         </div>
                                     </td>
                                 </tr>
@@ -171,7 +162,7 @@
                     </div>
 
                     <div class="mt-3">
-                        {{ $termicas->appends(request()->query())->links() }}
+                        {{ $contabilletes->appends(request()->query())->links() }}
                     </div>
                 </div>
             </div>
@@ -240,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function confirmDelete(id) {
     Swal.fire({
-        title: '¿Eliminar impresora térmica?',
+        title: '¿Eliminar contadora de billetes?',
         text: "Esta acción no se puede deshacer",
         icon: 'warning',
         showCancelButton: true,
