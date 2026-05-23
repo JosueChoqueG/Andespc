@@ -6,9 +6,31 @@
 
 <div>
     <h2>Responsables</h2>
-    <a href="{{ route('responsables.create') }}" class="btn btn-primary mb-3">
-        <i class="bi bi-plus-circle"></i>
-    </a>
+    
+    <div class="d-flex align-items-center gap-3 mb-3">
+        <a href="{{ route('responsables.create') }}" class="btn btn-primary" title="Nuevo Responsable">
+            <i class="bi bi-plus-circle"></i>
+        </a>
+
+        <form action="{{ route('responsables.index') }}" method="GET" class="d-flex">
+            <select name="search" class="form-select select2 me-2" style="width: 250px;">
+                <option value="">Buscar Responsable...</option>
+                @foreach($allResponsables as $resp)
+                    <option value="{{ $resp->nombre_responsable }}" {{ request('search') == $resp->nombre_responsable ? 'selected' : '' }}>
+                        {{ $resp->nombre_responsable }}
+                    </option>
+                @endforeach
+            </select>
+            <button type="submit" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-search"></i> Buscar
+            </button>
+            @if(request('search'))
+                <a href="{{ route('responsables.index') }}" class="btn btn-outline-danger btn-sm ms-2" title="Limpiar filtro">
+                    <i class="bi bi-x-circle"></i>
+                </a>
+            @endif
+        </form>
+    </div>
 </div>
 
 <div class="card shadow-sm d-inline-block">
@@ -78,4 +100,16 @@
     </div>
 </div>
 
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.jQuery && $.fn.select2) {
+        $('.select2').select2({
+            theme: 'bootstrap-5',
+            width: 'resolve'
+        });
+    }
+});
+</script>
+@endpush
 @endsection

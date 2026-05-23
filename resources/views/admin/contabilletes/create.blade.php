@@ -81,7 +81,7 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="form-label fw-bold">Marca *</label>
-                                    <select name="marca_contabilletes" class="form-control @error('marca_contabilletes') is-invalid @enderror" required>
+                                    <select name="marca_contabilletes" class="form-control select2 @error('marca_contabilletes') is-invalid @enderror" required>
                                         <option value="KISAN" {{ old('marca_contabilletes') == 'KISAN' ? 'selected' : '' }}>KISAN</option>
                                         <option value="PLUS" {{ old('marca_contabilletes') == 'PLUS' ? 'selected' : '' }}>PLUS</option>
                                         <option value="MAGNER" {{ old('marca_contabilletes') == 'MAGNER' ? 'selected' : '' }}>MAGNER</option>
@@ -97,7 +97,7 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="form-label fw-bold">Modelo *</label>
-                                    <select name="modelo_contabilletes" class="form-control @error('modelo_contabilletes') is-invalid @enderror" required>
+                                    <select name="modelo_contabilletes" class="form-control select2 @error('modelo_contabilletes') is-invalid @enderror" required>
                                         <option value="NEWTON3-V" {{ old('modelo_contabilletes') == 'NEWTON3-V' ? 'selected' : '' }}>NEWTON3-V</option>
                                         <option value="MAGNER 175V" {{ old('modelo_contabilletes') == 'MAGNER 175V' ? 'selected' : '' }}>MAGNER 175V</option>
                                         <option value="P-30" {{ old('modelo_contabilletes') == 'P-30' ? 'selected' : '' }}>P-30</option>
@@ -123,7 +123,7 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="form-label fw-bold">Velocidad de Conteo</label>
-                                    <select name="velocidad_contabilletes" class="form-control @error('velocidad_contabilletes') is-invalid @enderror" required>
+                                    <select name="velocidad_contabilletes" class="form-control select2 @error('velocidad_contabilletes') is-invalid @enderror" required>
                                         <option value="1000" {{ old('velocidad_contabilletes') == '1000' ? 'selected' : '' }}>1000 BPM</option>
                                         <option value="1200" {{ old('velocidad_contabilletes') == '1200' ? 'selected' : '' }}>1200 BPM</option>
                                         <option value="1500" {{ old('velocidad_contabilletes') == '1500' ? 'selected' : '' }}>1500 BPM</option>
@@ -149,7 +149,7 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="form-label fw-bold">Pantalla</label>
-                                    <select name="pantalla_contabilletes" class="form-control @error('pantalla_contabilletes') is-invalid @enderror">
+                                    <select name="pantalla_contabilletes" class="form-control select2 @error('pantalla_contabilletes') is-invalid @enderror">
                                         <option value="" {{ old('pantalla_contabilletes') == '' ? 'selected' : '' }}>Seleccione una opción</option>
                                         <option value="TFT LCD TACTIL A COLOR" {{ old('pantalla_contabilletes') == 'TFT LCD TACTIL A COLOR' ? 'selected' : '' }}>TFT LCD TACTIL A COLOR</option>
                                         <option value="LCD GRAFICA TACTIL A COLOR" {{ old('pantalla_contabilletes') == 'LCD GRAFICA TACTIL A COLOR' ? 'selected' : '' }}>LCD GRAFICA TACTIL A COLOR</option>
@@ -196,7 +196,7 @@
                             <div class="col-md-4">
                                 <div class="form-group mb-3">
                                     <label class="form-label fw-bold">Estado</label>
-                                    <select name="estado_contabilletes" class="form-control @error('estado_contabilletes') is-invalid @enderror">
+                                    <select name="estado_contabilletes" class="form-control select2 @error('estado_contabilletes') is-invalid @enderror">
                                         <option value="OPTIMO" {{ old('estado_contabilletes') == 'OPTIMO' ? 'selected' : '' }}>Óptimo</option>
                                         <option value="BUENO" {{ old('estado_contabilletes') == 'BUENO' ? 'selected' : '' }}>Bueno</option>
                                         <option value="REGULAR" {{ old('estado_contabilletes') == 'REGULAR' ? 'selected' : '' }}>Regular</option>

@@ -8,10 +8,18 @@ use Illuminate\Http\Request;
 
 class ResponsableController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $responsables = Responsable::all();
-        return view('admin.responsables.index', compact('responsables'));
+        $query = Responsable::query();
+
+        if ($request->filled('search')) {
+            $query->where('nombre_responsable', 'LIKE', '%' . $request->search . '%');
+        }
+
+        $responsables = $query->get();
+        $allResponsables = Responsable::orderBy('nombre_responsable')->get();
+        
+        return view('admin.responsables.index', compact('responsables', 'allResponsables'));
     }
 
     public function create()
