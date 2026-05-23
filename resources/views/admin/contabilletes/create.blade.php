@@ -23,7 +23,7 @@
                     <div class="card-body">
                         @if ($errors->any())
                             <div class="alert alert-danger">
-                                <h5><i class="icon fas fa-ban"></i> ¡Error!</h5>
+                                <h5><i class="bi bi-ban"></i> ¡Error!</h5>
                                 <ul>
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
@@ -81,8 +81,11 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="form-label fw-bold">Marca *</label>
-                                    <input type="text" name="marca_contabilletes" class="form-control @error('marca_contabilletes') is-invalid @enderror" 
-                                        value="{{ old('marca_contabilletes', 'Epson') }}" placeholder="ej: Epson, AccuBanker, Billcon" required>
+                                    <select name="marca_contabilletes" class="form-control @error('marca_contabilletes') is-invalid @enderror" required>
+                                        <option value="KISAN" {{ old('marca_contabilletes') == 'KISAN' ? 'selected' : '' }}>KISAN</option>
+                                        <option value="PLUS" {{ old('marca_contabilletes') == 'PLUS' ? 'selected' : '' }}>PLUS</option>
+                                        <option value="MAGNER" {{ old('marca_contabilletes') == 'MAGNER' ? 'selected' : '' }}>MAGNER</option>
+                                    </select>
                                     @error('marca_contabilletes')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -94,8 +97,11 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="form-label fw-bold">Modelo *</label>
-                                    <input type="text" name="modelo_contabilletes" class="form-control @error('modelo_contabilletes') is-invalid @enderror" 
-                                           value="{{ old('modelo_contabilletes') }}" placeholder="ej: AB4200, MC-100" required>
+                                    <select name="modelo_contabilletes" class="form-control @error('modelo_contabilletes') is-invalid @enderror" required>
+                                        <option value="NEWTON3-V" {{ old('modelo_contabilletes') == 'NEWTON3-V' ? 'selected' : '' }}>NEWTON3-V</option>
+                                        <option value="MAGNER 175V" {{ old('modelo_contabilletes') == 'MAGNER 175V' ? 'selected' : '' }}>MAGNER 175V</option>
+                                        <option value="P-30" {{ old('modelo_contabilletes') == 'P-30' ? 'selected' : '' }}>P-30</option>
+                                    </select>
                                     @error('modelo_contabilletes')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -117,8 +123,11 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="form-label fw-bold">Velocidad de Conteo</label>
-                                    <input type="text" name="velocidad_contabilletes" class="form-control @error('velocidad_contabilletes') is-invalid @enderror" 
-                                           value="{{ old('velocidad_contabilletes') }}" placeholder="ej: 1000 billetes/min">
+                                    <select name="velocidad_contabilletes" class="form-control @error('velocidad_contabilletes') is-invalid @enderror" required>
+                                        <option value="1000" {{ old('velocidad_contabilletes') == '1000' ? 'selected' : '' }}>1000 BPM</option>
+                                        <option value="1200" {{ old('velocidad_contabilletes') == '1200' ? 'selected' : '' }}>1200 BPM</option>
+                                        <option value="1500" {{ old('velocidad_contabilletes') == '1500' ? 'selected' : '' }}>1500 BPM</option>
+                                    </select>
                                     @error('velocidad_contabilletes')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -128,7 +137,7 @@
                                 <div class="form-group mb-3">
                                     <label class="form-label fw-bold">Tipo de Detección</label>
                                     <input type="text" name="tipo_deteccion" class="form-control @error('tipo_deteccion') is-invalid @enderror" 
-                                           value="{{ old('tipo_deteccion') }}" placeholder="ej: UV, MG, IR, CIS">
+                                           value="{{ old('tipo_deteccion', 'UV, MG, IR,GR, CIS DUAL') }}"> 
                                     @error('tipo_deteccion')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
@@ -140,8 +149,12 @@
                             <div class="col-md-6">
                                 <div class="form-group mb-3">
                                     <label class="form-label fw-bold">Pantalla</label>
-                                    <input type="text" name="pantalla_contabilletes" class="form-control @error('pantalla_contabilletes') is-invalid @enderror" 
-                                           value="{{ old('pantalla_contabilletes') }}" placeholder="ej: LCD, LED, Externa">
+                                    <select name="pantalla_contabilletes" class="form-control @error('pantalla_contabilletes') is-invalid @enderror">
+                                        <option value="" {{ old('pantalla_contabilletes') == '' ? 'selected' : '' }}>Seleccione una opción</option>
+                                        <option value="TFT LCD TACTIL A COLOR" {{ old('pantalla_contabilletes') == 'TFT LCD TACTIL A COLOR' ? 'selected' : '' }}>TFT LCD TACTIL A COLOR</option>
+                                        <option value="LCD GRAFICA TACTIL A COLOR" {{ old('pantalla_contabilletes') == 'LCD GRAFICA TACTIL A COLOR' ? 'selected' : '' }}>LCD GRAFICA TACTIL A COLOR</option>
+                                        <option value="LCD GRAFICA A COLOR" {{ old('pantalla_contabilletes') == 'LCD GRAFICA A COLOR' ? 'selected' : '' }}>LCD GRAFICA A COLOR</option>
+                                    </select>   
                                     @error('pantalla_contabilletes')
                                         <span class="invalid-feedback">{{ $message }}</span>
                                     @enderror
