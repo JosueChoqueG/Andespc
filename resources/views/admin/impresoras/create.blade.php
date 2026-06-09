@@ -75,6 +75,7 @@
                                         <option value="">Seleccione</option>
                                         <option value="Inyección" {{ old('tipo_impresora') == 'Inyección' ? 'selected' : '' }}>Inyección</option>
                                         <option value="Multifuncional" {{ old('tipo_impresora') == 'Multifuncional' || is_null(old('tipo_impresora')) ? 'selected' : '' }}>Multifuncional</option>
+                                        <option value="Escaner" {{ old('tipo_impresora') == 'Escaner' ? 'selected' : '' }}>Escaner</option>
                                     </select>
                                     @error('tipo_impresora')
                                         <span class="invalid-feedback">{{ $message }}</span>
@@ -89,6 +90,7 @@
                                         <option value="KYOCERA" {{ old('marca_impresora') == 'KYOCERA' || is_null(old('marca_impresora')) ? 'selected' : '' }}>KYOCERA</option>
                                         <option value="HP" {{ old('marca_impresora') == 'HP' ? 'selected' : '' }}>HP</option>
                                         <option value="BROTHER" {{ old('marca_impresora') == 'BROTHER' ? 'selected' : '' }}>BROTHER</option>
+                                        <option value="Avision" {{ old('marca_impresora') == 'Avision' ? 'selected' : '' }}>Avision</option>
                                     </select>
                                     @error('marca_impresora')
                                         <span class="invalid-feedback">{{ $message }}</span>
@@ -109,6 +111,7 @@
                                         <option value="HP LaserJet Tank MFP M634" {{ old('modelo_impresora') == 'HP LaserJet Tank MFP M634' ? 'selected' : '' }}>HP LaserJet Tank MFP M634</option>
                                         <option value="HP LaserJet PRO MFP M225dw" {{ old('modelo_impresora') == 'HP LaserJet PRO MFP M225dw' ? 'selected' : '' }}>HP LaserJet PRO MFP M225dw</option>
                                         <option value="HP LaserJet Tank MFP 2602sdw" {{ old('modelo_impresora') == 'HP LaserJet Tank MFP 2602sdw' ? 'selected' : '' }}>HP LaserJet Tank MFP 2602sdw</option>
+                                        <option value="FF-1905B" {{ old('modelo_impresora') == 'FF-1905B' ? 'selected' : '' }}>FF-1905B</option>
                                     </select>
                                     @error('modelo_impresora')
                                         <span class="invalid-feedback" style="display: block;">{{ $message }}</span>
