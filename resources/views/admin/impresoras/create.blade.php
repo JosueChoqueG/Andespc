@@ -111,6 +111,7 @@
                                         <option value="HP LaserJet Tank MFP M634" {{ old('modelo_impresora') == 'HP LaserJet Tank MFP M634' ? 'selected' : '' }}>HP LaserJet Tank MFP M634</option>
                                         <option value="HP LaserJet PRO MFP M225dw" {{ old('modelo_impresora') == 'HP LaserJet PRO MFP M225dw' ? 'selected' : '' }}>HP LaserJet PRO MFP M225dw</option>
                                         <option value="HP LaserJet Tank MFP 2602sdw" {{ old('modelo_impresora') == 'HP LaserJet Tank MFP 2602sdw' ? 'selected' : '' }}>HP LaserJet Tank MFP 2602sdw</option>
+                                        <option value="HP LaserJet Pro M15w" {{ old('modelo_impresora') == 'HP LaserJet Pro M15w' ? 'selected' : '' }}>HP LaserJet Pro M15w</option>
                                         <option value="FF-1905B" {{ old('modelo_impresora') == 'FF-1905B' ? 'selected' : '' }}>FF-1905B</option>
                                     </select>
                                     @error('modelo_impresora')
@@ -217,8 +218,10 @@
                                         <option value="TK-1175" {{ old('modelo_consumible') == 'TK-1175' ? 'selected' : '' }}>TK-1175</option>
                                         <option value="TK-3204" {{ old('modelo_consumible') == 'TK-3204' ? 'selected' : '' }}>TK-3204</option>
                                         <option value="TK-3432" {{ old('modelo_consumible') == 'TK-3432' ? 'selected' : '' }}>TK-3432</option>
+                                        <option value="HP 147A" {{ old('modelo_consumible') == 'HP 147A' ? 'selected' : '' }}>HP 147A</option>
                                         <option value="W1105A" {{ old('modelo_consumible') == 'W1105A' ? 'selected' : '' }}>W1105A</option>
                                         <option value="HP 154A" {{ old('modelo_consumible') == 'HP 154A' ? 'selected' : '' }}>HP 154A</option>
+                                        <option value="HP 44A" {{ old('modelo_consumible') == 'HP 44A' ? 'selected' : '' }}>HP 44A</option>
                                     </select>
                                 </div>
                             </div>

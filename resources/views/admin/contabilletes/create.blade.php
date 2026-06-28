@@ -100,6 +100,7 @@
                                     <select name="modelo_contabilletes" class="form-control select2 @error('modelo_contabilletes') is-invalid @enderror" required>
                                         <option value="NEWTON3-V" {{ old('modelo_contabilletes') == 'NEWTON3-V' ? 'selected' : '' }}>NEWTON3-V</option>
                                         <option value="MAGNER 175V" {{ old('modelo_contabilletes') == 'MAGNER 175V' ? 'selected' : '' }}>MAGNER 175V</option>
+                                        <option value="MAGNER 2000" {{ old('modelo_contabilletes') == 'MAGNER 2000' ? 'selected' : '' }}>MAGNER 2000</option>
                                         <option value="P-30" {{ old('modelo_contabilletes') == 'P-30' ? 'selected' : '' }}>P-30</option>
                                     </select>
                                     @error('modelo_contabilletes')
