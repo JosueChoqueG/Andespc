@@ -106,6 +106,7 @@
                                     <select name="modelo_impresora" class="form-control @error('modelo_impresora') is-invalid @enderror" required>
                                         <option value="">Seleccione un modelo</option>
                                         <option value="M2640" {{ old('modelo_impresora') == 'M2640' ? 'selected' : '' }}>M2640</option>
+                                        <option value="M3655idn" {{ old('modelo_impresora') == 'M3655idn' ? 'selected' : '' }}>M3655idn</option>
                                         <option value="MA4500ix" {{ old('modelo_impresora') == 'MA4500ix' ? 'selected' : '' }}>MA4500ix</option>
                                         <option value="MA5500ifx" {{ old('modelo_impresora') == 'MA5500ifx' ? 'selected' : '' }}>MA5500ifx</option>
                                         <option value="HP LaserJet Tank MFP M634" {{ old('modelo_impresora') == 'HP LaserJet Tank MFP M634' ? 'selected' : '' }}>HP LaserJet Tank MFP M634</option>
@@ -212,10 +213,11 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Modelo Consumible</label>
+                                    <label>Modelo Consumible</label> 
                                     <select name="modelo_consumible" class="form-control">
                                         <option value="" disabled {{ old('modelo_consumible') == '' ? 'selected' : '' }}>Seleccione</option>
                                         <option value="TK-1175" {{ old('modelo_consumible') == 'TK-1175' ? 'selected' : '' }}>TK-1175</option>
+                                        <option value="TK-3182" {{ old('modelo_consumible') == 'TK-3182' ? 'selected' : '' }}>TK-3182</option>
                                         <option value="TK-3204" {{ old('modelo_consumible') == 'TK-3204' ? 'selected' : '' }}>TK-3204</option>
                                         <option value="TK-3432" {{ old('modelo_consumible') == 'TK-3432' ? 'selected' : '' }}>TK-3432</option>
                                         <option value="HP 147A" {{ old('modelo_consumible') == 'HP 147A' ? 'selected' : '' }}>HP 147A</option>
