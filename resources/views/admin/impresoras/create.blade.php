@@ -113,6 +113,7 @@
                                         <option value="HP LaserJet PRO MFP M225dw" {{ old('modelo_impresora') == 'HP LaserJet PRO MFP M225dw' ? 'selected' : '' }}>HP LaserJet PRO MFP M225dw</option>
                                         <option value="HP LaserJet Tank MFP 2602sdw" {{ old('modelo_impresora') == 'HP LaserJet Tank MFP 2602sdw' ? 'selected' : '' }}>HP LaserJet Tank MFP 2602sdw</option>
                                         <option value="HP LaserJet Pro M15w" {{ old('modelo_impresora') == 'HP LaserJet Pro M15w' ? 'selected' : '' }}>HP LaserJet Pro M15w</option>
+                                        <option value="HP Smart Tank 750" {{ old('modelo_impresora') == 'HP Smart Tank 750' ? 'selected' : '' }}>HP Smart Tank 750</option>
                                         <option value="FF-1905B" {{ old('modelo_impresora') == 'FF-1905B' ? 'selected' : '' }}>FF-1905B</option>
                                     </select>
                                     @error('modelo_impresora')
@@ -223,6 +224,7 @@
                                         <option value="HP 147A" {{ old('modelo_consumible') == 'HP 147A' ? 'selected' : '' }}>HP 147A</option>
                                         <option value="W1105A" {{ old('modelo_consumible') == 'W1105A' ? 'selected' : '' }}>W1105A</option>
                                         <option value="HP 154A" {{ old('modelo_consumible') == 'HP 154A' ? 'selected' : '' }}>HP 154A</option>
+                                        <option value="HP 6UU47A" {{ old('modelo_consumible') == 'HP 6UU47A' ? 'selected' : '' }}>HP 6UU47A</option>
                                         <option value="HP 44A" {{ old('modelo_consumible') == 'HP 44A' ? 'selected' : '' }}>HP 44A</option>
                                     </select>
                                 </div>
