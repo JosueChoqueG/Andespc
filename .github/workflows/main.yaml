@@ -1,0 +1,74 @@
+name: Publish to CPanel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to cPanel via FTP
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies and build assets
+        run: |
+          npm ci --legacy-peer-deps
+          npm run build
+
+      - name: Install PHP and Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: 'composer'
+
+      - name: Install PHP dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+      - name: Optimize Laravel for production
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
+      - name: FTP-Deploy-Action
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          protocol: ftp
+          port: 21
+          server-dir: ./
+          timeout: 60000
+          exclude: |
+            - .git*
+            - .git/**
+            - node_modules/**
+            - tests/**
+            - .github/**
+            - .env
+            - .env.*
+            - .vscode/**
+            - README.md
+            - composer.json
+            - composer.lock
+            - package.json
+            - package-lock.json
+            - vite.config.js
+            - tailwind.config.js
+            - postcss.config.js
+            - .editorconfig
+            - .gitignore
+            - .env.example
