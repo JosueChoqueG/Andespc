@@ -7,7 +7,7 @@
     <div class="col-md-8">
         <h2 class="mb-0">Panel de Administración</h2>
         <p class="text-muted mb-0">
-            Bienvenido al sistema de gestión de equipos tecnológicos de la Coopac Los Andes.
+            Bienvenido al sistema de gestión de equipos tecnológicos TI.
         </p>
     </div>
 </div>
