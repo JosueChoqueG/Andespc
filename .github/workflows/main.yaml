@@ -46,6 +46,7 @@ jobs:
           port: 21
           server-dir: ./
           timeout: 60000
+          dangerous-clean-slate: true # <-- AGREGUE ESTA LÍNEA
           exclude: |
             .git*
             .git/**
