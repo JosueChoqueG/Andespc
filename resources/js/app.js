@@ -20,7 +20,6 @@ window.Swal = Swal;
 
 import './modules/swal-global';
 import './modules/incidencias';
-import './modules/create-impresoras';
 
 window.Alpine = Alpine;
 Alpine.start();
