@@ -36,6 +36,12 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
+      - name: Optimize Laravel for production
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -46,25 +52,23 @@ jobs:
           port: 21
           server-dir: ./
           timeout: 60000
-          dangerous-clean-slate: true # <-- AGREGUE ESTA LÍNEA
           exclude: |
-            .git*
-            .git/**
-            node_modules/**
-            tests/**
-            .github/**
-            .env
-            .env.*
-            .vscode/**
-            README.md
-            composer.json
-            composer.lock
-            package.json
-            package-lock.json
-            vite.config.js
-            tailwind.config.js
-            postcss.config.js
-            .editorconfig
-            .gitignore
-            .env.example
-            bootstrap/cache/**
+            - .git*
+            - .git/**
+            - node_modules/**
+            - tests/**
+            - .github/**
+            - .env
+            - .env.*
+            - .vscode/**
+            - README.md
+            - composer.json
+            - composer.lock
+            - package.json
+            - package-lock.json
+            - vite.config.js
+            - tailwind.config.js
+            - postcss.config.js
+            - .editorconfig
+            - .gitignore
+            - .env.example
