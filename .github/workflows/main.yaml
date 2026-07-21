@@ -36,11 +36,7 @@ jobs:
       - name: Install PHP dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
 
-      - name: Optimize Laravel for production
-        run: |
-          php artisan config:cache
-          php artisan route:cache
-          php artisan view:cache
+      # Ya NO se corre config:cache / route:cache / view:cache aquí
 
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -72,3 +68,4 @@ jobs:
             - .editorconfig
             - .gitignore
             - .env.example
+            - bootstrap/cache/*.php
