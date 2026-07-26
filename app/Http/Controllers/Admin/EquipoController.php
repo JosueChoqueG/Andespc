@@ -11,6 +11,11 @@ use App\Models\Modelo;
 use App\Models\SistemaOperativo;
 use App\Models\Responsable;
 use Illuminate\Http\Request;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class EquipoController extends Controller
 {
@@ -156,5 +161,119 @@ class EquipoController extends Controller
     {
         $equipo->delete();
         return redirect()->route('equipos.index')->with('success', 'Equipo eliminado correctamente.');
+    }
+
+    public function exportarExcel(Request $request)
+    {
+        $query = Equipo::with([
+            'oficina.agencia',
+            'tipoEquipo',
+            'hardware',
+            'modelo.marca',
+            'sistemaOperativo',
+            'responsable',
+        ]);
+
+        if ($request->filled('serie')) {
+            $query->where('numero_serie', 'like', '%' . $request->serie . '%');
+        }
+        if ($request->filled('oficina')) {
+            $query->where('oficina_id', $request->oficina);
+        }
+        if ($request->filled('agencia')) {
+            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $request->agencia));
+        }
+
+        $equipos = $query->orderBy('id')->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Equipos');
+
+        // ── Cabeceras ──────────────────────────────────────────────────────────
+        $columnas = [
+            'A' => 'CÓDIGO AGENCIA',
+            'B' => 'NOMBRE DE AGENCIA',
+            'C' => 'NOMBRE DE OFICINA',
+            'D' => 'NOMBRE EQUIPO',
+            'E' => 'SERIE',
+            'F' => 'MARCA',
+            'G' => 'MODELO',
+            'H' => 'TIPO',
+            'I' => 'SISTEMA OPERATIVO',
+            'J' => 'IP',
+            'K' => 'MAC',
+            'L' => 'FECHA DE COMPRA',
+            'M' => 'FECHA MANT. PC',
+            'N' => 'RESPONSABLE',
+            'O' => 'ESTADO',
+            'P' => 'CPU / PROCESADOR',
+            'Q' => 'RAM (GB)',
+            'R' => 'DISCO / ALMACENAMIENTO',
+            'S' => 'ANTIVIRUS',
+        ];
+
+        foreach ($columnas as $col => $titulo) {
+            $celda = $col . '1';
+            $sheet->setCellValue($celda, $titulo);
+            $sheet->getStyle($celda)->applyFromArray([
+                'font'      => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF']],
+                'fill'      => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FF1F6FEB']],
+                'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER],
+                'borders'   => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FFCCCCCC']]],
+            ]);
+        }
+
+        // ── Filas de datos ─────────────────────────────────────────────────────
+        $fila = 2;
+        foreach ($equipos as $equipo) {
+            $datos = [
+                'A' => $equipo->oficina?->agencia?->codigo_agencia ?? 'N/A',
+                'B' => $equipo->oficina?->agencia?->nombre_agencia  ?? 'N/A',
+                'C' => $equipo->oficina?->nombre_oficina             ?? 'N/A',
+                'D' => $equipo->nombre_dispositivo                   ?? 'N/A',
+                'E' => $equipo->numero_serie                         ?? 'N/A',
+                'F' => $equipo->modelo?->marca?->nombre_marca        ?? 'N/A',
+                'G' => $equipo->modelo?->nombre_modelo               ?? 'N/A',
+                'H' => $equipo->tipoEquipo?->nombre_tipo             ?? 'N/A',
+                'I' => $equipo->sistema_operativo_completo           ?? 'N/A',
+                'J' => $equipo->direccion_ip                         ?? 'N/A',
+                'K' => $equipo->direccion_mac                        ?? 'N/A',
+                'L' => $equipo->fecha_adquisicion?->format('d/m/Y')  ?? 'N/A',
+                'M' => $equipo->fecha_mantenimiento?->format('d/m/Y') ?? 'N/A',
+                'N' => $equipo->responsable?->nombre_responsable     ?? 'N/A',
+                'O' => $equipo->estado_equipo                        ?? 'N/A',
+                'P' => $equipo->hardware?->procesador                ?? 'N/A',
+                'Q' => $equipo->hardware?->ram_gb                    ?? 'N/A',
+                'R' => ($equipo->hardware?->almacenamiento_gb ?? 'N/A')
+                        . ' ' . ($equipo->hardware?->tipo_almacenamiento ?? ''),
+                'S' => $equipo->antivirus                            ?? 'N/A',
+            ];
+
+            foreach ($datos as $col => $valor) {
+                $sheet->setCellValue($col . $fila, $valor);
+                $sheet->getStyle($col . $fila)->applyFromArray([
+                    'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FFCCCCCC']]],
+                    'fill'    => $fila % 2 === 0
+                        ? ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FFF0F6FF']]
+                        : ['fillType' => Fill::FILL_NONE],
+                ]);
+            }
+
+            $fila++;
+        }
+
+        // ── Ancho automático de columnas ───────────────────────────────────────
+        foreach (array_keys($columnas) as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        // ── Descarga ───────────────────────────────────────────────────────────
+        $writer   = new Xlsx($spreadsheet);
+        $fileName = 'Reporte_Equipos_' . now()->format('Ymd_His') . '.xlsx';
+        $tmpFile  = tempnam(sys_get_temp_dir(), 'equipo_excel_');
+        $writer->save($tmpFile);
+
+        return response()->download($tmpFile, $fileName)->deleteFileAfterSend(true);
     }
 }

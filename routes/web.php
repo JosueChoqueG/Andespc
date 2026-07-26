@@ -202,6 +202,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         Route::get('mantenimientos/{mantenimiento}/hoja-vida/pdf', [MantenimientoPcController::class, 'descargarHojaVidaMantenimientoPDF'])
             ->name('equipos.hoja-vida-mantenimiento.pdf');
+
+        // REPORTE EXCEL - EQUIPOS
+        Route::get('equipos-export/excel', [EquipoController::class, 'exportarExcel'])
+            ->name('equipos.exportar');
     });
 });
 
