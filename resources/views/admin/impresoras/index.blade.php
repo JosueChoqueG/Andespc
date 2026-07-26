@@ -6,9 +6,14 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0"><i class="bi bi-printer"></i> Impresoras Registradas</h5>
-        <a href="{{ route('admin.impresoras.create') }}" class="btn btn-primary shadow-sm">
-            <i class="bi bi-plus-circle"></i>
-        </a>
+        <div class="d-flex gap-2">
+            <a href="{{ route('admin.impresoras.create') }}" class="btn btn-primary shadow-sm">
+                <i class="bi bi-plus-circle"></i>
+            </a>
+            <a href="{{ route('admin.impresoras.exportar') }}" class="btn btn-success shadow-sm">
+                <i class="bi bi-filetype-xlsx"></i>
+            </a>
+        </div>
     </div>
 
     <div class="row">

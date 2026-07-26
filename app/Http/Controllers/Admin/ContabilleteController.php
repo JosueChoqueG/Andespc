@@ -10,6 +10,11 @@ use App\Models\Agencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Barryvdh\DomPDF\Facade\Pdf;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class ContabilleteController extends Controller
 {
@@ -236,5 +241,101 @@ class ContabilleteController extends Controller
         $pdf->setPaper('A4', 'portrait');
         
         return $pdf->download("Hoja-Vida-Contadora-{$contabillete->serie_contabilletes}-" . date('Y-m-d') . ".pdf");
+    }
+
+    public function exportarExcel(Request $request)
+    {
+        $query = Contabillete::with(['oficina.agencia', 'responsable']);
+
+        if ($request->filled('oficina_id')) {
+            $query->where('oficina_id', $request->oficina_id);
+        }
+        if ($request->filled('agencia_id')) {
+            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $request->agencia_id));
+        }
+        if ($request->filled('serie')) {
+            $query->where('serie_contabilletes', 'LIKE', "%{$request->serie}%");
+        }
+        if ($request->filled('estado_contabilletes')) {
+            $query->where('estado_contabilletes', $request->estado_contabilletes);
+        }
+
+        $contabilletes = $query->orderBy('created_at', 'desc')->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Contadoras');
+
+        $columnas = [
+            'A' => 'CÓDIGO AGENCIA',
+            'B' => 'NOMBRE DE AGENCIA',
+            'C' => 'NOMBRE DE OFICINA',
+            'D' => 'TIPO',
+            'E' => 'SERIE',
+            'F' => 'MARCA',
+            'G' => 'MODELO',
+            'H' => 'FECHA DE COMPRA',
+            'I' => 'RESPONSABLE',
+            'J' => 'ESTADO',
+            'K' => 'VELOCIDAD',
+            'L' => 'CAPACIDAD TOLVA',
+            'M' => 'CAPACIDAD BANDEJA',
+            'N' => 'TIPO DETECCIÓN',
+            'O' => 'PANTALLA',
+        ];
+
+        $headerStyle = [
+            'font'      => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF']],
+            'fill'      => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FF16A34A']],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER],
+            'borders'   => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FFCCCCCC']]],
+        ];
+
+        foreach ($columnas as $col => $titulo) {
+            $sheet->setCellValue($col . '1', $titulo);
+            $sheet->getStyle($col . '1')->applyFromArray($headerStyle);
+        }
+
+        $fila = 2;
+        foreach ($contabilletes as $cont) {
+            $datos = [
+                'A' => $cont->oficina?->agencia?->codigo_agencia   ?? 'N/A',
+                'B' => $cont->oficina?->agencia?->nombre_agencia    ?? 'N/A',
+                'C' => $cont->oficina?->nombre_oficina              ?? 'N/A',
+                'D' => $cont->tipo_contabilletes                    ?? 'N/A',
+                'E' => $cont->serie_contabilletes                   ?? 'N/A',
+                'F' => $cont->marca_contabilletes                   ?? 'N/A',
+                'G' => $cont->modelo_contabilletes                  ?? 'N/A',
+                'H' => $cont->fecha_adquisicion?->format('d/m/Y')   ?? 'N/A',
+                'I' => $cont->responsable?->nombre_responsable      ?? 'N/A',
+                'J' => $cont->estado_contabilletes                  ?? 'N/A',
+                'K' => $cont->velocidad_contabilletes               ?? 'N/A',
+                'L' => $cont->capacidad_tolva                       ?? 'N/A',
+                'M' => $cont->capacidad_bandeja                     ?? 'N/A',
+                'N' => $cont->tipo_deteccion                        ?? 'N/A',
+                'O' => $cont->pantalla_contabilletes                ?? 'N/A',
+            ];
+            foreach ($datos as $col => $valor) {
+                $sheet->setCellValue($col . $fila, $valor);
+                $sheet->getStyle($col . $fila)->applyFromArray([
+                    'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FFCCCCCC']]],
+                    'fill'    => $fila % 2 === 0
+                        ? ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FFF0FDF4']]
+                        : ['fillType' => Fill::FILL_NONE],
+                ]);
+            }
+            $fila++;
+        }
+
+        foreach (array_keys($columnas) as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer   = new Xlsx($spreadsheet);
+        $fileName = 'Reporte_Contadoras_' . now()->format('Ymd_His') . '.xlsx';
+        $tmpFile  = tempnam(sys_get_temp_dir(), 'cont_excel_');
+        $writer->save($tmpFile);
+
+        return response()->download($tmpFile, $fileName)->deleteFileAfterSend(true);
     }
 }

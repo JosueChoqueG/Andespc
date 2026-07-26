@@ -206,6 +206,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // REPORTE EXCEL - EQUIPOS
         Route::get('equipos-export/excel', [EquipoController::class, 'exportarExcel'])
             ->name('equipos.exportar');
+
+        // REPORTE EXCEL - IMPRESORAS
+        Route::get('impresoras-export/excel', [ImpresoraController::class, 'exportarExcel'])
+            ->name('impresoras.exportar');
+
+        // REPORTE EXCEL - TÉRMICAS
+        Route::get('termicas-export/excel', [TermicaController::class, 'exportarExcel'])
+            ->name('termicas.exportar');
+
+        // REPORTE EXCEL - CONTADORAS DE BILLETES
+        Route::get('contabilletes-export/excel', [ContabilleteController::class, 'exportarExcel'])
+            ->name('contabilletes.exportar');
     });
 });
 

@@ -9,6 +9,11 @@ use App\Models\Responsable;
 use App\Models\Agencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Fill;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class ImpresoraController extends Controller
 {
@@ -244,5 +249,101 @@ class ImpresoraController extends Controller
         $pdf->setPaper('A4', 'portrait');
         
         return $pdf->download("Hoja-Vida-Impresora-{$impresora->serie_impresora}-" . date('Y-m-d') . ".pdf");
+    }
+    
+    public function exportarExcel(Request $request)
+    {
+        $query = Impresora::with(['oficina.agencia', 'responsable']);
+
+        if ($request->filled('oficina_id')) {
+            $query->where('oficina_id', $request->oficina_id);
+        }
+        if ($request->filled('agencia_id')) {
+            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $request->agencia_id));
+        }
+        if ($request->filled('serie')) {
+            $query->where('serie_impresora', 'LIKE', "%{$request->serie}%");
+        }
+        if ($request->filled('estado_impresora')) {
+            $query->where('estado_impresora', $request->estado_impresora);
+        }
+
+        $impresoras = $query->orderBy('created_at', 'desc')->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Impresoras');
+
+        $columnas = [
+            'A' => 'CÓDIGO AGENCIA',
+            'B' => 'NOMBRE DE AGENCIA',
+            'C' => 'NOMBRE DE OFICINA',
+            'D' => 'TIPO',
+            'E' => 'SERIE',
+            'F' => 'MARCA',
+            'G' => 'MODELO',
+            'H' => 'IP',
+            'I' => 'TIPO CONEXIÓN',
+            'J' => 'FECHA DE COMPRA',
+            'K' => 'RESPONSABLE',
+            'L' => 'ESTADO',
+            'M' => 'VELOCIDAD IMPRESIÓN',
+            'N' => 'MODELO CONSUMIBLE',
+            'O' => 'TIPO CONSUMIBLE',
+        ];
+
+        $headerStyle = [
+            'font'      => ['bold' => true, 'color' => ['argb' => 'FFFFFFFF']],
+            'fill'      => ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FF1F6FEB']],
+            'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER, 'vertical' => Alignment::VERTICAL_CENTER],
+            'borders'   => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FFCCCCCC']]],
+        ];
+
+        foreach ($columnas as $col => $titulo) {
+            $sheet->setCellValue($col . '1', $titulo);
+            $sheet->getStyle($col . '1')->applyFromArray($headerStyle);
+        }
+
+        $fila = 2;
+        foreach ($impresoras as $imp) {
+            $datos = [
+                'A' => $imp->oficina?->agencia?->codigo_agencia ?? 'N/A',
+                'B' => $imp->oficina?->agencia?->nombre_agencia ?? 'N/A',
+                'C' => $imp->oficina?->nombre_oficina           ?? 'N/A',
+                'D' => $imp->tipo_impresora                    ?? 'N/A',
+                'E' => $imp->serie_impresora                   ?? 'N/A',
+                'F' => $imp->marca_impresora                   ?? 'N/A',
+                'G' => $imp->modelo_impresora                  ?? 'N/A',
+                'H' => $imp->direccion_ip                      ?? 'N/A',
+                'I' => $imp->tipo_conexion                     ?? 'N/A',
+                'J' => $imp->fecha_adquisicion?->format('d/m/Y') ?? 'N/A',
+                'K' => $imp->responsable?->nombre_responsable  ?? 'N/A',
+                'L' => $imp->estado_impresora                  ?? 'N/A',
+                'M' => $imp->velocidad_impresion               ?? 'N/A',
+                'N' => $imp->modelo_consumible                 ?? 'N/A',
+                'O' => $imp->tipo_consumible                   ?? 'N/A',
+            ];
+            foreach ($datos as $col => $valor) {
+                $sheet->setCellValue($col . $fila, $valor);
+                $sheet->getStyle($col . $fila)->applyFromArray([
+                    'borders' => ['allBorders' => ['borderStyle' => Border::BORDER_THIN, 'color' => ['argb' => 'FFCCCCCC']]],
+                    'fill'    => $fila % 2 === 0
+                        ? ['fillType' => Fill::FILL_SOLID, 'startColor' => ['argb' => 'FFF0F6FF']]
+                        : ['fillType' => Fill::FILL_NONE],
+                ]);
+            }
+            $fila++;
+        }
+
+        foreach (array_keys($columnas) as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        $writer   = new Xlsx($spreadsheet);
+        $fileName = 'Reporte_Impresoras_' . now()->format('Ymd_His') . '.xlsx';
+        $tmpFile  = tempnam(sys_get_temp_dir(), 'imp_excel_');
+        $writer->save($tmpFile);
+
+        return response()->download($tmpFile, $fileName)->deleteFileAfterSend(true);
     }
 }
