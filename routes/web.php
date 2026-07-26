@@ -30,7 +30,25 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        // Chart: Equipos por Estado
+        $equiposPorEstado = \App\Models\Equipo::selectRaw('estado_equipo, COUNT(*) as total')
+            ->groupBy('estado_equipo')
+            ->pluck('total', 'estado_equipo')
+            ->toArray();
+
+        // Chart: Incidencias por Estado
+        $incidenciasPorEstado = \App\Models\Incidencia::selectRaw('estado, COUNT(*) as total')
+            ->groupBy('estado')
+            ->pluck('total', 'estado')
+            ->toArray();
+
+        // Recent Incidencias
+        $incidenciasRecientes = \App\Models\Incidencia::with('atendidoPor')
+            ->latest()
+            ->take(6)
+            ->get();
+
+        return view('dashboard', compact('equiposPorEstado', 'incidenciasPorEstado', 'incidenciasRecientes'));
     })->name('dashboard');
 
     // Perfil de usuario

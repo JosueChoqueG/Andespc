@@ -148,3 +148,70 @@
     .sidebar-soft.show { left: 15px; width: 280px; }
     .main-content { margin-left: 0; width: 100%; }
 }
+
+/* Custom Widgets (Minia Cards) */
+.minia-card {
+    border: none;
+    box-shadow: 0 2px 4px rgba(15, 34, 58, 0.12);
+    border-radius: 0.25rem;
+    background-color: #fff;
+    margin-bottom: 24px;
+}
+
+.minia-card .card-body {
+    padding: 1.25rem;
+}
+
+.minia-card .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #495057;
+}
+
+.minia-avatar-sm {
+    height: 3rem;
+    width: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.5rem;
+}
+
+/* Timeline Activity */
+.activity-feed {
+    list-style: none;
+    padding-left: 0;
+}
+
+.activity-feed .feed-item {
+    position: relative;
+    padding-bottom: 24px;
+    padding-left: 20px;
+    border-left: 2px solid #ccc;
+}
+
+.activity-feed .feed-item:last-child {
+    border-left-color: transparent;
+    padding-bottom: 0;
+}
+
+.activity-feed .feed-item::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 4px;
+    left: -6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #5156be;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px #5156be;
+}
+
+.feed-item.warning::after { background: #ffc107; box-shadow: 0 0 0 2px #ffc107; }
+.feed-item.success::after { background: #2ab57d; box-shadow: 0 0 0 2px #2ab57d; }
+.feed-item.danger::after { background: #fd625e; box-shadow: 0 0 0 2px #fd625e; }
+.feed-item.info::after { background: #4ba6ef; box-shadow: 0 0 0 2px #4ba6ef; }
