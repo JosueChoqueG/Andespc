@@ -51,11 +51,11 @@
                         <a href="{{ route('equipos.edit', $equipo) }}" class="btn btn-sm btn-warning" title="Editar">
                             <i class="bi bi-pencil"></i>
                         </a>
-                        <a href="{{ route('admin.mantenimientos-pc.create', $equipo) }}" 
+                        <a href="{{ route('admin.mantenimientos-pc.create', $equipo) }}" target="_blank" 
                         class="btn btn-sm btn-success" title="Nuevo Mantenimiento">
                             <i class="bi bi-tools"></i>
                         </a>
-                        <a href="{{ route('admin.mantenimientos-pc.historial', $equipo) }}" 
+                        <a href="{{ route('admin.mantenimientos-pc.historial', $equipo) }} " target="_blank"
                         class="btn btn-sm btn-secondary" title="Historial">
                             <i class="bi bi-clock-history"></i>
                         </a>
