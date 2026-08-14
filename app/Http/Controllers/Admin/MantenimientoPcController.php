@@ -110,6 +110,18 @@ class MantenimientoPcController extends Controller
     }
 
     /**
+     * Eliminar un registro de mantenimiento
+     */
+    public function destroy(MantenimientoPc $mantenimiento)
+    {
+        $equipo = $mantenimiento->equipo;
+        $mantenimiento->delete();
+
+        return redirect()->route('admin.mantenimientos-pc.historial', $equipo)
+            ->with('success', 'Mantenimiento eliminado exitosamente.');
+    }
+
+    /**
      * Generar hoja de vida basada en un mantenimiento específico (Vista HTML)
      */
     public function generarHojaVida(MantenimientoPc $mantenimiento)

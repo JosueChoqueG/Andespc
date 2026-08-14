@@ -186,6 +186,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('mantenimientos/{mantenimiento}', [MantenimientoPcController::class, 'show'])
             ->name('mantenimientos-pc.show');
         
+        Route::delete('mantenimientos/{mantenimiento}', [MantenimientoPcController::class, 'destroy'])
+            ->name('mantenimientos-pc.destroy');
+        
         Route::get('equipos/{equipo}/mantenimientos/historial', [MantenimientoPcController::class, 'historial'])
             ->name('mantenimientos-pc.historial');
         

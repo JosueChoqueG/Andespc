@@ -90,6 +90,12 @@
                                                class="btn btn-primary" title="Hoja de Vida" target="_blank">
                                                 <i class="bi bi-file-pdf"></i>
                                             </a>
+                                            <button type="button" 
+                                                    class="btn btn-danger" 
+                                                    title="Eliminar"
+                                                    onclick="confirmDelete({{ $mantenimiento->id }})">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>
@@ -111,4 +117,47 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+function confirmDelete(id) {
+    Swal.fire({
+        title: '¿Eliminar mantenimiento?',
+        text: 'Esta acción no se puede deshacer',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        customClass: {
+            confirmButton: 'btn btn-danger me-2',
+            cancelButton: 'btn btn-secondary'
+        },
+        buttonsStyling: false
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let form = document.createElement('form');
+            form.method = 'POST';
+            form.action = "{{ route('admin.mantenimientos-pc.destroy', ':id') }}".replace(':id', id);
+            
+            let csrf = document.createElement('input');
+            csrf.type = 'hidden';
+            csrf.name = '_token';
+            csrf.value = "{{ csrf_token() }}";
+            
+            let method = document.createElement('input');
+            method.type = 'hidden';
+            method.name = '_method';
+            method.value = 'DELETE';
+            
+            form.appendChild(csrf);
+            form.appendChild(method);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
+}
+</script>
+@endpush
 @endsection
