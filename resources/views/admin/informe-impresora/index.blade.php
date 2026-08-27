@@ -172,15 +172,12 @@ function confirmDelete(id) {
         text: 'Esta acción no se puede deshacer.',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#6c757d',
         confirmButtonText: 'Sí, eliminar',
         cancelButtonText: 'Cancelar',
         customClass: {
-            confirmButton: 'btn btn-danger me-2',
-            cancelButton: 'btn btn-secondary',
+            popup: 'animate__animated animate__zoomIn animate__faster'
         },
-        buttonsStyling: false
+        buttonsStyling: true
     }).then((result) => {
         if (result.isConfirmed) {
             document.getElementById('delete-form-' + id).submit();

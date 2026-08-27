@@ -261,6 +261,60 @@
                 opacity: 1;
             }
         }
+        /* SweetAlert Premium Customization */
+        div:where(.swal2-container) div:where(.swal2-popup) {
+            border-radius: 20px;
+            padding: 2em;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        div:where(.swal2-container) h2:where(.swal2-title) {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: var(--andean-night);
+        }
+
+        div:where(.swal2-container) div:where(.swal2-html-container) {
+            color: #61647dff;
+            font-size: 1rem;
+        }
+        
+        div:where(.swal2-container) button.swal2-confirm {
+            background: linear-gradient(135deg, var(--terracota) 0%, var(--inti-gold) 100%) !important;
+            border: none !important;
+            border-radius: 10px !important;
+            padding: 10px 24px !important;
+            font-weight: 600 !important;
+            box-shadow: 0 4px 12px rgba(200, 90, 23, 0.25) !important;
+            transition: all 0.3s ease !important;
+            color: white !important;
+        }
+
+        div:where(.swal2-container) button.swal2-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(200, 90, 23, 0.4) !important;
+        }
+
+        div:where(.swal2-container) button.swal2-cancel {
+            background: #e2e8f0 !important;
+            color: #475569 !important;
+            border: none !important;
+            border-radius: 10px !important;
+            padding: 10px 24px !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+            margin-left: 10px;
+        }
+        
+        div:where(.swal2-container) button.swal2-cancel:hover {
+            background: #cbd5e1 !important;
+        }
+
+        /* End SweetAlert */
     </style>
 </head>
 
@@ -451,9 +505,9 @@
                 icon: "{{ session('success') ? 'success' : 'error' }}",
                 confirmButtonText: 'Aceptar',
                 customClass: {
-                    confirmButton: 'btn btn-primary px-4 py-2 rounded-3'
+                    popup: 'animate__animated animate__zoomIn animate__faster'
                 },
-                buttonsStyling: false
+                buttonsStyling: true
             });
         });
     </script>
