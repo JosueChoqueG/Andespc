@@ -19,15 +19,15 @@ class MantenimientoImpresoraController extends Controller
         $query = MantenimientoImpresora::with('impresora');
 
         // Filtros
-        if ($request->has('impresora_id')) {
+        if ($request->filled('impresora_id')) {
             $query->where('impresora_id', $request->impresora_id);
         }
 
-        if ($request->has('tipo_mantenimiento')) {
+        if ($request->filled('tipo_mantenimiento')) {
             $query->where('tipo_mantenimiento', $request->tipo_mantenimiento);
         }
 
-        if ($request->has('fecha_inicio') && $request->has('fecha_fin')) {
+        if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
             $query->whereBetween('fecha_mantenimiento', [$request->fecha_inicio, $request->fecha_fin]);
         }
 
@@ -197,7 +197,7 @@ class MantenimientoImpresoraController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $mantenimiento->update($request->all());
+        $mantenimiento->update($request->validated());
 
         return redirect()->route('admin.impresoras.show', $mantenimiento->impresora_id)
             ->with('success', 'Mantenimiento actualizado correctamente');

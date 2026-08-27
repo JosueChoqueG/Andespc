@@ -104,7 +104,7 @@ class EquipoController extends Controller
             'observacion' => 'nullable|string',
         ]);
 
-        Equipo::create($request->all());
+        Equipo::create($request->validated());
 
         return redirect()->route('equipos.index')->with('success', 'Equipo creado correctamente.');
     }
@@ -152,7 +152,7 @@ class EquipoController extends Controller
             'observacion' => 'nullable|string',
         ]);
 
-        $equipo->update($request->all());
+        $equipo->update($request->validated());
 
         return redirect()->route('equipos.index')->with('success', 'Equipo actualizado correctamente.');
     }

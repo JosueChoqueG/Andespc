@@ -25,7 +25,7 @@ class MarcaController extends Controller
             'nombre_marca' => 'required|string|max:50|unique:marcas,nombre_marca',
         ]);
 
-        Marca::create($request->all());
+        Marca::create($request->validated());
 
         return redirect()->route('marcas.index')
             ->with('success', 'Marca creada correctamente.');
@@ -47,7 +47,7 @@ class MarcaController extends Controller
             'nombre_marca' => 'required|string|max:50|unique:marcas,nombre_marca,' . $marca->id,
         ]);
 
-        $marca->update($request->all());
+        $marca->update($request->validated());
 
         return redirect()->route('marcas.index')
             ->with('success', 'Marca actualizada correctamente.');

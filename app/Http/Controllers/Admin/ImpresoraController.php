@@ -102,7 +102,7 @@ class ImpresoraController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        Impresora::create($request->all());
+        Impresora::create($request->validated());
 
         return redirect()->route('admin.impresoras.index')
             ->with('success', 'Impresora registrada correctamente');
@@ -162,7 +162,7 @@ class ImpresoraController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $impresora->update($request->all());
+        $impresora->update($request->validated());
 
         return redirect()->route('admin.impresoras.index')
             ->with('success', 'Impresora actualizada correctamente');

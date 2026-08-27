@@ -19,15 +19,15 @@ class MantenimientoTermicaController extends Controller
         $query = MantenimientoTermica::with('termica');
 
         // Filtros
-        if ($request->has('termica_id') && $request->filled('termica_id')) {
+        if ($request->filled('termica_id')) {
             $query->where('termica_id', $request->termica_id);
         }
 
-        if ($request->has('tipo_mantenimiento') && $request->filled('tipo_mantenimiento')) {
+        if ($request->filled('tipo_mantenimiento')) {
             $query->where('tipo_mantenimiento', $request->tipo_mantenimiento);
         }
 
-        if ($request->has('fecha_inicio') && $request->filled('fecha_inicio') && $request->has('fecha_fin') && $request->filled('fecha_fin')) {
+        if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
             $query->whereBetween('fecha_mantenimiento', [$request->fecha_inicio, $request->fecha_fin]);
         }
 
@@ -197,7 +197,7 @@ class MantenimientoTermicaController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $mantenimiento->update($request->all());
+        $mantenimiento->update($request->validated());
 
         return redirect()->route('admin.termicas.show', $mantenimiento->termica_id)
             ->with('success', 'Mantenimiento actualizado correctamente');

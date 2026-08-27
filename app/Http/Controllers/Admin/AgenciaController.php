@@ -26,7 +26,7 @@ class AgenciaController extends Controller
             'nombre_agencia' => 'required|string|max:100',
         ]);
 
-        Agencia::create($request->all());
+        Agencia::create($request->validated());
         return redirect()->route('agencias.index')->with('success', 'Agencia creada.');
     }
 
@@ -42,7 +42,7 @@ class AgenciaController extends Controller
             'nombre_agencia' => 'required|string|max:100',
         ]);
 
-        $agencia->update($request->all());
+        $agencia->update($request->validated());
         return redirect()->route('agencias.index')->with('success', 'Agencia actualizada.');
     }
 
