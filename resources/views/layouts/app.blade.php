@@ -370,7 +370,26 @@
                 <div class="icon-box-white"><i class="bi bi-printer text-success fs-5"></i></div>
                 <span>Impresoras</span>
             </a>
-            
+
+            @php
+                $isInformesOpen = Request::routeIs([
+                    'admin.informes-impresora.*',
+                ]);
+            @endphp
+            <a class="nav-link-main {{ $isInformesOpen ? 'active-section' : '' }}"
+               data-bs-toggle="collapse" href="#informesCollapse" role="button"
+               aria-expanded="{{ $isInformesOpen ? 'true' : 'false' }}">
+                <div class="icon-box-white"><i class="bi bi-file-earmark-text text-danger fs-5"></i></div>
+                <span class="flex-grow-1">Informes</span>
+                <i class="bi bi-chevron-down small opacity-50 transition-transform"></i>
+            </a>
+            <div class="collapse {{ $isInformesOpen ? 'show' : '' }}" id="informesCollapse">
+                <a href="{{ route('admin.informes-impresora.index') }}"
+                   class="nav-sub-item {{ Request::routeIs('admin.informes-impresora.index') ? 'active' : '' }}">
+                   Historial de Informes
+                </a>
+            </div>
+
             <a class="nav-link-main {{ Request::routeIs('admin.termicas.*') ? 'active-section' : '' }}" href="{{ route('admin.termicas.index') }}">
                 <div class="icon-box-white"><i class="bi bi-receipt text-warning fs-5"></i></div>
                 <span>Impresoras Térmicas</span>

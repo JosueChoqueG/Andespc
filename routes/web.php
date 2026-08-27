@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ServicioInternetController;
 use App\Http\Controllers\Admin\MantenimientoPcController;
 use App\Http\Controllers\Admin\ContabilleteController;
 use App\Http\Controllers\Admin\MantenimientoContabilleteController;
+use App\Http\Controllers\Admin\InformeImpresoraController;
 
 // Página de inicio (pública)
 Route::get('/', function () {
@@ -169,6 +170,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('contabilletes.hoja-vida-mantenimiento');
         Route::get('mantenimientos-contabillete/{mantenimiento}/hoja-vida/pdf', [MantenimientoContabilleteController::class, 'descargarHojaVidaMantenimientoPDF'])
             ->name('contabilletes.hoja-vida-mantenimiento.pdf');
+
+        // 📄 INFORMES DE IMPRESORAS
+        Route::get('informes-impresora', [InformeImpresoraController::class, 'index'])
+            ->name('informes-impresora.index');
+        Route::get('impresoras/{impresora}/informes/create', [InformeImpresoraController::class, 'create'])
+            ->name('informes-impresora.create');
+        Route::post('impresoras/{impresora}/informes', [InformeImpresoraController::class, 'store'])
+            ->name('informes-impresora.store');
+        Route::get('informes-impresora/{informesImpresora}', [InformeImpresoraController::class, 'show'])
+            ->name('informes-impresora.show');
+        Route::delete('informes-impresora/{informesImpresora}', [InformeImpresoraController::class, 'destroy'])
+            ->name('informes-impresora.destroy');
+        Route::get('informes-impresora/{informesImpresora}/pdf', [InformeImpresoraController::class, 'descargarPdf'])
+            ->name('informes-impresora.pdf');
+        Route::get('informes-impresora/{informesImpresora}/imprimir', [InformeImpresoraController::class, 'imprimir'])
+            ->name('informes-impresora.imprimir');
+        Route::get('impresoras/{impresora}/informes/historial', [InformeImpresoraController::class, 'historial'])
+            ->name('informes-impresora.historial');
 
         // 🌐 SERVICIOS DE INTERNET
         Route::resource('servicios-internet', ServicioInternetController::class)->parameters(['servicios-internet' => 'servicio']);

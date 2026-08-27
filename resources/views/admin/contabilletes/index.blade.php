@@ -137,20 +137,20 @@
                                                class="btn btn-primary" title="Registrar Mantenimiento">
                                                 <i class="bi bi-tools"></i>
                                             </a>
-                                            <button type="button" 
+                                            <!-- button type="button" 
                                                     class="btn btn-danger" 
                                                     title="Eliminar"
                                                     onclick="confirmDelete({{ $contabillete->id }})">
                                                 <i class="bi bi-trash"></i>
-                                            </button>
+                                            </button -->
                                         </div>
                                         
-                                        <form id="delete-form-{{ $contabillete->id }}" 
+                                        <!-- form id="delete-form-{{ $contabillete->id }}" 
                                               action="{{ route('admin.contabilletes.destroy', $contabillete->id) }}" 
                                               method="POST" style="display: none;">
                                             @csrf
                                             @method('DELETE')
-                                        </form>
+                                        </form -->
                                     </td>
                                 </tr>
                                 @empty
@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function confirmDelete(id) {
+/* function confirmDelete(id) {
     Swal.fire({
         title: '¿Eliminar contadora de billetes?',
         text: "Esta acción no se puede deshacer",
@@ -249,7 +249,7 @@ function confirmDelete(id) {
             document.getElementById('delete-form-' + id).submit();
         }
     });
-}
+} */
 </script>
 @endpush
 @endsection

@@ -145,20 +145,24 @@
                                                class="btn btn-primary" title="Registrar Mantenimiento">
                                                 <i class="bi bi-tools"></i>
                                             </a>
-                                            <button type="button" 
+                                            <a href="{{ route('admin.informes-impresora.create', $impresora->id) }}" 
+                                               class="btn btn-success" title="Nuevo Informe">
+                                                <i class="bi bi-file-earmark-text"></i> 
+                                            </a>    
+                                            <!-- button type="button" 
                                                     class="btn btn-danger" 
                                                     title="Eliminar"
                                                     onclick="confirmDelete({{ $impresora->id }})">
                                                 <i class="bi bi-trash"></i>
-                                            </button>
+                                            </button-->
                                         </div>
                                         
-                                        <form id="delete-form-{{ $impresora->id }}" 
+                                        <!--form id="delete-form-{{ $impresora->id }}" 
                                               action="{{ route('admin.impresoras.destroy', $impresora->id) }}" 
                                               method="POST" style="display: none;">
                                             @csrf
                                             @method('DELETE')
-                                        </form>
+                                        </form-->
                                     </td>
                                 </tr>
                                 @empty

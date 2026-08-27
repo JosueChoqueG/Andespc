@@ -25,6 +25,9 @@
                         <a href="{{ route('admin.mantenimientos-impresora.create', $impresora->id) }}" class="btn btn-primary btn-sm">
                             <i class="bi bi-tools"></i> Nuevo Mantenimiento
                         </a>
+                        <a href="{{ route('admin.informes-impresora.create', $impresora->id) }}" class="btn btn-danger btn-sm">
+                            <i class="bi bi-file-earmark-text"></i> Nuevo Informe
+                        </a>
                         <button type="button" class="btn btn-danger btn-sm" onclick="confirmDelete()">
                             <i class="bi bi-trash"></i> Eliminar
                         </button>
