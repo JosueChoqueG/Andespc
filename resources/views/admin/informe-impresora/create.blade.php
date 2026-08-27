@@ -140,7 +140,8 @@
                 </label>
                 <textarea id="incidencias" name="incidencias" rows="2"
                           class="form-control @error('incidencias') is-invalid @enderror"
-                          placeholder="Ej: Atasco de papel al imprimir y hacer copias">{{ old('incidencias') }}</textarea>
+                          placeholder="Ej: Atasco de papel al imprimir y hacer copias">{{ old('incidencias','Es grato dirigirme a usted para saludarlo cordialmente e informarle sobre la impresora multifuncional Kyocera Ecosys M2640, con número de serie VR84416886. Dicho equipo fue asignado a la oficina informativa de Haquira – módulo créditos. El equipo presenta inconvenientes al realizar impresiones y copias, ya que presenta atasco en el bloque D.
+Para hacer las validaciones se hizo limpieza del bloque B, así como residual de tóner, pero persiste el problema. Los síntomas que presenta pueden ser por diferentes factores como; requiere la renovación de la unidad fusor, requiere cambio de la unidad de imagen o limpieza general.') }}</textarea>
                 @error('incidencias') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
         </div>
@@ -157,7 +158,12 @@
             </div>
             <div class="card-body p-4">
                 <div id="procedimientos-container">
-                    @php $procs = old('procedimientos', ['']); @endphp
+                    @php $procs = old('procedimientos', ['Verificar cantidad de tóner (Correcto)', 
+                                                        'Prueba: Primera impresión con 1 hojas (Atasco de papel en bloque D)', 
+                                                        'Prueba: Segunda impresión múltiple (Atasco de papel bloque D)', 
+                                                        'Prueba: Copias/Impresiones múltiples 06 hojas (Todas las hojas con manchas)', 
+                                                        'Impresión de página de estado (total de copias/impresión 32651) [Página de estado]']);
+                    @endphp
                     @foreach($procs as $i => $proc)
                     <div class="d-flex gap-2 mb-2 proc-item">
                         <span class="badge bg-secondary d-flex align-items-center justify-content-center"
@@ -193,7 +199,9 @@
                         <label for="observaciones" class="form-label fw-semibold">Conclusión</label>
                         <textarea id="observaciones" name="observaciones" rows="5"
                                   class="form-control @error('observaciones') is-invalid @enderror"
-                                  placeholder="Ej: Se hizo limpieza de suciedad en el bloque C y residual de tóner. Se realizó pruebas de impresión, copias y reiniciar el equipo, pero el problema persiste.">{{ old('observaciones') }}</textarea>
+                                  placeholder="Ej: Se hizo limpieza de suciedad en el bloque C y residual de tóner.">{{ old('observaciones','Se hizo limpieza de suciedad en el bloque C y residual de tóner.
+Se realizó pruebas de impresión, copias y reiniciar el equipo, pero el problema persiste.
+Como antecedentes sobre las impresoras Kyocera al pasar las 25000 copias/impresiones empiezan a presentar fallo como atascos o impresiones con manchas y en este caso el equipo en mención presentó fallas a las 32651 copias/impresiones. [Foto] [Pagina de Estado].') }}</textarea>
                         @error('observaciones') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         <small class="text-muted">Cada línea aparecerá como un párrafo separado en el informe.</small>
                     </div>
@@ -201,7 +209,7 @@
                         <label for="recomendaciones" class="form-label fw-semibold">Recomendaciones</label>
                         <textarea id="recomendaciones" name="recomendaciones" rows="5"
                                   class="form-control @error('recomendaciones') is-invalid @enderror"
-                                  placeholder="Ej: Dado que el equipo se encuentra dentro del periodo de garantía, se sugiere remitirlo al proveedor para el mantenimiento correspondiente.">{{ old('recomendaciones') }}</textarea>
+                                  placeholder="Ej: Dado que el equipo se encuentra dentro del periodo de garantía, se sugiere remitirlo al proveedor para el mantenimiento correspondiente.">{{ old('recomendaciones','Actualmente, el contador registra un total de 32 651 copias e impresiones. Dado que el equipo se encuentra dentro del periodo de garantía, se sugiere remitirlo al proveedor para el mantenimiento correspondiente.') }}</textarea>
                         @error('recomendaciones') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                 </div>
