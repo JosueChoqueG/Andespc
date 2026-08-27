@@ -28,7 +28,7 @@ class ModeloController extends Controller
             'marca_id' => 'required|exists:marcas,id',
         ]);
 
-        Modelo::create($request->all());
+        Modelo::create($request->validated());
 
         return redirect()->route('modelos.index')
             ->with('success', 'Modelo creado correctamente.');
@@ -53,7 +53,7 @@ class ModeloController extends Controller
             'marca_id' => 'required|exists:marcas,id',
         ]);
         
-        $modelo->update($request->all());
+        $modelo->update($request->validated());
 
         return redirect()->route('modelos.index')
             ->with('success', 'Modelo actualizado correctamente.');

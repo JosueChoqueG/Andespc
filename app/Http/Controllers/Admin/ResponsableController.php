@@ -33,7 +33,7 @@ class ResponsableController extends Controller
             'nombre_responsable' => 'required|string|max:100|unique:responsables,nombre_responsable',
         ]);
 
-        Responsable::create($request->all());
+        Responsable::create($request->validated());
 
         return redirect()->route('responsables.index')
             ->with('success', 'Responsable creado correctamente.');
@@ -55,7 +55,7 @@ class ResponsableController extends Controller
             'nombre_responsable' => 'required|string|max:100|unique:responsables,nombre_responsable,' . $responsable->id,
         ]);
 
-        $responsable->update($request->all());
+        $responsable->update($request->validated());
 
         return redirect()->route('responsables.index')
             ->with('success', 'Responsable actualizado correctamente.');

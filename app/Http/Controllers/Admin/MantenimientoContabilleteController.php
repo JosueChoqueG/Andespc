@@ -19,15 +19,15 @@ class MantenimientoContabilleteController extends Controller
         $query = MantenimientoContabillete::with('contabillete');
 
         // Filtros
-        if ($request->has('contabillete_id') && $request->filled('contabillete_id')) {
+        if ($request->filled('contabillete_id')) {
             $query->where('contabillete_id', $request->contabillete_id);
         }
 
-        if ($request->has('tipo_mantenimiento') && $request->filled('tipo_mantenimiento')) {
+        if ($request->filled('tipo_mantenimiento')) {
             $query->where('tipo_mantenimiento', $request->tipo_mantenimiento);
         }
 
-        if ($request->has('fecha_inicio') && $request->filled('fecha_inicio') && $request->has('fecha_fin') && $request->filled('fecha_fin')) {
+        if ($request->filled('fecha_inicio') && $request->filled('fecha_fin')) {
             $query->whereBetween('fecha_mantenimiento', [$request->fecha_inicio, $request->fecha_fin]);
         }
 
@@ -197,7 +197,7 @@ class MantenimientoContabilleteController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $mantenimiento->update($request->all());
+        $mantenimiento->update($request->validated());
 
         return redirect()->route('admin.contabilletes.show', $mantenimiento->contabillete_id)
             ->with('success', 'Mantenimiento actualizado correctamente');

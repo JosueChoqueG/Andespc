@@ -27,7 +27,7 @@ class SistemaOperativoController extends Controller
             'version' => 'nullable|string|max:20',
         ]);
 
-        SistemaOperativo::create($request->all());
+        SistemaOperativo::create($request->validated());
 
         return redirect()->route('sistemaoperativos.index')
             ->with('success', 'Sistema operativo creado correctamente.');
@@ -51,7 +51,7 @@ class SistemaOperativoController extends Controller
             'version' => 'nullable|string|max:20',
         ]);
 
-        $sistemaoperativo->update($request->all());
+        $sistemaoperativo->update($request->validated());
 
         return redirect()->route('sistemaoperativos.index')
             ->with('success', 'Sistema operativo actualizado correctamente.');

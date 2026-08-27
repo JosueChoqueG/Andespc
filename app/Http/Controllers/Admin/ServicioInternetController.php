@@ -81,8 +81,16 @@ class ServicioInternetController extends Controller
     {
         $request->validate([
             'oficina_id'        => 'required|exists:oficinas,id',
-            'tipo_instalacion'  => 'required|in:Fibra óptica,Radio enlace,RPC,Starlink',
-            'direccion_ip'      => 'nullable|ip',
+            'direccion'         => 'nullable|string',
+            'coordenada'         => 'nullable|string|max:100',
+            'megas_contratado'   => 'required|string|max:50',
+            'tipo_instalacion'   => 'required|in:Fibra óptica,Radio enlace,RPC,Starlink',
+            'nombre_proveedor'   => 'required|string|max:100',
+            'telefono_proveedor' => 'nullable|string|max:15',
+            'contrasena_router'  => 'nullable|string|max:100',
+            'nombre_wifi'        => 'nullable|string|max:100',
+            'contrasena_wifi'    => 'nullable|string|max:100',
+            'direccion_ip'       => 'nullable|ip',
         ]);
 
         $servicio->update($request->only([

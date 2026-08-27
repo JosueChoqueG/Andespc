@@ -98,7 +98,7 @@ class ContabilleteController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        Contabillete::create($request->all());
+        Contabillete::create($request->validated());
 
         return redirect()->route('admin.contabilletes.index')
             ->with('success', 'Contadora de billetes registrada correctamente');
@@ -154,7 +154,7 @@ class ContabilleteController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $contabillete->update($request->all());
+        $contabillete->update($request->validated());
 
         return redirect()->route('admin.contabilletes.index')
             ->with('success', 'Contadora de billetes actualizada correctamente');

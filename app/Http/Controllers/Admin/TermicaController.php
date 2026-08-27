@@ -102,7 +102,7 @@ class TermicaController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        Termica::create($request->all());
+        Termica::create($request->validated());
 
         return redirect()->route('admin.termicas.index')
             ->with('success', 'Impresora térmica registrada correctamente');
@@ -161,7 +161,7 @@ class TermicaController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $termica->update($request->all());
+        $termica->update($request->validated());
 
         return redirect()->route('admin.termicas.index')
             ->with('success', 'Impresora térmica actualizada correctamente');
