@@ -42,7 +42,12 @@
         {{-- ── DATOS AUTOCOMPLETOS (ocultos) ─────────────────────── --}}
         {{-- La impresora ya está vinculada por la ruta; el técnico viene del auth --}}
         <input type="hidden" name="tecnico_nombre" value="{{ $tecnico }}">
-        <input type="hidden" name="estado_equipo"  value="REGULAR"> {{-- editable en el futuro si se necesita --}}
+
+        {{-- estado_equipo sincronizado por defecto con el estado actual de la impresora --}}
+        @php
+            $mapEstado = ['OPTIMO' => 'OPTIMO', 'BUENO' => 'BUENO', 'REGULAR' => 'REGULAR', 'DEFICIENTE' => 'DEFICIENTE', 'DE BAJA' => 'DEFICIENTE'];
+            $estadoDefault = $mapEstado[$impresora->estado_impresora] ?? 'REGULAR';
+        @endphp
 
         {{-- ══════════════════════════════════════════════════════════
              TARJETA INFO AUTOCOMPLETA (solo lectura, orientativa)
@@ -61,6 +66,18 @@
                 <small class="text-muted d-block">Oficina / Área</small>
                 <strong>{{ $impresora->oficina->nombre_oficina ?? '—' }}</strong>
             </div>
+            @if($impresora->modelo_consumible)
+            <div>
+                <small class="text-muted d-block">Consumible</small>
+                <strong>{{ $impresora->modelo_consumible }}</strong>
+            </div>
+            @endif
+            @if($impresora->cantidad_impresion)
+            <div>
+                <small class="text-muted d-block">Contador actual</small>
+                <strong>{{ number_format($impresora->cantidad_impresion) }}</strong>
+            </div>
+            @endif
             <div>
                 <small class="text-muted d-block">Técnico</small>
                 <strong>{{ $tecnico }}</strong>
@@ -108,8 +125,25 @@
                         <label for="contador_copias" class="form-label fw-semibold">Contador de copias</label>
                         <input type="number" id="contador_copias" name="contador_copias" min="0"
                                class="form-control @error('contador_copias') is-invalid @enderror"
-                               value="{{ old('contador_copias', $impresora->cantidad_impresion) }}" placeholder="Ej: 32651">
+                               value="{{ old('contador_copias', $impresora->cantidad_impresion) }}"
+                               placeholder="{{ $impresora->cantidad_impresion ?? 'Ej: 0' }}">
                         @error('contador_copias') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="estado_equipo" class="form-label fw-semibold">
+                            Estado del equipo <span class="text-danger">*</span>
+                        </label>
+                        <select id="estado_equipo" name="estado_equipo"
+                                class="form-select @error('estado_equipo') is-invalid @enderror" required>
+                            @foreach(\App\Models\InformeImpresora::ESTADOS_EQUIPO as $val => $label)
+                                <option value="{{ $val }}"
+                                    {{ old('estado_equipo', $estadoDefault) == $val ? 'selected' : '' }}>
+                                    {{ $label }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('estado_equipo') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
 
                     <div class="col-md-2 d-flex align-items-end pb-1">
@@ -138,10 +172,19 @@
                 <label for="incidencias" class="form-label fw-semibold">
                     ¿Qué falla o problema presenta el equipo? <span class="text-danger">*</span>
                 </label>
-                <textarea id="incidencias" name="incidencias" rows="2"
+                @php
+                    $incidenciaDefault = old('incidencias',
+                        'Es grato dirigirme a usted para saludarlo cordialmente e informarle sobre la impresora ' .
+                        $impresora->tipo_impresora . ' ' . $impresora->marca_impresora . ' ' . $impresora->modelo_impresora .
+                        ', con número de serie ' . $impresora->serie_impresora . '.'
+                        . ($impresora->oficina ? ' Dicho equipo fue asignado a la ' . $impresora->oficina->nombre_oficina . '.' : '') .
+                        ' El equipo presenta inconvenientes al realizar impresiones y/o copias.' .
+                        ($impresora->modelo_consumible ? ' Consumible: ' . $impresora->modelo_consumible . '.' : '')
+                    );
+                @endphp
+                <textarea id="incidencias" name="incidencias" rows="3"
                           class="form-control @error('incidencias') is-invalid @enderror"
-                          placeholder="Ej: Atasco de papel al imprimir y hacer copias">{{ old('incidencias','Es grato dirigirme a usted para saludarlo cordialmente e informarle sobre la impresora multifuncional Kyocera Ecosys M2640, con número de serie VR84416886. Dicho equipo fue asignado a la oficina informativa de Haquira – módulo créditos. El equipo presenta inconvenientes al realizar impresiones y copias, ya que presenta atasco en el bloque D.
-Para hacer las validaciones se hizo limpieza del bloque B, así como residual de tóner, pero persiste el problema. Los síntomas que presenta pueden ser por diferentes factores como; requiere la renovación de la unidad fusor, requiere cambio de la unidad de imagen o limpieza general.') }}</textarea>
+                          placeholder="Ej: Atasco de papel al imprimir y hacer copias">{{ $incidenciaDefault }}</textarea>
                 @error('incidencias') <div class="invalid-feedback">{{ $message }}</div> @enderror
             </div>
         </div>
@@ -158,11 +201,17 @@ Para hacer las validaciones se hizo limpieza del bloque B, así como residual de
             </div>
             <div class="card-body p-4">
                 <div id="procedimientos-container">
-                    @php $procs = old('procedimientos', ['Verificar cantidad de tóner (Correcto)', 
-                                                        'Prueba: Primera impresión con 1 hojas (Atasco de papel en bloque D)', 
-                                                        'Prueba: Segunda impresión múltiple (Atasco de papel bloque D)', 
-                                                        'Prueba: Copias/Impresiones múltiples 06 hojas (Todas las hojas con manchas)', 
-                                                        'Impresión de página de estado (total de copias/impresión 32651) [Página de estado]']);
+                    @php
+                        $contadorTexto = $impresora->cantidad_impresion ? number_format($impresora->cantidad_impresion) : 'N/A';
+                        $consumibleTexto = $impresora->modelo_consumible ? 'Verificar consumible ' . $impresora->modelo_consumible : 'Verificar nivel de consumible (tóner/tinta)';
+                        $procsDefault = [
+                            $consumibleTexto . ' (resultado)',
+                            'Prueba: Primera impresión (resultado)',
+                            'Prueba: Impresión múltiple (resultado)',
+                            'Prueba: Copia (resultado)',
+                            'Impresión de página de estado (total copias/impresiones: ' . $contadorTexto . ') [Página de estado]',
+                        ];
+                        $procs = old('procedimientos', $procsDefault);
                     @endphp
                     @foreach($procs as $i => $proc)
                     <div class="d-flex gap-2 mb-2 proc-item">
@@ -197,19 +246,37 @@ Para hacer las validaciones se hizo limpieza del bloque B, así como residual de
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="observaciones" class="form-label fw-semibold">Conclusión</label>
+                        @php
+                            $capacidadTexto = $impresora->capacidad_impresion ? number_format($impresora->capacidad_impresion) : null;
+                            $contadorObs   = $impresora->cantidad_impresion   ? number_format($impresora->cantidad_impresion)   : null;
+                            $observDefault  = 'Se realizaron pruebas de impresión, copias y se reinició el equipo.';
+                            if ($capacidadTexto && $contadorObs) {
+                                $observDefault .= "\nEl equipo " . $impresora->marca_impresora . ' ' . $impresora->modelo_impresora
+                                    . ' (serie: ' . $impresora->serie_impresora . ')'
+                                    . ' registra actualmente ' . $contadorObs . ' copias/impresiones'
+                                    . ' de una capacidad estimada de ' . $capacidadTexto . '. [Foto] [Página de Estado].';
+                            } elseif ($contadorObs) {
+                                $observDefault .= "\nEl equipo registra actualmente " . $contadorObs . ' copias/impresiones. [Foto] [Página de Estado].';
+                            }
+                        @endphp
                         <textarea id="observaciones" name="observaciones" rows="5"
                                   class="form-control @error('observaciones') is-invalid @enderror"
-                                  placeholder="Ej: Se hizo limpieza de suciedad en el bloque C y residual de tóner.">{{ old('observaciones','Se hizo limpieza de suciedad en el bloque C y residual de tóner.
-Se realizó pruebas de impresión, copias y reiniciar el equipo, pero el problema persiste.
-Como antecedentes sobre las impresoras Kyocera al pasar las 25000 copias/impresiones empiezan a presentar fallo como atascos o impresiones con manchas y en este caso el equipo en mención presentó fallas a las 32651 copias/impresiones. [Foto] [Pagina de Estado].') }}</textarea>
+                                  placeholder="Ej: Se hizo limpieza de suciedad y residual de tóner.">{{ old('observaciones', $observDefault) }}</textarea>
                         @error('observaciones') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         <small class="text-muted">Cada línea aparecerá como un párrafo separado en el informe.</small>
                     </div>
                     <div class="col-md-6">
                         <label for="recomendaciones" class="form-label fw-semibold">Recomendaciones</label>
+                        @php
+                            $recomDefault = '';
+                            if ($impresora->cantidad_impresion) {
+                                $recomDefault = 'Actualmente, el contador registra un total de ' . number_format($impresora->cantidad_impresion) . ' copias e impresiones.';
+                            }
+                            $recomDefault .= ($recomDefault ? ' ' : '') . 'Se recomienda realizar el mantenimiento correspondiente o remitirlo al proveedor si el equipo se encuentra dentro del periodo de garantía.';
+                        @endphp
                         <textarea id="recomendaciones" name="recomendaciones" rows="5"
                                   class="form-control @error('recomendaciones') is-invalid @enderror"
-                                  placeholder="Ej: Dado que el equipo se encuentra dentro del periodo de garantía, se sugiere remitirlo al proveedor para el mantenimiento correspondiente.">{{ old('recomendaciones','Actualmente, el contador registra un total de 32 651 copias e impresiones. Dado que el equipo se encuentra dentro del periodo de garantía, se sugiere remitirlo al proveedor para el mantenimiento correspondiente.') }}</textarea>
+                                  placeholder="Ej: Dado que el equipo se encuentra dentro del periodo de garantía, se sugiere remitirlo al proveedor para el mantenimiento correspondiente.">{{ old('recomendaciones', $recomDefault) }}</textarea>
                         @error('recomendaciones') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                 </div>
