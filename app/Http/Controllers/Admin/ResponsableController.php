@@ -29,11 +29,11 @@ class ResponsableController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre_responsable' => 'required|string|max:100|unique:responsables,nombre_responsable',
         ]);
 
-        Responsable::create($request->validated());
+        Responsable::create($validated);
 
         return redirect()->route('responsables.index')
             ->with('success', 'Responsable creado correctamente.');
@@ -51,11 +51,11 @@ class ResponsableController extends Controller
 
     public function update(Request $request, Responsable $responsable)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre_responsable' => 'required|string|max:100|unique:responsables,nombre_responsable,' . $responsable->id,
         ]);
 
-        $responsable->update($request->validated());
+        $responsable->update($validated);
 
         return redirect()->route('responsables.index')
             ->with('success', 'Responsable actualizado correctamente.');
