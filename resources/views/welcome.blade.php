@@ -644,7 +644,7 @@
             </div>
             <p>
                 <i class="bi bi-arrow-right-circle text-info"></i>
-                Infraestructura TI de <span class="highlight">alto rendimiento</span>
+                Infraestructura TI <span class="highlight">alto rendimiento</span>
                 <i class="bi bi-arrow-left-circle text-info"></i>
                 <br>
                 <span style="font-size: 0.95rem; color: #556677;">
