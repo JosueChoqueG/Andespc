@@ -197,7 +197,7 @@ class MantenimientoTermicaController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $mantenimiento->update($request->validated());
+        $mantenimiento->update($validator->validated());
 
         return redirect()->route('admin.termicas.show', $mantenimiento->termica_id)
             ->with('success', 'Mantenimiento actualizado correctamente');
@@ -239,3 +239,4 @@ class MantenimientoTermicaController extends Controller
         return view('admin.mantenimientos-termica.historial', compact('termica', 'mantenimientos', 'estadisticas'));
     }
 }
+

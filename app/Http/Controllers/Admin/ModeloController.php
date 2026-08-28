@@ -23,12 +23,12 @@ class ModeloController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre_modelo' => 'required|string|max:100',
             'marca_id' => 'required|exists:marcas,id',
         ]);
 
-        Modelo::create($request->validated());
+        Modelo::create($validated);
 
         return redirect()->route('modelos.index')
             ->with('success', 'Modelo creado correctamente.');
@@ -48,12 +48,12 @@ class ModeloController extends Controller
 
     public function update(Request $request, Modelo $modelo)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre_modelo' => 'required|string|max:100',
             'marca_id' => 'required|exists:marcas,id',
         ]);
         
-        $modelo->update($request->validated());
+        $modelo->update($validated);
 
         return redirect()->route('modelos.index')
             ->with('success', 'Modelo actualizado correctamente.');
@@ -67,3 +67,4 @@ class ModeloController extends Controller
             ->with('success', 'Modelo eliminado correctamente.');
     }
 }
+

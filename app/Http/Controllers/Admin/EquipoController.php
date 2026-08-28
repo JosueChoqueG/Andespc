@@ -80,7 +80,7 @@ class EquipoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre_dispositivo' => 'required|string|max:100',
             'numero_serie' => 'nullable|string|max:100|unique:equipos',
             'direccion_ip' => 'nullable|ip',
@@ -104,7 +104,7 @@ class EquipoController extends Controller
             'observacion' => 'nullable|string',
         ]);
 
-        Equipo::create($request->validated());
+        Equipo::create($validated);
 
         return redirect()->route('equipos.index')->with('success', 'Equipo creado correctamente.');
     }
@@ -128,7 +128,7 @@ class EquipoController extends Controller
 
     public function update(Request $request, Equipo $equipo)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre_dispositivo' => 'required|string|max:100',
             'numero_serie' => 'nullable|string|max:100|unique:equipos,numero_serie,' . $equipo->id,
             'direccion_ip' => 'nullable|ip',
@@ -152,7 +152,7 @@ class EquipoController extends Controller
             'observacion' => 'nullable|string',
         ]);
 
-        $equipo->update($request->validated());
+        $equipo->update($validated);
 
         return redirect()->route('equipos.index')->with('success', 'Equipo actualizado correctamente.');
     }
@@ -277,3 +277,4 @@ class EquipoController extends Controller
         return response()->download($tmpFile, $fileName)->deleteFileAfterSend(true);
     }
 }
+

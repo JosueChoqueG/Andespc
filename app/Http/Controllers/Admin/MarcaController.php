@@ -21,11 +21,11 @@ class MarcaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre_marca' => 'required|string|max:50|unique:marcas,nombre_marca',
         ]);
 
-        Marca::create($request->validated());
+        Marca::create($validated);
 
         return redirect()->route('marcas.index')
             ->with('success', 'Marca creada correctamente.');
@@ -43,11 +43,11 @@ class MarcaController extends Controller
 
     public function update(Request $request, Marca $marca)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre_marca' => 'required|string|max:50|unique:marcas,nombre_marca,' . $marca->id,
         ]);
 
-        $marca->update($request->validated());
+        $marca->update($validated);
 
         return redirect()->route('marcas.index')
             ->with('success', 'Marca actualizada correctamente.');
