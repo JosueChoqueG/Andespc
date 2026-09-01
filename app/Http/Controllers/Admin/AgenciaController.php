@@ -21,12 +21,12 @@ class AgenciaController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'codigo_agencia' => 'required|unique:agencias',
             'nombre_agencia' => 'required|string|max:100',
         ]);
 
-        Agencia::create($request->validated());
+        Agencia::create($validated);
         return redirect()->route('agencias.index')->with('success', 'Agencia creada.');
     }
 
@@ -37,12 +37,12 @@ class AgenciaController extends Controller
 
     public function update(Request $request, Agencia $agencia)
     {
-        $request->validate([
+        $validated = $request->validate([
             'codigo_agencia' => 'required|unique:agencias,codigo_agencia,' . $agencia->id,
             'nombre_agencia' => 'required|string|max:100',
         ]);
 
-        $agencia->update($request->validated());
+        $agencia->update($validated);
         return redirect()->route('agencias.index')->with('success', 'Agencia actualizada.');
     }
 
@@ -53,3 +53,4 @@ class AgenciaController extends Controller
     }
 
 }
+

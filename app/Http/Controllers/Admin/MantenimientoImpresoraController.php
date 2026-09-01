@@ -197,7 +197,7 @@ class MantenimientoImpresoraController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $mantenimiento->update($request->validated());
+        $mantenimiento->update($validator->validated());
 
         return redirect()->route('admin.impresoras.show', $mantenimiento->impresora_id)
             ->with('success', 'Mantenimiento actualizado correctamente');

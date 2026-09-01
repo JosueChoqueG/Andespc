@@ -21,13 +21,13 @@ class SistemaOperativoController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre_so' => 'required|string|max:50',
             'edicion' => 'nullable|string|max:50',
             'version' => 'nullable|string|max:20',
         ]);
 
-        SistemaOperativo::create($request->validated());
+        SistemaOperativo::create($validated);
 
         return redirect()->route('sistemaoperativos.index')
             ->with('success', 'Sistema operativo creado correctamente.');
@@ -45,13 +45,13 @@ class SistemaOperativoController extends Controller
 
     public function update(Request $request, SistemaOperativo $sistemaoperativo)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nombre_so' => 'required|string|max:50',
             'edicion' => 'nullable|string|max:50',
             'version' => 'nullable|string|max:20',
         ]);
 
-        $sistemaoperativo->update($request->validated());
+        $sistemaoperativo->update($validated);
 
         return redirect()->route('sistemaoperativos.index')
             ->with('success', 'Sistema operativo actualizado correctamente.');
