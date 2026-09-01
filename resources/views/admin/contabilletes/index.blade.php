@@ -74,8 +74,8 @@
                             <select name="agencia_id" id="filtroAgencia" class="form-select form-select-sm select2">
                                 <option value="">Agencias</option>
                                 @foreach($agencias ?? [] as $agencia)
-                                    <option value="{{ $agencia->id }}" {{ request('agencia_id') == $agencia->id ? 'selected' : '' }}>
-                                        {{ $agencia->nombre_agencia }}
+                                    <option value="{{ $agencia?->id }}" {{ request('agencia_id') == $agencia?->id ? 'selected' : '' }}>
+                                        {{ $agencia?->nombre_agencia }}
                                     </option>
                                 @endforeach
                             </select>
@@ -84,10 +84,10 @@
                             <select name="oficina_id" id="filtroOficina" class="form-select form-select-sm select2">
                                 <option value="">Oficinas</option>
                                 @foreach($oficinas ?? [] as $oficina)
-                                    <option value="{{ $oficina->id }}" 
-                                        data-agencia="{{ $oficina->agencia_id }}"
-                                        {{ request('oficina_id') == $oficina->id ? 'selected' : '' }}>
-                                        {{ $oficina->nombre_oficina }}
+                                    <option value="{{ $oficina?->id }}" 
+                                        data-agencia="{{ $oficina?->agencia_id }}"
+                                        {{ request('oficina_id') == $oficina?->id ? 'selected' : '' }}>
+                                        {{ $oficina?->nombre_oficina }}
                                     </option>
                                 @endforeach
                             </select>
