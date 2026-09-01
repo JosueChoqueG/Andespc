@@ -2,6 +2,40 @@
 
 @section('title', 'Gestión de Contadoras de Billetes')
 
+@push('styles')
+<style>
+    .autocomplete-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        z-index: 1000;
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+    }
+    .autocomplete-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .autocomplete-item:last-child {
+        border-bottom: none;
+    }
+    .autocomplete-item:hover {
+        background-color: #f8f9fa;
+    }
+    .search-container {
+        position: relative;
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -10,7 +44,7 @@
             <a href="{{ route('admin.contabilletes.create') }}" class="btn btn-primary shadow-sm">
                 <i class="bi bi-plus-circle"></i>
             </a>
-            <a href="{{ route('admin.contabilletes.exportar') }}" class="btn btn-success shadow-sm">
+            <a href="{{ route('admin.contabilletes.exportar') }}" id="btnExportar" class="btn btn-success shadow-sm">
                 <i class="bi bi-filetype-xlsx"></i>
             </a>
         </div>
@@ -23,9 +57,18 @@
                     <strong><i class="bi bi-list-check"></i> Listado de Contadoras</strong>
                     
                     <!-- Buscador y Filtros Inline -->
-                    <form method="GET" action="{{ route('admin.contabilletes.index') }}" class="row g-2 align-items-center flex-grow-1 justify-content-end">
-                        <div class="col-md-2 col-sm-4 col-12">
-                            <input type="text" name="serie" class="form-control form-control-sm" placeholder="Por serie..." value="{{ request('serie') }}">
+                    <form id="filter-form" class="row g-2 align-items-center flex-grow-1 justify-content-end">
+                        <div class="col-md-3 col-sm-4 col-12 search-container">
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                <input type="text" name="search" id="searchInput" class="form-control" placeholder="Buscar por serie, marca, modelo, oficina..." value="{{ request('search') }}" autocomplete="off">
+                                <span class="input-group-text bg-white d-none" id="searchSpinner">
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </span>
+                            </div>
+                            <div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
                         </div>
                         <div class="col-md-2 col-sm-4 col-12">
                             <select name="agencia_id" id="filtroAgencia" class="form-select form-select-sm select2">
@@ -50,7 +93,7 @@
                             </select>
                         </div>
                         <div class="col-md-2 col-sm-4 col-12">
-                            <select name="estado_contabilletes" class="form-select form-select-sm">
+                            <select name="estado_contabilletes" id="filtroEstado" class="form-select form-select-sm">
                                 <option value="">Estados</option>
                                 <option value="OPTIMO" {{ request('estado_contabilletes') == 'OPTIMO' ? 'selected' : '' }}>Óptimo</option>
                                 <option value="BUENO" {{ request('estado_contabilletes') == 'BUENO' ? 'selected' : '' }}>Bueno</option>
@@ -71,103 +114,8 @@
                 </div>
                 
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Serie</th>
-                                    <th>Marca / Modelo</th>
-                                    <th>Oficina</th>
-                                    <th>Velocidad</th>
-                                    <th>Detección</th>
-                                    <th>Pantalla</th>
-                                    <th>Estado</th>
-                                    <th>Últ. Mant.</th>
-                                    <th width="150">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($contabilletes as $contabillete)
-                                <tr>
-                                    <td>{{ $contabillete->id }}</td>
-                                    <td>{{ $contabillete->serie_contabilletes }}</td>
-                                    <td>
-                                        <strong>{{ $contabillete->marca_contabilletes }}</strong><br>
-                                        <small>{{ $contabillete->modelo_contabilletes }}</small>
-                                    </td>
-                                    <td>{{ $contabillete->oficina->nombre_oficina ?? 'N/A' }}</td>
-                                    <td>{{ $contabillete->velocidad_contabilletes ?? 'N/A' }}</td>
-                                    <td>{{ $contabillete->tipo_deteccion ?? 'N/A' }}</td>
-                                    <td>{{ $contabillete->pantalla_contabilletes ?? 'N/A' }}</td>
-                                    <td>
-                                        @php
-                                            $estado = strtoupper(trim($contabillete->estado_contabilletes));
-                                            $badgeClass = [
-                                                'OPTIMO' => 'success',
-                                                'BUENO' => 'info',
-                                                'REGULAR' => 'warning',
-                                                'DEFICIENTE' => 'danger',
-                                                'DE BAJA' => 'secondary'
-                                            ][$estado] ?? 'dark';
-                                        @endphp
-                                        
-                                        <span class="badge bg-{{ $badgeClass }}">
-                                            {{ $contabillete->estado_contabilletes }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        @if($contabillete->ultimoMantenimiento)
-                                            {{ date('d/m/Y', strtotime($contabillete->ultimoMantenimiento->fecha_mantenimiento)) }}
-                                        @else
-                                            <span class="text-muted">Sin registro</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="btn-group btn-group-sm">
-                                            <a href="{{ route('admin.contabilletes.show', $contabillete->id) }}" 
-                                               class="btn btn-info" title="Ver">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-                                            <a href="{{ route('admin.contabilletes.edit', $contabillete->id) }}" 
-                                               class="btn btn-warning" title="Editar">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <a href="{{ route('admin.mantenimientos-contabillete.create', $contabillete->id) }}" 
-                                               class="btn btn-primary" title="Registrar Mantenimiento">
-                                                <i class="bi bi-tools"></i>
-                                            </a>
-                                            <!-- button type="button" 
-                                                    class="btn btn-danger" 
-                                                    title="Eliminar"
-                                                    onclick="confirmDelete({{ $contabillete->id }})">
-                                                <i class="bi bi-trash"></i>
-                                            </button -->
-                                        </div>
-                                        
-                                        <!-- form id="delete-form-{{ $contabillete->id }}" 
-                                              action="{{ route('admin.contabilletes.destroy', $contabillete->id) }}" 
-                                              method="POST" style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form -->
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="10" class="text-center">
-                                        <div class="alert alert-info mb-0">
-                                            <i class="bi bi-info-circle"></i> No hay contadoras de billetes registradas
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="mt-3">
-                        {{ $contabilletes->appends(request()->query())->links() }}
+                    <div id="contabilletes-table-container">
+                        @include('admin.contabilletes.partials.table')
                     </div>
                 </div>
             </div>
@@ -193,63 +141,243 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function filterOficinas() {
         const selectedAgencia = agenciaSelect.value;
-        
-        // Guardar selección actual de oficina para ver si se puede conservar
         const currentOficinaVal = oficinaSelect.value;
         
-        // Limpiar opciones actuales
         oficinaSelect.innerHTML = '';
         
-        // Filtrar y añadir opciones
         allOficinaOptions.forEach(option => {
             if (!selectedAgencia || option.value === '' || option.getAttribute('data-agencia') === selectedAgencia) {
                 oficinaSelect.appendChild(option.cloneNode(true));
             }
         });
 
-        // Restaurar selección previa si aún existe entre las opciones filtradas
         if (Array.from(oficinaSelect.options).some(opt => opt.value === currentOficinaVal)) {
             oficinaSelect.value = currentOficinaVal;
         } else {
             oficinaSelect.value = '';
         }
 
-        // Trigger Select2 update if it exists
         if (window.jQuery && $(oficinaSelect).data('select2')) {
             $(oficinaSelect).trigger('change.select2');
         }
     }
 
     if (agenciaSelect && oficinaSelect) {
-        agenciaSelect.addEventListener('change', filterOficinas);
-        // Ejecutar al cargar si hay una agencia seleccionada
+        if (window.jQuery && $(agenciaSelect).data('select2')) {
+            $(agenciaSelect).on('change', filterOficinas);
+        } else {
+            agenciaSelect.addEventListener('change', filterOficinas);
+        }
+        
         if (agenciaSelect.value) {
             filterOficinas();
-            // Mantener la oficina seleccionada si es posible
             const savedOficinaId = "{{ request('oficina_id') }}";
             if (savedOficinaId) {
                 oficinaSelect.value = savedOficinaId;
+                if (window.jQuery && $(oficinaSelect).data('select2')) {
+                    $(oficinaSelect).trigger('change.select2');
+                }
             }
         }
     }
-});
 
-/* function confirmDelete(id) {
-    Swal.fire({
-        title: '¿Eliminar contadora de billetes?',
-        text: "Esta acción no se puede deshacer",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            document.getElementById('delete-form-' + id).submit();
+    // Lógica para Live Search y Autocomplete
+    const searchInput = document.getElementById('searchInput');
+    const searchSpinner = document.getElementById('searchSpinner');
+    const tableContainer = document.getElementById('contabilletes-table-container');
+    const form = document.getElementById('filter-form');
+    const btnExportar = document.getElementById('btnExportar');
+    const autocompleteDropdown = document.getElementById('autocomplete-dropdown');
+    const filterEstado = document.getElementById('filtroEstado');
+
+    let debounceTimer;
+    let autocompleteTimer;
+    let currentAbortController = null;
+
+    function getFormData() {
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+        return params.toString();
+    }
+
+    function updateExportUrl() {
+        if(btnExportar) {
+            const baseUrl = "{{ route('admin.contabilletes.exportar') }}";
+            btnExportar.href = baseUrl + '?' + getFormData();
+        }
+    }
+
+    function fetchTableData() {
+        searchSpinner.classList.remove('d-none');
+        
+        if (currentAbortController) {
+            currentAbortController.abort();
+        }
+        currentAbortController = new AbortController();
+
+        const queryString = getFormData();
+        const url = "{{ route('admin.contabilletes.index') }}?" + queryString;
+
+        updateExportUrl();
+
+        window.history.pushState({}, '', url);
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            signal: currentAbortController.signal
+        })
+        .then(response => response.text())
+        .then(html => {
+            tableContainer.innerHTML = html;
+            searchSpinner.classList.add('d-none');
+        })
+        .catch(error => {
+            if (error.name !== 'AbortError') {
+                console.error('Error:', error);
+                searchSpinner.classList.add('d-none');
+            }
+        });
+    }
+
+    function fetchAutocomplete(query) {
+        if (!query) {
+            autocompleteDropdown.style.display = 'none';
+            return;
+        }
+
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+        params.set('q', query);
+        params.delete('search');
+
+        fetch("{{ route('admin.contabilletes.sugerencias') }}?" + params.toString(), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            autocompleteDropdown.innerHTML = '';
+            if (data.length > 0) {
+                data.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'autocomplete-item';
+                    
+                    const badgeColor = {
+                        'OPTIMO': 'success',
+                        'BUENO': 'info',
+                        'REGULAR': 'warning',
+                        'DEFICIENTE': 'danger',
+                        'DE BAJA': 'secondary'
+                    }[item.estado] || 'dark';
+
+                    div.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>${item.value}</strong>
+                            <span class="badge bg-${badgeColor}">${item.estado}</span>
+                        </div>
+                        <div class="text-muted small">
+                            ${item.marcaModelo} | Of: ${item.oficina} | Resp: ${item.responsable}
+                        </div>
+                    `;
+                    div.addEventListener('click', () => {
+                        searchInput.value = item.value;
+                        autocompleteDropdown.style.display = 'none';
+                        fetchTableData();
+                    });
+                    autocompleteDropdown.appendChild(div);
+                });
+                autocompleteDropdown.style.display = 'block';
+            } else {
+                autocompleteDropdown.style.display = 'none';
+            }
+        });
+    }
+
+    searchInput.addEventListener('input', function() {
+        const val = this.value.trim();
+        
+        clearTimeout(autocompleteTimer);
+        autocompleteTimer = setTimeout(() => {
+            fetchAutocomplete(val);
+        }, 150);
+
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            fetchTableData();
+        }, 300);
+    });
+
+    document.addEventListener('click', function(e) {
+        if (!autocompleteDropdown.contains(e.target) && e.target !== searchInput) {
+            autocompleteDropdown.style.display = 'none';
         }
     });
-} */
+
+    // Handle form submit (prevent default and fetch via AJAX)
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        autocompleteDropdown.style.display = 'none';
+        fetchTableData();
+    });
+
+    // Handle changes in filters
+    [filterEstado].forEach(el => {
+        if(el) {
+            el.addEventListener('change', () => {
+                autocompleteDropdown.style.display = 'none';
+                fetchTableData();
+            });
+        }
+    });
+
+    if (window.jQuery) {
+        $(agenciaSelect).on('change', function() {
+            fetchTableData();
+        });
+        $(oficinaSelect).on('change', function() {
+            fetchTableData();
+        });
+    } else {
+        agenciaSelect.addEventListener('change', fetchTableData);
+        oficinaSelect.addEventListener('change', fetchTableData);
+    }
+
+    // Pagination AJAX
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.pagination a')) {
+            e.preventDefault();
+            const url = e.target.closest('.pagination a').href;
+            
+            searchSpinner.classList.remove('d-none');
+            
+            fetch(url, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                tableContainer.innerHTML = html;
+                searchSpinner.classList.add('d-none');
+                
+                // Actualizar URL y Exportar URL
+                window.history.pushState({}, '', url);
+                updateExportUrl();
+            })
+            .catch(error => {
+                console.error('Error paginating:', error);
+                searchSpinner.classList.add('d-none');
+            });
+        }
+    });
+
+    // Initialize export URL
+    updateExportUrl();
+});
 </script>
 @endpush
 @endsection
+

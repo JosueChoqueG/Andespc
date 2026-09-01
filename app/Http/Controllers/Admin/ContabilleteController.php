@@ -23,43 +23,112 @@ class ContabilleteController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Contabillete::with(['oficina.agencia', 'responsable']);
-
-        // Filtros
-        if ($request->filled('oficina_id')) {
-            $query->where('oficina_id', $request->oficina_id);
+        if ($request->has('autocomplete') || $request->routeIs('admin.contabilletes.sugerencias')) {
+            return $this->sugerencias($request);
         }
 
-        if ($request->filled('agencia_id')) {
-            $query->whereHas('oficina', function($q) use ($request) {
-                $q->where('agencia_id', $request->agencia_id);
+        $query = Contabillete::with(['oficina.agencia', 'responsable', 'ultimoMantenimiento']);
+
+        // Filtro por término de búsqueda (multicampo)
+        $searchTerm = trim($request->input('serie') ?? $request->input('search') ?? '');
+        if ($searchTerm !== '') {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('serie_contabilletes', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('marca_contabilletes', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('modelo_contabilletes', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('tipo_contabilletes', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('tipo_deteccion', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('pantalla_contabilletes', 'LIKE', "%{$searchTerm}%")
+                  ->orWhereHas('responsable', function ($r) use ($searchTerm) {
+                      $r->where('nombre_responsable', 'LIKE', "%{$searchTerm}%");
+                  })
+                  ->orWhereHas('oficina', function ($o) use ($searchTerm) {
+                      $o->where('nombre_oficina', 'LIKE', "%{$searchTerm}%");
+                  });
             });
         }
 
-        if ($request->filled('serie')) {
-            $query->where('serie_contabilletes', 'LIKE', "%{$request->serie}%");
+        // Filtros de oficina y agencia
+        $oficinaId = $request->input('oficina_id') ?? $request->input('oficina');
+        if (!empty($oficinaId)) {
+            $query->where('oficina_id', $oficinaId);
         }
 
+        $agenciaId = $request->input('agencia_id') ?? $request->input('agencia');
+        if (!empty($agenciaId)) {
+            $query->whereHas('oficina', function ($q) use ($agenciaId) {
+                $q->where('agencia_id', $agenciaId);
+            });
+        }
+
+        // Filtro por estado
         if ($request->filled('estado_contabilletes')) {
             $query->where('estado_contabilletes', $request->estado_contabilletes);
         }
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('marca_contabilletes', 'LIKE', "%{$search}%")
-                  ->orWhere('modelo_contabilletes', 'LIKE', "%{$search}%")
-                  ->orWhere('serie_contabilletes', 'LIKE', "%{$search}%");
-            });
-        }
-
-        $contabilletes = $query->orderBy('created_at', 'desc')->paginate(15);
+        $contabilletes = $query->orderBy('id', 'desc')->paginate(15)->withQueryString();
         
         $oficinas = Oficina::orderBy('nombre_oficina')->get();
         $agencias = Agencia::orderBy('nombre_agencia')->get();
         $responsables = Responsable::all();
 
+        if ($request->ajax()) {
+            return view('admin.contabilletes.partials.table', compact('contabilletes'))->render();
+        }
+
         return view('admin.contabilletes.index', compact('contabilletes', 'oficinas', 'agencias', 'responsables'));
+    }
+
+    /**
+     * Devuelve sugerencias de autocompletado para contadoras de billetes en tiempo real.
+     */
+    public function sugerencias(Request $request)
+    {
+        $term = trim($request->input('q') ?? $request->input('serie') ?? $request->input('search') ?? '');
+        if ($term === '') {
+            return response()->json([]);
+        }
+
+        $query = Contabillete::with(['oficina.agencia', 'responsable']);
+
+        $query->where(function ($q) use ($term) {
+            $q->where('serie_contabilletes', 'LIKE', "%{$term}%")
+              ->orWhere('marca_contabilletes', 'LIKE', "%{$term}%")
+              ->orWhere('modelo_contabilletes', 'LIKE', "%{$term}%")
+              ->orWhere('tipo_contabilletes', 'LIKE', "%{$term}%")
+              ->orWhereHas('responsable', fn($r) => $r->where('nombre_responsable', 'LIKE', "%{$term}%"))
+              ->orWhereHas('oficina', fn($o) => $o->where('nombre_oficina', 'LIKE', "%{$term}%"));
+        });
+
+        $oficinaId = $request->input('oficina_id') ?? $request->input('oficina');
+        if (!empty($oficinaId)) {
+            $query->where('oficina_id', $oficinaId);
+        }
+        $agenciaId = $request->input('agencia_id') ?? $request->input('agencia');
+        if (!empty($agenciaId)) {
+            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $agenciaId));
+        }
+        if ($request->filled('estado_contabilletes')) {
+            $query->where('estado_contabilletes', $request->estado_contabilletes);
+        }
+
+        $contabilletes = $query->take(8)->get();
+
+        $resultados = $contabilletes->map(function ($contabillete) {
+            $marcaModelo = trim(($contabillete->marca_contabilletes ?? '') . ' ' . ($contabillete->modelo_contabilletes ?? ''));
+            return [
+                'id'          => $contabillete->id,
+                'serie'       => $contabillete->serie_contabilletes,
+                'value'       => $contabillete->serie_contabilletes ?: $marcaModelo,
+                'nombre'      => $marcaModelo ?: 'Contadora de Billetes',
+                'marcaModelo' => $marcaModelo,
+                'responsable' => $contabillete->responsable?->nombre_responsable ?? 'Sin asignar',
+                'oficina'     => $contabillete->oficina?->nombre_oficina ?? 'Sin oficina',
+                'estado'      => $contabillete->estado_contabilletes,
+            ];
+        });
+
+        return response()->json($resultados);
     }
 
     /**
@@ -245,22 +314,40 @@ class ContabilleteController extends Controller
 
     public function exportarExcel(Request $request)
     {
-        $query = Contabillete::with(['oficina.agencia', 'responsable']);
+        $query = Contabillete::with(['oficina.agencia', 'responsable', 'ultimoMantenimiento']);
 
-        if ($request->filled('oficina_id')) {
-            $query->where('oficina_id', $request->oficina_id);
+        // Filtro por término de búsqueda (multicampo)
+        $searchTerm = trim($request->input('serie') ?? $request->input('search') ?? '');
+        if ($searchTerm !== '') {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('serie_contabilletes', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('marca_contabilletes', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('modelo_contabilletes', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('tipo_contabilletes', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('tipo_deteccion', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('pantalla_contabilletes', 'LIKE', "%{$searchTerm}%")
+                  ->orWhereHas('responsable', function ($r) use ($searchTerm) {
+                      $r->where('nombre_responsable', 'LIKE', "%{$searchTerm}%");
+                  })
+                  ->orWhereHas('oficina', function ($o) use ($searchTerm) {
+                      $o->where('nombre_oficina', 'LIKE', "%{$searchTerm}%");
+                  });
+            });
         }
-        if ($request->filled('agencia_id')) {
-            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $request->agencia_id));
+
+        $oficinaId = $request->input('oficina_id') ?? $request->input('oficina');
+        if (!empty($oficinaId)) {
+            $query->where('oficina_id', $oficinaId);
         }
-        if ($request->filled('serie')) {
-            $query->where('serie_contabilletes', 'LIKE', "%{$request->serie}%");
+        $agenciaId = $request->input('agencia_id') ?? $request->input('agencia');
+        if (!empty($agenciaId)) {
+            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $agenciaId));
         }
         if ($request->filled('estado_contabilletes')) {
             $query->where('estado_contabilletes', $request->estado_contabilletes);
         }
 
-        $contabilletes = $query->orderBy('created_at', 'desc')->get();
+        $contabilletes = $query->orderBy('id', 'desc')->get();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();

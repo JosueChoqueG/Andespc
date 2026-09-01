@@ -21,6 +21,11 @@ class EquipoController extends Controller
 {
     public function index(Request $request)
     {
+        // Si se solicitan sugerencias vía AJAX / parámetro
+        if ($request->has('autocomplete') || $request->routeIs('equipos.sugerencias')) {
+            return $this->sugerencias($request);
+        }
+
         $query = Equipo::with([
             'oficina',
             'oficina.agencia',
@@ -31,38 +36,132 @@ class EquipoController extends Controller
             'responsable'
         ]);
 
-        // 🔎 Buscar por nombre del dispositivo
-        if ($request->filled('search')) {
-            $query->where('nombre_dispositivo', 'like', '%' . $request->search . '%');
-        }
-
-        // 🔎 Buscar por número de serie
-        if ($request->filled('serie')) {
-            $query->where('numero_serie', 'like', '%' . $request->serie . '%');
-        }
-
-        // 🏢 Filtrar por oficina
-        if ($request->filled('oficina')) {
-            $query->where('oficina_id', $request->oficina);
-        }
-        // Filtrar por agencia
-        if ($request->filled('agencia')) {
-            $query->whereHas('oficina', function ($q) use ($request) {
-                $q->where('agencia_id', $request->agencia);
+        // 🔎 Buscar en múltiples campos (serie, dispositivo, IP, MAC, responsable, marca, modelo, tipo)
+        $searchTerm = trim($request->input('serie') ?? $request->input('search') ?? '');
+        if ($searchTerm !== '') {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('numero_serie', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('nombre_dispositivo', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('direccion_ip', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('direccion_mac', 'like', '%' . $searchTerm . '%')
+                  ->orWhereHas('responsable', function ($r) use ($searchTerm) {
+                      $r->where('nombre_responsable', 'like', '%' . $searchTerm . '%');
+                  })
+                  ->orWhereHas('modelo.marca', function ($m) use ($searchTerm) {
+                      $m->where('nombre_marca', 'like', '%' . $searchTerm . '%');
+                  })
+                  ->orWhereHas('modelo', function ($m) use ($searchTerm) {
+                      $m->where('nombre_modelo', 'like', '%' . $searchTerm . '%');
+                  })
+                  ->orWhereHas('tipoEquipo', function ($t) use ($searchTerm) {
+                      $t->where('nombre_tipo', 'like', '%' . $searchTerm . '%');
+                  });
             });
         }
 
-        $equipos = $query->paginate(12)->withQueryString();
+        // 🏢 Filtrar por oficina
+        $oficinaId = $request->input('oficina') ?? $request->input('oficina_id');
+        if (!empty($oficinaId)) {
+            $query->where('oficina_id', $oficinaId);
+        }
 
-        // Necesario para el select del filtro
-        $oficinas = Oficina::all();
-        $agencias = Agencia::all();
+        // 🏛️ Filtrar por agencia
+        $agenciaId = $request->input('agencia') ?? $request->input('agencia_id');
+        if (!empty($agenciaId)) {
+            $query->whereHas('oficina', function ($q) use ($agenciaId) {
+                $q->where('agencia_id', $agenciaId);
+            });
+        }
+
+        // ⚡ Filtrar por estado
+        if ($request->filled('estado_equipo')) {
+            $query->where('estado_equipo', $request->estado_equipo);
+        }
+
+        $equipos = $query->orderBy('id', 'desc')->paginate(12)->withQueryString();
+
+        // Necesario para los selects de los filtros
+        $oficinas = Oficina::orderBy('nombre_oficina')->get();
+        $agencias = Agencia::orderBy('nombre_agencia')->get();
 
         if ($request->ajax()) {
             return view('admin.equipos.partials.table', compact('equipos'))->render();
         }
 
         return view('admin.equipos.index', compact('equipos', 'oficinas', 'agencias'));
+    }
+
+    /**
+     * Devuelve coincidencias en JSON para autocompletado en tiempo real.
+     */
+    public function sugerencias(Request $request)
+    {
+        $term = trim($request->input('q') ?? $request->input('serie') ?? $request->input('search') ?? '');
+        if ($term === '') {
+            return response()->json([]);
+        }
+
+        $query = Equipo::with([
+            'oficina.agencia',
+            'modelo.marca',
+            'responsable',
+            'tipoEquipo'
+        ]);
+
+        $query->where(function ($q) use ($term) {
+            $q->where('numero_serie', 'like', "%{$term}%")
+              ->orWhere('nombre_dispositivo', 'like', "%{$term}%")
+              ->orWhere('direccion_ip', 'like', "%{$term}%")
+              ->orWhere('direccion_mac', 'like', "%{$term}%")
+              ->orWhereHas('responsable', function ($r) use ($term) {
+                  $r->where('nombre_responsable', 'like', "%{$term}%");
+              })
+              ->orWhereHas('modelo.marca', function ($m) use ($term) {
+                  $m->where('nombre_marca', 'like', "%{$term}%");
+              })
+              ->orWhereHas('modelo', function ($m) use ($term) {
+                  $m->where('nombre_modelo', 'like', "%{$term}%");
+              })
+              ->orWhereHas('tipoEquipo', function ($t) use ($term) {
+                  $t->where('nombre_tipo', 'like', "%{$term}%");
+              });
+        });
+
+        // Filtrar por oficina / agencia si están presentes en la petición
+        if ($request->filled('oficina')) {
+            $query->where('oficina_id', $request->oficina);
+        }
+        if ($request->filled('agencia')) {
+            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $request->agencia));
+        }
+        if ($request->filled('estado_equipo')) {
+            $query->where('estado_equipo', $request->estado_equipo);
+        }
+
+        $equipos = $query->take(8)->get();
+
+        $resultados = $equipos->map(function ($equipo) {
+            $serie = $equipo->numero_serie ?: 'S/N';
+            $nombre = $equipo->nombre_dispositivo ?: 'Equipo';
+            $marca = $equipo->modelo?->marca?->nombre_marca ?? '';
+            $modelo = $equipo->modelo?->nombre_modelo ?? '';
+            $marcaModelo = trim($marca . ' ' . $modelo);
+            $responsable = $equipo->responsable?->nombre_responsable ?? 'Sin asignar';
+            $oficina = $equipo->oficina?->nombre_oficina ?? 'Sin oficina';
+
+            return [
+                'id'          => $equipo->id,
+                'serie'       => $equipo->numero_serie,
+                'value'       => $equipo->numero_serie ?: $equipo->nombre_dispositivo,
+                'nombre'      => $nombre,
+                'marcaModelo' => $marcaModelo,
+                'responsable' => $responsable,
+                'oficina'     => $oficina,
+                'estado'      => $equipo->estado_equipo,
+            ];
+        });
+
+        return response()->json($resultados);
     }
 
     public function create()
@@ -174,17 +273,32 @@ class EquipoController extends Controller
             'responsable',
         ]);
 
-        if ($request->filled('serie')) {
-            $query->where('numero_serie', 'like', '%' . $request->serie . '%');
+        $searchTerm = trim($request->input('serie') ?? $request->input('search') ?? '');
+        if ($searchTerm !== '') {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('numero_serie', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('nombre_dispositivo', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('direccion_ip', 'like', '%' . $searchTerm . '%')
+                  ->orWhere('direccion_mac', 'like', '%' . $searchTerm . '%')
+                  ->orWhereHas('responsable', fn($r) => $r->where('nombre_responsable', 'like', '%' . $searchTerm . '%'))
+                  ->orWhereHas('modelo.marca', fn($m) => $m->where('nombre_marca', 'like', '%' . $searchTerm . '%'))
+                  ->orWhereHas('modelo', fn($m) => $m->where('nombre_modelo', 'like', '%' . $searchTerm . '%'))
+                  ->orWhereHas('tipoEquipo', fn($t) => $t->where('nombre_tipo', 'like', '%' . $searchTerm . '%'));
+            });
         }
-        if ($request->filled('oficina')) {
-            $query->where('oficina_id', $request->oficina);
+        $oficinaId = $request->input('oficina') ?? $request->input('oficina_id');
+        if (!empty($oficinaId)) {
+            $query->where('oficina_id', $oficinaId);
         }
-        if ($request->filled('agencia')) {
-            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $request->agencia));
+        $agenciaId = $request->input('agencia') ?? $request->input('agencia_id');
+        if (!empty($agenciaId)) {
+            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $agenciaId));
+        }
+        if ($request->filled('estado_equipo')) {
+            $query->where('estado_equipo', $request->estado_equipo);
         }
 
-        $equipos = $query->orderBy('id')->get();
+        $equipos = $query->orderBy('id', 'desc')->get();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
