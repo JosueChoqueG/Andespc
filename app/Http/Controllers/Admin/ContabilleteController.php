@@ -32,20 +32,26 @@ class ContabilleteController extends Controller
         // Filtro por término de búsqueda (multicampo)
         $searchTerm = trim($request->input('serie') ?? $request->input('search') ?? '');
         if ($searchTerm !== '') {
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('serie_contabilletes', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('marca_contabilletes', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('modelo_contabilletes', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('tipo_contabilletes', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('tipo_deteccion', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('pantalla_contabilletes', 'LIKE', "%{$searchTerm}%")
-                  ->orWhereHas('responsable', function ($r) use ($searchTerm) {
-                      $r->where('nombre_responsable', 'LIKE', "%{$searchTerm}%");
-                  })
-                  ->orWhereHas('oficina', function ($o) use ($searchTerm) {
-                      $o->where('nombre_oficina', 'LIKE', "%{$searchTerm}%");
-                  });
-            });
+            $terms = explode(' ', $searchTerm);
+            foreach ($terms as $term) {
+                $term = trim($term);
+                if (empty($term)) continue;
+
+                $query->where(function ($q) use ($term) {
+                    $q->where('serie_contabilletes', 'LIKE', "%{$term}%")
+                      ->orWhere('marca_contabilletes', 'LIKE', "%{$term}%")
+                      ->orWhere('modelo_contabilletes', 'LIKE', "%{$term}%")
+                      ->orWhere('tipo_contabilletes', 'LIKE', "%{$term}%")
+                      ->orWhere('tipo_deteccion', 'LIKE', "%{$term}%")
+                      ->orWhere('pantalla_contabilletes', 'LIKE', "%{$term}%")
+                      ->orWhereHas('responsable', function ($r) use ($term) {
+                          $r->where('nombre_responsable', 'LIKE', "%{$term}%");
+                      })
+                      ->orWhereHas('oficina', function ($o) use ($term) {
+                          $o->where('nombre_oficina', 'LIKE', "%{$term}%");
+                      });
+                });
+            }
         }
 
         // Filtros de oficina y agencia
@@ -91,14 +97,20 @@ class ContabilleteController extends Controller
 
         $query = Contabillete::with(['oficina.agencia', 'responsable']);
 
-        $query->where(function ($q) use ($term) {
-            $q->where('serie_contabilletes', 'LIKE', "%{$term}%")
-              ->orWhere('marca_contabilletes', 'LIKE', "%{$term}%")
-              ->orWhere('modelo_contabilletes', 'LIKE', "%{$term}%")
-              ->orWhere('tipo_contabilletes', 'LIKE', "%{$term}%")
-              ->orWhereHas('responsable', fn($r) => $r->where('nombre_responsable', 'LIKE', "%{$term}%"))
-              ->orWhereHas('oficina', fn($o) => $o->where('nombre_oficina', 'LIKE', "%{$term}%"));
-        });
+        $terms = explode(' ', $term);
+        foreach ($terms as $t) {
+            $t = trim($t);
+            if (empty($t)) continue;
+
+            $query->where(function ($q) use ($t) {
+                $q->where('serie_contabilletes', 'LIKE', "%{$t}%")
+                  ->orWhere('marca_contabilletes', 'LIKE', "%{$t}%")
+                  ->orWhere('modelo_contabilletes', 'LIKE', "%{$t}%")
+                  ->orWhere('tipo_contabilletes', 'LIKE', "%{$t}%")
+                  ->orWhereHas('responsable', fn($r) => $r->where('nombre_responsable', 'LIKE', "%{$t}%"))
+                  ->orWhereHas('oficina', fn($o) => $o->where('nombre_oficina', 'LIKE', "%{$t}%"));
+            });
+        }
 
         $oficinaId = $request->input('oficina_id') ?? $request->input('oficina');
         if (!empty($oficinaId)) {
@@ -119,7 +131,7 @@ class ContabilleteController extends Controller
             return [
                 'id'          => $contabillete->id,
                 'serie'       => $contabillete->serie_contabilletes,
-                'value'       => $contabillete->serie_contabilletes ?: $marcaModelo,
+                'value'       => $contabillete->serie_contabilletes . ($marcaModelo ? ' - ' . $marcaModelo : ''),
                 'nombre'      => $marcaModelo ?: 'Contadora de Billetes',
                 'marcaModelo' => $marcaModelo,
                 'responsable' => $contabillete->responsable?->nombre_responsable ?? 'Sin asignar',
@@ -319,20 +331,26 @@ class ContabilleteController extends Controller
         // Filtro por término de búsqueda (multicampo)
         $searchTerm = trim($request->input('serie') ?? $request->input('search') ?? '');
         if ($searchTerm !== '') {
-            $query->where(function ($q) use ($searchTerm) {
-                $q->where('serie_contabilletes', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('marca_contabilletes', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('modelo_contabilletes', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('tipo_contabilletes', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('tipo_deteccion', 'LIKE', "%{$searchTerm}%")
-                  ->orWhere('pantalla_contabilletes', 'LIKE', "%{$searchTerm}%")
-                  ->orWhereHas('responsable', function ($r) use ($searchTerm) {
-                      $r->where('nombre_responsable', 'LIKE', "%{$searchTerm}%");
-                  })
-                  ->orWhereHas('oficina', function ($o) use ($searchTerm) {
-                      $o->where('nombre_oficina', 'LIKE', "%{$searchTerm}%");
-                  });
-            });
+            $terms = explode(' ', $searchTerm);
+            foreach ($terms as $term) {
+                $term = trim($term);
+                if (empty($term)) continue;
+
+                $query->where(function ($q) use ($term) {
+                    $q->where('serie_contabilletes', 'LIKE', "%{$term}%")
+                      ->orWhere('marca_contabilletes', 'LIKE', "%{$term}%")
+                      ->orWhere('modelo_contabilletes', 'LIKE', "%{$term}%")
+                      ->orWhere('tipo_contabilletes', 'LIKE', "%{$term}%")
+                      ->orWhere('tipo_deteccion', 'LIKE', "%{$term}%")
+                      ->orWhere('pantalla_contabilletes', 'LIKE', "%{$term}%")
+                      ->orWhereHas('responsable', function ($r) use ($term) {
+                          $r->where('nombre_responsable', 'LIKE', "%{$term}%");
+                      })
+                      ->orWhereHas('oficina', function ($o) use ($term) {
+                          $o->where('nombre_oficina', 'LIKE', "%{$term}%");
+                      });
+                });
+            }
         }
 
         $oficinaId = $request->input('oficina_id') ?? $request->input('oficina');

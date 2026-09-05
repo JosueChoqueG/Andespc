@@ -4,34 +4,20 @@
 
 @push('styles')
 <style>
-    .autocomplete-dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        z-index: 1000;
-        max-height: 300px;
-        overflow-y: auto;
-        display: none;
-    }
-    .autocomplete-item {
-        padding: 10px;
-        border-bottom: 1px solid #eee;
+    #autocomplete-dropdown .dropdown-item {
+        padding: 8px 12px;
+        border-bottom: 1px solid #f1f5f9;
         cursor: pointer;
-        transition: background-color 0.2s;
+        transition: background-color 0.15s ease;
     }
-    .autocomplete-item:last-child {
+    #autocomplete-dropdown .dropdown-item:last-child {
         border-bottom: none;
     }
-    .autocomplete-item:hover {
-        background-color: #f8f9fa;
-    }
-    .search-container {
-        position: relative;
+    #autocomplete-dropdown .dropdown-item:hover,
+    #autocomplete-dropdown .dropdown-item.active,
+    #autocomplete-dropdown .dropdown-item:focus {
+        background-color: #fef9c3;
+        color: #854d0e;
     }
 </style>
 @endpush
@@ -58,17 +44,16 @@
                     
                     <!-- Buscador y Filtros Inline -->
                     <form id="filter-form" class="row g-2 align-items-center flex-grow-1 justify-content-end">
-                        <div class="col-md-3 col-sm-4 col-12 search-container">
+                        <div class="col-md-3 col-sm-4 col-12 position-relative">
                             <div class="input-group input-group-sm">
                                 <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
                                 <input type="text" name="search" id="searchInput" class="form-control" placeholder="Buscar por serie, marca, modelo, oficina..." value="{{ request('search') }}" autocomplete="off">
-                                <span class="input-group-text bg-white d-none" id="searchSpinner">
-                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
+                                <span class="input-group-text bg-white border-start-0 py-0 px-2 d-none" id="searchSpinner" style="cursor: default;">
+                                    <span class="spinner-border spinner-border-sm text-primary" role="status" style="width: 0.85rem; height: 0.85rem;"></span>
                                 </span>
                             </div>
-                            <div id="autocomplete-dropdown" class="autocomplete-dropdown"></div>
+                            <!-- Dropdown de autocompletado flotante -->
+                            <ul id="autocomplete-dropdown" class="dropdown-menu shadow-lg w-100 mt-1 py-1 border border-light" style="display: none; position: absolute; top: 100%; left: 0; z-index: 1055; max-height: 300px; overflow-y: auto; border-radius: 8px;"></ul>
                         </div>
                         <div class="col-md-2 col-sm-4 col-12">
                             <select name="agencia_id" id="filtroAgencia" class="form-select form-select-sm select2">
@@ -194,6 +179,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let autocompleteTimer;
     let currentAbortController = null;
 
+    function escapeRegex(string) {
+        return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+
+    function escapeHtml(string) {
+        return String(string || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
     function getFormData() {
         const formData = new FormData(form);
         const params = new URLSearchParams(formData);
@@ -260,11 +253,15 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(res => res.json())
         .then(data => {
             autocompleteDropdown.innerHTML = '';
-            if (data.length > 0) {
-                data.forEach(item => {
-                    const div = document.createElement('div');
-                    div.className = 'autocomplete-item';
-                    
+            if (data && data.length > 0) {
+                let html = '';
+                const regex = new RegExp('(' + escapeRegex(query) + ')', 'gi');
+                
+                data.forEach((item, index) => {
+                    const highlightSerie = item.serie ? item.serie.replace(regex, '<mark class="bg-warning px-1 rounded">$1</mark>') : 'S/N';
+                    const highlightNombre = item.nombre ? item.nombre.replace(regex, '<mark class="bg-warning px-1 rounded">$1</mark>') : '';
+                    const highlightResp = item.responsable ? item.responsable.replace(regex, '<mark class="bg-warning px-1 rounded">$1</mark>') : '';
+
                     const badgeColor = {
                         'OPTIMO': 'success',
                         'BUENO': 'info',
@@ -273,23 +270,38 @@ document.addEventListener('DOMContentLoaded', function() {
                         'DE BAJA': 'secondary'
                     }[item.estado] || 'dark';
 
-                    div.innerHTML = `
-                        <div class="d-flex justify-content-between align-items-center">
-                            <strong>${item.value}</strong>
-                            <span class="badge bg-${badgeColor}">${item.estado}</span>
-                        </div>
-                        <div class="text-muted small">
-                            ${item.marcaModelo} | Of: ${item.oficina} | Resp: ${item.responsable}
-                        </div>
+                    html += `
+                        <li class="dropdown-item py-2 px-3 suggestion-item" data-value="${escapeHtml(item.value)}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <div class="fw-semibold text-dark">
+                                        <i class="bi bi-cash-coin text-warning me-1"></i> ${highlightNombre} 
+                                        <span class="badge bg-light text-dark border ms-1">${highlightSerie}</span>
+                                    </div>
+                                    <div class="small text-muted mt-1">
+                                        <i class="bi bi-person me-1"></i>${highlightResp} • 
+                                        <i class="bi bi-geo-alt me-1"></i>${item.oficina}
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="badge bg-${badgeColor} opacity-75">${item.estado || ''}</span>
+                                </div>
+                            </div>
+                        </li>
                     `;
-                    div.addEventListener('click', () => {
-                        searchInput.value = item.value;
+                });
+                
+                autocompleteDropdown.innerHTML = html;
+                autocompleteDropdown.style.display = 'block';
+                
+                autocompleteDropdown.querySelectorAll('.suggestion-item').forEach(el => {
+                    el.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        searchInput.value = this.getAttribute('data-value');
                         autocompleteDropdown.style.display = 'none';
                         fetchTableData();
                     });
-                    autocompleteDropdown.appendChild(div);
                 });
-                autocompleteDropdown.style.display = 'block';
             } else {
                 autocompleteDropdown.style.display = 'none';
             }
