@@ -1,5 +1,6 @@
 <div class="table-responsive shadow-sm rounded-3 border bg-white">
-    <table class="table table-hover align-middle mb-0">
+    <div class="table-responsive">
+<table class="table table-hover align-middle mb-0">
         <thead class="table-light text-nowrap">
             <tr>
                 <th class="px-4 py-3 border-bottom-0 text-secondary fw-semibold">Dispositivo / SN</th>
@@ -104,6 +105,7 @@
             @endforelse
         </tbody>
     </table>
+</div>
 </div>
 
 <!-- Paginación Bootstrap -->

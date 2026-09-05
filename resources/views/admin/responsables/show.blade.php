@@ -10,10 +10,12 @@
                 <h5>Detalles del Responsable</h5>
             </div>
             <div class="card-body">
-                <table class="table table-bordered">
+                <div class="table-responsive">
+<table class="table table-bordered">
                     <tr><th>ID</th><td>{{ $responsable->id_responsable }}</td></tr>
                     <tr><th>Nombre</th><td>{{ $responsable->nombre_responsable }}</td></tr>
                 </table>
+</div>
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('responsables.edit', $responsable) }}" class="btn btn-warning me-2">Editar</a>
                     <a href="{{ route('responsables.index') }}" class="btn btn-secondary">Volver</a>

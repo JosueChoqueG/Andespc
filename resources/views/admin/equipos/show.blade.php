@@ -10,7 +10,8 @@
                 <h5><i class="bi bi-pc-display"></i> Detalles del Equipo: {{ $equipo->nombre_dispositivo }}</h5>
             </div>
             <div class="card-body">
-                <table class="table table-bordered">
+                <div class="table-responsive">
+<table class="table table-bordered">
                     <tr><th>Nombre</th><td>{{ $equipo->nombre_dispositivo }}</td></tr>
                     <tr><th>Serie</th><td>{{ $equipo->numero_serie ?? 'N/A' }}</td></tr>
                     <tr><th>Dirección IP</th><td>{{ $equipo->direccion_ip ?? 'N/A' }}</td></tr>
@@ -67,6 +68,7 @@
                     <tr><th>Copias de Seguridad</th><td><pre class="bg-light p-2 rounded">{{ $equipo->copias_seguridad ?? 'N/A' }}</pre></td></tr>
                     <tr><th>Observaciones</th><td><pre class="bg-light p-2 rounded">{{ $equipo->observacion ?? 'N/A' }}</pre></td></tr>
                 </table>
+</div>
 
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('equipos.edit', $equipo) }}" class="btn btn-warning me-2">Editar</a>

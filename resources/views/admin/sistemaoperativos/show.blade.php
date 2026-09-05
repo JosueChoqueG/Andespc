@@ -10,11 +10,13 @@
                 <h5>Detalles del Sistema Operativo</h5>
             </div>
             <div class="card-body">
-                <table class="table table-bordered">
+                <div class="table-responsive">
+<table class="table table-bordered">
                     <tr><th>Nombre</th><td>{{ $sistemaoperativos->nombre_so }}</td></tr>
                     <tr><th>Edición</th><td>{{ $sistemaoperativos->edicion ?? 'N/A' }}</td></tr>
                     <tr><th>Versión</th><td>{{ $sistemaoperativos->version ?? 'N/A' }}</td></tr>
                 </table>
+</div>
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('sistemaoperativos.edit', $sistema) }}" class="btn btn-warning me-2">Editar</a>
                     <a href="{{ route('sistemaoperativos.index') }}" class="btn btn-secondary">Volver</a>

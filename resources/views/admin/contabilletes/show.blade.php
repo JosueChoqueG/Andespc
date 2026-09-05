@@ -31,7 +31,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="40%">Número de Serie:</th>
                             <td><strong>{{ $contabillete->serie_contabilletes }}</strong></td>
@@ -61,6 +62,7 @@
                             <td>{{ $contabillete->fecha_adquisicion ? date('d/m/Y', strtotime($contabillete->fecha_adquisicion)) : 'No registrada' }}</td>
                         </tr>
                     </table>
+</div>
                 </div>
             </div>
         </div>
@@ -73,7 +75,8 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="40%">Velocidad de Conteo:</th>
                             <td>{{ $contabillete->velocidad_contabilletes ?? 'No especificada' }}</td>
@@ -113,6 +116,7 @@
                             </td>
                         </tr>
                     </table>
+</div>
                 </div>
             </div>
         </div>
@@ -133,7 +137,8 @@
                         $correctivos = $contabillete->mantenimientos->where('tipo_mantenimiento', 'Correctivo')->count();
                         $ultimoMant = $contabillete->mantenimientos->first();
                     @endphp
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="50%">Total Mantenimientos:</th>
                             <td><span class="badge bg-primary badge-lg">{{ $totalMant }}</span></td>
@@ -161,6 +166,7 @@
                         </tr>
                         @endif
                     </table>
+</div>
                 </div>
             </div>
         </div>

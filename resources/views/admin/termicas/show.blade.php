@@ -31,7 +31,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="40%">Número de Serie:</th>
                             <td><strong>{{ $termica->serie_termica }}</strong></td>
@@ -61,6 +62,7 @@
                             <td>{{ $termica->fecha_adquisicion ? date('d/m/Y', strtotime($termica->fecha_adquisicion)) : 'No registrada' }}</td>
                         </tr>
                     </table>
+</div>
                 </div>
             </div>
         </div>
@@ -73,7 +75,8 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="40%">Tipo de Conexión:</th>
                             <td>
@@ -117,6 +120,7 @@
                             </td>
                         </tr>
                     </table>
+</div>
                 </div>
             </div>
         </div>
@@ -131,7 +135,8 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="50%">Velocidad de Impresión:</th>
                             <td>{{ $termica->velocidad_impresion ?? 'No especificada' }}</td>
@@ -171,6 +176,7 @@
                         </tr>
                         @endif
                     </table>
+</div>
                 </div>
             </div>
         </div>
@@ -189,7 +195,8 @@
                         $correctivos = $termica->mantenimientos->where('tipo_mantenimiento', 'Correctivo')->count();
                         $ultimoMant = $termica->mantenimientos->first();
                     @endphp
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="50%">Total Mantenimientos:</th>
                             <td><span class="badge bg-primary badge-lg">{{ $totalMant }}</span></td>
@@ -217,6 +224,7 @@
                         </tr>
                         @endif
                     </table>
+</div>
                 </div>
             </div>
         </div>

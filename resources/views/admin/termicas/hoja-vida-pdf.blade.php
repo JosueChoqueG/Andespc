@@ -51,7 +51,8 @@
     </head>
     <body>
         <div class="page">
-            <table>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <td style="width: 20%; padding: 0; text-align: center;">
                         @if(isset($logoPath))
@@ -70,8 +71,10 @@
                     <td style="width: 18%;"><strong>{{ $termica->serie_termica ?? $termica->id }}</strong></td>
                 </tr>
             </table>
+</div>
             
-            <table>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <th style="width: 15%;">Realizado por</th>
                     <td style="width: 20%;" class="text-center">{{ $tecnico }}</td>
@@ -80,9 +83,11 @@
                     <td style="width: 35%;" class="text-center">Versión: 1.0</td>
                 </tr>
             </table>
+</div>
 
             <div class="section-title">1. DATOS GENERALES DEL EQUIPO</div>
-            <table>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <th style="width: 15%;">Tipo de impresora</th>
                     <td style="width: 12%;" class="text-center">{{ $termica->tipo_termica }}</td>
@@ -114,7 +119,9 @@
                     <td colspan="2"></td>
                 </tr>
             </table>
-            <table>
+</div>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <td style="width: 15%;">Responsable / Área</td>
                     <td style="width: 40%;" class="text-center">
@@ -122,9 +129,11 @@
                     </td>
                 </tr>
             </table>
+</div>
 
             <div class="section-title">2. CARACTERÍSTICAS TECNICAS</div>
-            <table>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <th style="width: 15%;">Nombre de Host</th>
                     <td style="width: 20%;" class="text-center">{{ $termica->nombre_host ?? 'N/A' }}</td>
@@ -150,9 +159,11 @@
                     <td class="text-center">-</td>
                 </tr>
             </table>
+</div>
 
             <div class="section-title">3. HISTORIAL DE MANTENIMIENTO</div>
-            <table>
+            <div class="table-responsive">
+<table>
                 <thead>
                     <tr>
                         <th style="width: 12%;">Fecha</th>
@@ -182,9 +193,11 @@
                     @endforelse
                 </tbody>
             </table>
+</div>
 
             <div class="section-title">4. REGISTRO DE FALLAS E INCIDENCIAS</div>
-            <table>
+            <div class="table-responsive">
+<table>
                 <thead>
                     <tr>
                         <th style="width: 15%;">Fecha</th>
@@ -206,9 +219,11 @@
                     @endforelse
                 </tbody>
             </table>
+</div>
 
             <div class="section-title">5. ESTADO ACTUAL DE LA IMPRESORA TÉRMICA</div>
-            <table>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <th width="25%">Descripción</th>
                     <th width="10%" class="text-center">Estado</th>
@@ -239,10 +254,12 @@
                     </td>
                 </tr>
             </table>
+</div>
 
             <div class="no-break">
                 <div class="section-title">6. RESPONSABLES</div>
-                <table>
+                <div class="table-responsive">
+<table>
                     <thead>
                         <tr>
                             <th width="25%"></th>
@@ -266,6 +283,7 @@
                         </tr>
                     </tbody>
                 </table>
+</div>
             </div>
         </div>
     </body>

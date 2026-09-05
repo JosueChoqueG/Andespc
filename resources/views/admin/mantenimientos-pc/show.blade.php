@@ -32,7 +32,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <table class="table table-bordered">
+                            <div class="table-responsive">
+<table class="table table-bordered">
                                 <tr>
                                     <th width="40%">Equipo</th>
                                     <td>{{ $equipo->nombre_dispositivo }}</td>
@@ -50,9 +51,11 @@
                                     <td>{{ $mantenimiento->tecnico_nombre ?? 'Josue Choque Gomez' }}</td>
                                 </tr>
                             </table>
+</div>
                         </div>
                         <div class="col-md-6">
-                            <table class="table table-bordered">
+                            <div class="table-responsive">
+<table class="table table-bordered">
                                 <tr>
                                     <th width="40%">Tipo de Mantenimiento</th>
                                     <td>
@@ -70,6 +73,7 @@
                                     <td>{{ $mantenimiento->created_at->format('d/m/Y H:i') }}</td>
                                 </tr>
                             </table>
+</div>
                         </div>
                     </div>
 
