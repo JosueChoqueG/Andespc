@@ -26,7 +26,8 @@
                 </div>
                 <div class="card-body">
                     <h5 class="fw-bold mb-3 border-bottom pb-2">Información del Equipo</h5>
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="30%">Marca/Modelo:</th>
                             <td>{{ $mantenimiento->contabillete->marca_contabilletes }} {{ $mantenimiento->contabillete->modelo_contabilletes }}</td>
@@ -40,9 +41,11 @@
                             <td>{{ $mantenimiento->contabillete->oficina->nombre_oficina ?? 'N/A' }}</td>
                         </tr>
                     </table>
+</div>
 
                     <h5 class="fw-bold mt-4 mb-3 border-bottom pb-2">Detalles del Mantenimiento</h5>
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="30%">Tipo Mantenimiento:</th>
                             <td>
@@ -72,10 +75,12 @@
                         </tr>
                         @endif
                     </table>
+</div>
 
                     @if($mantenimiento->fallas_detectadas || $mantenimiento->fallas_solucion)
                     <h5 class="fw-bold mt-4 mb-3 border-bottom pb-2">Incidencias y Fallas</h5>
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         @if($mantenimiento->fecha_fallas)
                         <tr>
                             <th width="30%">Fecha de Reporte Falla:</th>
@@ -95,6 +100,7 @@
                         </tr>
                         @endif
                     </table>
+</div>
                     @endif
 
                     @if($mantenimiento->observacion_general)

@@ -7,10 +7,10 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0"><i class="bi bi-printer"></i> Impresoras Registradas</h5>
         <div class="d-flex gap-2">
-            <a href="{{ route('admin.impresoras.create') }}" class="btn btn-primary shadow-sm">
+            <a href="{{ route('admin.impresoras.create') }}" class="btn btn-primary shadow-sm" title="Nueva Impresora">
                 <i class="bi bi-plus-circle"></i>
             </a>
-            <a href="{{ route('admin.impresoras.exportar') }}" class="btn btn-success shadow-sm">
+            <a href="{{ route('admin.impresoras.exportar') }}" id="btnExportarExcel" class="btn btn-success shadow-sm" title="Exportar a Excel">
                 <i class="bi bi-filetype-xlsx"></i>
             </a>
         </div>
@@ -23,15 +23,22 @@
                     <strong><i class="bi bi-list-check"></i> Listado de Impresoras</strong>
                     
                     <!-- Buscador y Filtros Inline -->
-                    <form method="GET" action="{{ route('admin.impresoras.index') }}" class="row g-2 align-items-center flex-grow-1 justify-content-end">
-                        <div class="col-md-2 col-sm-4 col-12">
-                            <input type="text" name="serie" class="form-control form-control-sm" placeholder="Por serie..." value="{{ request('serie') }}">
+                    <form method="GET" action="{{ route('admin.impresoras.index') }}" class="row g-2 align-items-center flex-grow-1 justify-content-end" id="filtros-form">
+                        <div class="col-md-3 col-sm-4 col-12 position-relative">
+                            <div class="input-group input-group-sm">
+                                <input type="text" name="serie" id="inputSerieBusqueda" class="form-control form-control-sm" placeholder="Por serie, marca, modelo, ip..." value="{{ request('serie') ?? request('search') }}" autocomplete="off">
+                                <span class="input-group-text bg-white border-start-0 py-0 px-2 d-none" id="search-spinner" style="cursor: default;">
+                                    <span class="spinner-border spinner-border-sm text-primary" role="status" style="width: 0.85rem; height: 0.85rem;"></span>
+                                </span>
+                            </div>
+                            <!-- Dropdown de autocompletado flotante -->
+                            <ul id="autocomplete-dropdown" class="dropdown-menu shadow-lg w-100 mt-1 py-1 border border-light" style="display: none; position: absolute; top: 100%; left: 0; z-index: 1055; max-height: 300px; overflow-y: auto; border-radius: 8px;"></ul>
                         </div>
                         <div class="col-md-2 col-sm-4 col-12">
                             <select name="agencia_id" id="filtroAgencia" class="form-select form-select-sm select2">
                                 <option value="">Agencias</option>
                                 @foreach($agencias ?? [] as $agencia)
-                                    <option value="{{ $agencia->id }}" {{ request('agencia_id') == $agencia->id ? 'selected' : '' }}>
+                                    <option value="{{ $agencia->id }}" {{ (request('agencia_id') == $agencia->id || request('agencia') == $agencia->id) ? 'selected' : '' }}>
                                         {{ $agencia->nombre_agencia }}
                                     </option>
                                 @endforeach
@@ -43,14 +50,14 @@
                                 @foreach($oficinas ?? [] as $oficina)
                                     <option value="{{ $oficina->id }}" 
                                         data-agencia="{{ $oficina->agencia_id }}"
-                                        {{ request('oficina_id') == $oficina->id ? 'selected' : '' }}>
+                                        {{ (request('oficina_id') == $oficina->id || request('oficina') == $oficina->id) ? 'selected' : '' }}>
                                         {{ $oficina->nombre_oficina }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="col-md-2 col-sm-4 col-12">
-                            <select name="estado_impresora" class="form-select form-select-sm">
+                            <select name="estado_impresora" id="filtroEstado" class="form-select form-select-sm">
                                 <option value="">Estados</option>
                                 <option value="OPTIMO" {{ request('estado_impresora') == 'OPTIMO' ? 'selected' : '' }}>Óptimo</option>
                                 <option value="BUENO" {{ request('estado_impresora') == 'BUENO' ? 'selected' : '' }}>Bueno</option>
@@ -63,123 +70,15 @@
                             <button type="submit" class="btn btn-sm btn-outline-primary d-flex align-items-center justify-content-center shadow-sm" title="Filtrar">
                                 <i class="bi bi-search"></i>
                             </button>
-                            <a href="{{ route('admin.impresoras.index') }}" class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center shadow-sm" title="Limpiar Filtros">
+                            <a href="{{ route('admin.impresoras.index') }}" class="btn btn-sm btn-outline-secondary d-flex align-items-center justify-content-center shadow-sm" title="Limpiar Filtros" id="btnLimpiarFiltros">
                                 <i class="bi bi-arrow-clockwise"></i>
                             </a>
                         </div>
                     </form>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Serie</th>
-                                    <th>Marca / Modelo</th>
-                                    <th>Oficina</th>
-                                    <th>Conexión</th>
-                                    <th>IP</th>
-                                    <th>Estado</th>
-                                    <th>Últ. Mant.</th>
-                                    <th width="150">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($impresoras as $impresora)
-                                <tr>
-                                    <td>{{ $impresora->id }}</td>
-                                    <td>{{ $impresora->serie_impresora }}</td>
-                                    <td>
-                                        <strong>{{ $impresora->marca_impresora }}</strong><br>
-                                        <small>{{ $impresora->modelo_impresora }}</small>
-                                    </td>
-                                    <td>{{ $impresora->oficina->nombre_oficina ?? 'N/A' }}</td>
-                                    <td>
-                                        @php
-                                            $iconos = [
-                                                'USB' => 'fa-usb',
-                                                'WIFI' => 'fa-wifi',
-                                                'ETHERNET' => 'fa-network-wired',
-                                                'WIFI-DIRECT' => 'fa-wifi'
-                                            ];
-                                        @endphp
-                                        <i class="fas {{ $iconos[$impresora->tipo_conexion] ?? 'fa-plug' }}"></i>
-                                        {{ $impresora->tipo_conexion }}
-                                    </td>
-                                    <td>{{ $impresora->direccion_ip ?? 'N/A' }}</td>
-                                    <td>
-                                        @php
-                                            $estado = strtoupper(trim($impresora->estado_impresora));
-                                            $badgeClass = [
-                                                'OPTIMO' => 'success',
-                                                'BUENO' => 'info',
-                                                'REGULAR' => 'warning',
-                                                'DEFICIENTE' => 'danger',
-                                                'DE BAJA' => 'secondary'
-                                            ][$estado] ?? 'dark';
-                                        @endphp
-                                        
-                                        <span class="badge bg-{{ $badgeClass }}">
-                                            {{ $impresora->estado_impresora }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        @if($impresora->ultimoMantenimiento)
-                                            {{ date('d/m/Y', strtotime($impresora->ultimoMantenimiento->fecha_mantenimiento)) }}
-                                        @else
-                                            <span class="text-muted">Sin registro</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="btn-group btn-group-sm">
-                                            <a href="{{ route('admin.impresoras.show', $impresora->id) }}" 
-                                               class="btn btn-info" title="Ver">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-                                            <a href="{{ route('admin.impresoras.edit', $impresora->id) }}" 
-                                               class="btn btn-warning" title="Editar">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-                                            <a href="{{ route('admin.mantenimientos-impresora.create', $impresora->id) }}" 
-                                               class="btn btn-primary" title="Registrar Mantenimiento">
-                                                <i class="bi bi-tools"></i>
-                                            </a>
-                                            <a href="{{ route('admin.informes-impresora.create', $impresora->id) }}" 
-                                               class="btn btn-success" title="Nuevo Informe">
-                                                <i class="bi bi-file-earmark-text"></i> 
-                                            </a>    
-                                            <!-- button type="button" 
-                                                    class="btn btn-danger" 
-                                                    title="Eliminar"
-                                                    onclick="confirmDelete({{ $impresora->id }})">
-                                                <i class="bi bi-trash"></i>
-                                            </button-->
-                                        </div>
-                                        
-                                        <!--form id="delete-form-{{ $impresora->id }}" 
-                                              action="{{ route('admin.impresoras.destroy', $impresora->id) }}" 
-                                              method="POST" style="display: none;">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form-->
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="9" class="text-center">
-                                        <div class="alert alert-info mb-0">
-                                            <i class="bi bi-info-circle"></i> No hay impresoras registradas
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="mt-3">
-                        {{ $impresoras->appends(request()->query())->links() }}
+                    <div id="impresoras-table-container">
+                        @include('admin.impresoras.partials.table')
                     </div>
                 </div>
             </div>
@@ -187,10 +86,28 @@
     </div>
 </div>
 
+<style>
+    #autocomplete-dropdown .dropdown-item {
+        padding: 8px 12px;
+        border-bottom: 1px solid #f1f5f9;
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+    }
+    #autocomplete-dropdown .dropdown-item:last-child {
+        border-bottom: none;
+    }
+    #autocomplete-dropdown .dropdown-item:hover,
+    #autocomplete-dropdown .dropdown-item.active,
+    #autocomplete-dropdown .dropdown-item:focus {
+        background-color: #f0f7ff;
+        color: #0d6efd;
+    }
+</style>
+
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Inicializar Select2
+    // 1. Inicialización de Select2
     if (window.jQuery && $.fn.select2) {
         $('.select2').select2({
             theme: 'bootstrap-5',
@@ -199,69 +116,294 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    const form = document.getElementById('filtros-form');
+    const inputBusqueda = document.getElementById('inputSerieBusqueda');
     const agenciaSelect = document.getElementById('filtroAgencia');
     const oficinaSelect = document.getElementById('filtroOficina');
-    const allOficinaOptions = Array.from(oficinaSelect.options);
+    const estadoSelect = document.getElementById('filtroEstado');
+    const spinner = document.getElementById('search-spinner');
+    const autocompleteDropdown = document.getElementById('autocomplete-dropdown');
+    const tableContainer = document.getElementById('impresoras-table-container');
+    const btnExportar = document.getElementById('btnExportarExcel');
+    const exportBaseUrl = "{{ route('admin.impresoras.exportar') }}";
+    const indexUrl = "{{ route('admin.impresoras.index') }}";
+    const sugerenciasUrl = "{{ route('admin.impresoras.sugerencias') }}";
 
+    const allOficinaOptions = Array.from(oficinaSelect.options);
+    let debounceTimer = null;
+    let autocompleteTimer = null;
+    let activeAbortController = null;
+    let selectedSuggestionIndex = -1;
+
+    // 2. Cascada Agencias -> Oficinas
     function filterOficinas() {
         const selectedAgencia = agenciaSelect.value;
-        
-        // Guardar selección actual de oficina para ver si se puede conservar
         const currentOficinaVal = oficinaSelect.value;
-        
-        // Limpiar opciones actuales
         oficinaSelect.innerHTML = '';
-        
-        // Filtrar y añadir opciones
         allOficinaOptions.forEach(option => {
             if (!selectedAgencia || option.value === '' || option.getAttribute('data-agencia') === selectedAgencia) {
                 oficinaSelect.appendChild(option.cloneNode(true));
             }
         });
-
-        // Restaurar selección previa si aún existe entre las opciones filtradas
         if (Array.from(oficinaSelect.options).some(opt => opt.value === currentOficinaVal)) {
             oficinaSelect.value = currentOficinaVal;
         } else {
             oficinaSelect.value = '';
         }
-
-        // Trigger Select2 update if it exists
         if (window.jQuery && $(oficinaSelect).data('select2')) {
             $(oficinaSelect).trigger('change.select2');
         }
     }
 
     if (agenciaSelect && oficinaSelect) {
-        agenciaSelect.addEventListener('change', filterOficinas);
-        // Ejecutar al cargar si hay una agencia seleccionada
+        agenciaSelect.addEventListener('change', function() {
+            filterOficinas();
+            ejecutarFiltroAjax();
+        });
         if (agenciaSelect.value) {
             filterOficinas();
-            // Mantener la oficina seleccionada si es posible
-            const savedOficinaId = "{{ request('oficina_id') }}";
+            const savedOficinaId = "{{ request('oficina_id') ?? request('oficina') }}";
             if (savedOficinaId) {
                 oficinaSelect.value = savedOficinaId;
             }
         }
     }
-});
 
-function confirmDelete(id) {
-    Swal.fire({
-        title: '¿Eliminar impresora?',
-        text: "Esta acción no se puede deshacer",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            document.getElementById('delete-form-' + id).submit();
+    // 3. Sincronizar enlace de Exportar
+    function updateExportUrl() {
+        if (!btnExportar) return;
+        const params = new URLSearchParams(new FormData(form));
+        btnExportar.href = exportBaseUrl + '?' + params.toString();
+    }
+
+    // 4. Filtrado en vivo de la tabla vía AJAX
+    function ejecutarFiltroAjax(pageUrl = null) {
+        if (spinner) spinner.classList.remove('d-none');
+
+        if (activeAbortController) {
+            activeAbortController.abort();
+        }
+        activeAbortController = new AbortController();
+
+        const formData = new FormData(form);
+        const params = new URLSearchParams(formData);
+        let fetchUrl = pageUrl ? pageUrl : (indexUrl + '?' + params.toString());
+
+        if (!pageUrl) {
+            window.history.replaceState({}, '', indexUrl + '?' + params.toString());
+            updateExportUrl();
+        }
+
+        fetch(fetchUrl, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'text/html'
+            },
+            signal: activeAbortController.signal
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Error en respuesta');
+            return response.text();
+        })
+        .then(html => {
+            tableContainer.innerHTML = html;
+            if (spinner) spinner.classList.add('d-none');
+        })
+        .catch(err => {
+            if (err.name !== 'AbortError') {
+                console.error('Error al filtrar impresoras:', err);
+                if (spinner) spinner.classList.add('d-none');
+            }
+        });
+    }
+
+    // 5. Autocompletado en tiempo real
+    function buscarSugerencias(query) {
+        if (!query || query.trim().length === 0) {
+            cerrarAutocomplete();
+            return;
+        }
+
+        const params = new URLSearchParams({
+            q: query.trim(),
+            agencia_id: agenciaSelect ? agenciaSelect.value : '',
+            oficina_id: oficinaSelect ? oficinaSelect.value : '',
+            estado_impresora: estadoSelect ? estadoSelect.value : ''
+        });
+
+        fetch(sugerenciasUrl + '?' + params.toString(), {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            renderSugerencias(data, query.trim());
+        })
+        .catch(err => {
+            console.error('Error en sugerencias:', err);
+            cerrarAutocomplete();
+        });
+    }
+
+    function renderSugerencias(items, query) {
+        if (!items || items.length === 0) {
+            cerrarAutocomplete();
+            return;
+        }
+
+        selectedSuggestionIndex = -1;
+        let html = '';
+        const regex = new RegExp('(' + escapeRegex(query) + ')', 'gi');
+
+        items.forEach((item, index) => {
+            const highlightSerie = item.serie ? item.serie.replace(regex, '<mark class="bg-warning px-1 rounded">$1</mark>') : 'S/N';
+            const highlightNombre = item.nombre ? item.nombre.replace(regex, '<mark class="bg-warning px-1 rounded">$1</mark>') : '';
+            const highlightResp = item.responsable ? item.responsable.replace(regex, '<mark class="bg-warning px-1 rounded">$1</mark>') : '';
+
+            html += `
+                <li class="dropdown-item py-2 px-3 suggestion-item" data-index="${index}" data-value="${escapeHtml(item.value)}">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="fw-semibold text-dark">
+                                <i class="bi bi-printer text-primary me-1"></i> ${highlightNombre} 
+                                <span class="badge bg-light text-dark border ms-1">${highlightSerie}</span>
+                            </div>
+                            <div class="small text-muted mt-1">
+                                ${item.ip ? '<i class="bi bi-hdd-network me-1"></i>' + item.ip + ' • ' : ''}
+                                <i class="bi bi-person me-1"></i>${highlightResp} • 
+                                <i class="bi bi-geo-alt me-1"></i>${item.oficina}
+                            </div>
+                        </div>
+                        <div>
+                            <span class="badge bg-secondary opacity-75">${item.estado || ''}</span>
+                        </div>
+                    </div>
+                </li>
+            `;
+        });
+
+        autocompleteDropdown.innerHTML = html;
+        autocompleteDropdown.style.display = 'block';
+
+        autocompleteDropdown.querySelectorAll('.suggestion-item').forEach(el => {
+            el.addEventListener('click', function(e) {
+                e.preventDefault();
+                inputBusqueda.value = this.getAttribute('data-value');
+                cerrarAutocomplete();
+                ejecutarFiltroAjax();
+            });
+        });
+    }
+
+    function cerrarAutocomplete() {
+        if (autocompleteDropdown) {
+            autocompleteDropdown.style.display = 'none';
+            autocompleteDropdown.innerHTML = '';
+            selectedSuggestionIndex = -1;
+        }
+    }
+
+    function escapeRegex(string) {
+        return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    }
+
+    function escapeHtml(string) {
+        return String(string || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    // 6. Eventos de búsqueda
+    inputBusqueda.addEventListener('input', function() {
+        const query = this.value;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            ejecutarFiltroAjax();
+        }, 250);
+
+        clearTimeout(autocompleteTimer);
+        autocompleteTimer = setTimeout(() => {
+            buscarSugerencias(query);
+        }, 150);
+    });
+
+    inputBusqueda.addEventListener('keydown', function(e) {
+        const items = autocompleteDropdown.querySelectorAll('.suggestion-item');
+        if (!items || items.length === 0 || autocompleteDropdown.style.display === 'none') return;
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            selectedSuggestionIndex = (selectedSuggestionIndex + 1) % items.length;
+            actualizarSeleccion(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            selectedSuggestionIndex = (selectedSuggestionIndex - 1 + items.length) % items.length;
+            actualizarSeleccion(items);
+        } else if (e.key === 'Enter') {
+            if (selectedSuggestionIndex >= 0 && items[selectedSuggestionIndex]) {
+                e.preventDefault();
+                inputBusqueda.value = items[selectedSuggestionIndex].getAttribute('data-value');
+                cerrarAutocomplete();
+                ejecutarFiltroAjax();
+            }
+        } else if (e.key === 'Escape') {
+            cerrarAutocomplete();
         }
     });
-}
+
+    function actualizarSeleccion(items) {
+        items.forEach((item, idx) => {
+            if (idx === selectedSuggestionIndex) {
+                item.classList.add('active');
+                item.scrollIntoView({ block: 'nearest' });
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    }
+
+    document.addEventListener('click', function(e) {
+        if (!inputBusqueda.contains(e.target) && !autocompleteDropdown.contains(e.target)) {
+            cerrarAutocomplete();
+        }
+    });
+
+    // 7. Selects
+    if (oficinaSelect) {
+        oficinaSelect.addEventListener('change', () => ejecutarFiltroAjax());
+    }
+    if (estadoSelect) {
+        estadoSelect.addEventListener('change', () => ejecutarFiltroAjax());
+    }
+
+    if (window.jQuery && $.fn.select2) {
+        $('#filtroAgencia, #filtroOficina').on('select2:select select2:clear', function() {
+            if (this.id === 'filtroAgencia') {
+                filterOficinas();
+            }
+            ejecutarFiltroAjax();
+        });
+    }
+
+    // 8. Form submit
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        cerrarAutocomplete();
+        ejecutarFiltroAjax();
+    });
+
+    // 9. Paginación AJAX
+    document.addEventListener('click', function(e) {
+        const link = e.target.closest('#impresoras-table-container .pagination a');
+        if (link && link.href) {
+            e.preventDefault();
+            ejecutarFiltroAjax(link.href);
+            tableContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+
+    updateExportUrl();
+});
 </script>
 @endpush
 @endsection

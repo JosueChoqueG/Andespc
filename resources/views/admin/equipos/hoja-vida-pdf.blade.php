@@ -58,7 +58,8 @@
 <body>
 
     {{-- ========== ENCABEZADO ========== --}}
-    <table>
+    <div class="table-responsive">
+<table>
         <tr>
             <td style="width: 18%; padding: 2px;">
                 @php
@@ -90,8 +91,10 @@
             <td style="width: 22%; font-weight: bold;">{{ $equipo->numero_serie ?? $equipo->id }}</td>
         </tr>
     </table>
+</div>
 
-    <table>
+    <div class="table-responsive">
+<table>
         <tr>
             <th style="width: 16%;">Realizado por</th>
             <td style="width: 20%; text-align: center;">{{ $tecnico }}</td>
@@ -100,17 +103,21 @@
             <td style="width: 32%; text-align: center;">Versión: 1.0</td>
         </tr>
     </table>
+</div>
 
-    <table>
+    <div class="table-responsive">
+<table>
         <tr>
             <td style="width: 40%; text-align: center;">Uso: Interno - Confidencial</td>
             <td style="width: 60%; text-align: center;">UNIDAD DE INFRAESTRUCTURA COMUNICACIÓN Y SOPORTE</td>
         </tr>
     </table>
+</div>
 
     {{-- ========== 1. DATOS GENERALES ========== --}}
     <div class="section-title">1. DATOS GENERALES DEL EQUIPO</div>
-    <table>
+    <div class="table-responsive">
+<table>
         <tr>
             <th style="width: 15%;">Tipo Equipo</th>
             <td style="width: 12%; text-align: center;">{{ $equipo->tipo_equipo_nombre }}</td>
@@ -141,6 +148,7 @@
             <td ></td>
         </tr>
     </table>
+</div>
     @php
     // Normalizamos a mayúsculas para búsqueda insensible
     $host = strtoupper($equipo->nombre_dispositivo ?? '');
@@ -160,7 +168,8 @@
     }
     @endphp
 
-    <table>
+    <div class="table-responsive">
+<table>
         <tr>
             <td style="width: 15%;">Responsable / Área</td>
             <td style="width: 40%;" class="text-center">
@@ -168,10 +177,12 @@
             </td>
         </tr>
     </table>
+</div>
 
     {{-- ========== 2. CARACTERÍSTICAS TÉCNICAS ========== --}}
     <div class="section-title">2. CARACTERÍSTICAS TÉCNICAS</div>
-    <table>
+    <div class="table-responsive">
+<table>
         <tr>
             <th style="width: 15%;">Nombre de Host</th>
             <td style="width: 20%; text-align: center;">{{ $equipo->nombre_dispositivo }}</td>
@@ -197,10 +208,12 @@
             <td style="text-align: center;">{{ $equipo->direccion_mac ?? 'N/A' }}</td>
         </tr>
     </table>
+</div>
 
     {{-- ========== 3. HISTORIAL DE MANTENIMIENTO ========== --}}
     <div class="section-title">3. HISTORIAL DE MANTENIMIENTO</div>
-    <table>
+    <div class="table-responsive">
+<table>
         <thead>
             <tr>
                 <th style="width: 14%;">Fecha</th>
@@ -228,10 +241,12 @@
             @endforelse
         </tbody>
     </table>
+</div>
 
     {{-- ========== 4. REGISTRO DE FALLAS ========== --}}
     <div class="section-title">4. REGISTRO DE FALLAS E INCIDENCIAS</div>
-    <table>
+    <div class="table-responsive">
+<table>
         <thead>
             <tr>
                 <th style="width: 14%;">Fecha</th>
@@ -259,10 +274,12 @@
             @endif
         </tbody>
     </table>
+</div>
 
     {{-- ========== 5. ESTADO ACTUAL DEL EQUIPO ========== --}}
     <div class="section-title">5. ESTADO ACTUAL DEL EQUIPO</div>
-    <table>
+    <div class="table-responsive">
+<table>
         <thead>
             <tr>
                 <th style="width: 25%;">Descripción</th>
@@ -298,10 +315,12 @@
             </tr>
         </tbody>
     </table>
+</div>
 
     {{-- ========== 6. RESPONSABLES ========== --}}
     <div class="section-title">6. RESPONSABLES</div>
-    <table>
+    <div class="table-responsive">
+<table>
         <thead>
             <tr>
                 <th width="20%"></th>
@@ -348,5 +367,6 @@
 
             </tbody>
         </table>
+</div>
 </body>
 </html>

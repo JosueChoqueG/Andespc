@@ -90,7 +90,8 @@
         </a>
 
         <div class="page">
-            <table>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <td style="width: 20%; padding: 0;">
                         <img src="{{ asset('logo.jpeg') }}" alt="LOS ANDES" style="width: 100%; height: 100%; object-fit: cover;">
@@ -105,7 +106,9 @@
                     <td style="width: 18%;"><strong>{{ $termica->serie_termica ?? $termica->id }}</strong></td>
                 </tr>
             </table>
-            <table>
+</div>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <th style="width: 15%;">Realizado por</th>
                     <td style="width: 20%;" class="text-center">{{ $tecnico }}</td>
@@ -114,14 +117,18 @@
                     <td style="width: 35%;" class="text-center">Versión: 1.0</td>
                 </tr>
             </table>
-            <table>
+</div>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <td style="width: 40%;" class="text-center">Uso: Interno - Confidencial</td>
                     <td style="width: 60%;" class="text-center">UNIDAD DE INFRAESTRUCTURA COMUNICACIÓN Y SOPORTE</td>
                 </tr>
             </table>
+</div>
             <div class="section-title">1. DATOS GENERALES DEL EQUIPO</div>
-            <table>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <th style="width: 15%;">Tipo de impresora</th>
                     <td style="width: 12%;" class="text-center">{{ $termica->tipo_termica }}</td>
@@ -152,7 +159,9 @@
                     <td style="width: 20%;" class="text-center">{{ $termica->oficina->nombre_oficina ?? 'Abancay' }}</td>
                 </tr>
             </table>
-            <table>
+</div>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <td style="width: 15%;">Responsable / Área</td>
                     <td style="width: 40%;" class="text-center">
@@ -160,8 +169,10 @@
                     </td>
                 </tr>
             </table>
+</div>
             <div class="section-title">2. CARACTERÍSTICAS TECNICAS</div>
-            <table>
+            <div class="table-responsive">
+<table>
                 <tr>
                     <th style="width: 15%;">Nombre de Host</th>
                     <td style="width: 20%;" class="text-center">{{ $termica->nombre_host ?? 'N/A' }}</td>
@@ -187,8 +198,10 @@
                     <td width="20%" class="text-center">-</td>
                 </tr>
             </table>
+</div>
             <div class="section-title">3. HISTORIAL DE MANTENIMIENTO</div>
-            <table>
+            <div class="table-responsive">
+<table>
                 <thead>
                     <tr>
                         <th style="width: 15%;">Fecha</th>
@@ -218,8 +231,10 @@
                     @endforelse
                 </tbody>
             </table>
+</div>
             <div class="section-title">4. REGISTRO DE FALLAS E INCIDENCIAS</div>
-            <table>
+            <div class="table-responsive">
+<table>
                 <thead>
                     <tr>
                         <th style="width: 15%;">Fecha</th>
@@ -241,8 +256,10 @@
                     @endforelse
                 </tbody>
             </table>
+</div>
             <div class="section-title">5. ESTADO ACTUAL DE LA IMPRESORA TÉRMICA</div>
-            <table>
+            <div class="table-responsive">
+<table>
                 <thead>
                     <tr>
                         <th width="25%">Descripción</th>
@@ -282,8 +299,10 @@
                     </tr>
                 </tbody>
             </table>
+</div>
             <div class="section-title">6. RESPONSABLES</div>
-            <table>
+            <div class="table-responsive">
+<table>
                 <thead>
                     <tr>
                         <th width="20%"></th>
@@ -313,6 +332,7 @@
                     </tr>
                 </tbody>
             </table>
+</div>
         </div>
     </body>
 </html>

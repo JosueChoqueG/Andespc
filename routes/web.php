@@ -66,6 +66,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('hardwares', HardwareController::class);
     Route::resource('sistemaoperativos', SistemaOperativoController::class);
     Route::resource('responsables', ResponsableController::class);
+    // Equipos sugerencias (autocomplete) y recurso
+    Route::get('equipos/sugerencias', [EquipoController::class, 'sugerencias'])->name('equipos.sugerencias');
     Route::resource('equipos', EquipoController::class);
 
     // 🔹 Panel de administración: rutas bajo /admin
@@ -76,6 +78,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/incidencias/exportar', [IncidenciaController::class, 'exportarExcel'])->name('incidencias.exportar');
 
         // CRUD IMPRESORAS
+        Route::get('impresoras/sugerencias', [ImpresoraController::class, 'sugerencias'])->name('impresoras.sugerencias');
         Route::resource('impresoras', ImpresoraController::class);
 
         // MANTENIMIENTOS DE IMPRESORAS (renombrado)
@@ -108,6 +111,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('impresoras.hoja-vida-mantenimiento.pdf');
 
         // CRUD IMPRESORAS TÉRMICAS
+        Route::get('termicas/sugerencias', [TermicaController::class, 'sugerencias'])->name('termicas.sugerencias');
         Route::resource('termicas', TermicaController::class);
 
         // MANTENIMIENTOS DE IMPRESORAS TÉRMICAS
@@ -140,6 +144,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('termicas.hoja-vida-mantenimiento.pdf');
 
         // CRUD CONTADORAS DE BILLETES
+        Route::get('contabilletes/sugerencias', [ContabilleteController::class, 'sugerencias'])->name('contabilletes.sugerencias');
         Route::resource('contabilletes', ContabilleteController::class);
 
         // MANTENIMIENTOS DE CONTADORAS DE BILLETES

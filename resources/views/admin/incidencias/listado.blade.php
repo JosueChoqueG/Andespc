@@ -51,7 +51,8 @@
     </div>
 
     <div class="table-responsive" style="max-height:600px; overflow:auto;">
-        <table class="table table-bordered table-hover mb-0">
+        <div class="table-responsive">
+<table class="table table-bordered table-hover mb-0">
             <thead class="table-dark">
                 <tr>
                     <th class="position-sticky top-0 bg-dark text-white">#</th>
@@ -119,6 +120,7 @@
                 @endforelse
             </tbody>
         </table>
+</div>
     </div>
 </div>
 

@@ -22,44 +22,115 @@ class ImpresoraController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Impresora::with(['oficina.agencia', 'responsable']);
-
-        // Filtros
-        if ($request->filled('oficina_id')) {
-            $query->where('oficina_id', $request->oficina_id);
+        if ($request->has('autocomplete') || $request->routeIs('admin.impresoras.sugerencias')) {
+            return $this->sugerencias($request);
         }
 
-        if ($request->filled('agencia_id')) {
-            $query->whereHas('oficina', function($q) use ($request) {
-                $q->where('agencia_id', $request->agencia_id);
+        $query = Impresora::with(['oficina.agencia', 'responsable', 'ultimoMantenimiento']);
+
+        // Filtro por término de búsqueda (multicampo)
+        $searchTerm = trim($request->input('serie') ?? $request->input('search') ?? '');
+        if ($searchTerm !== '') {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('serie_impresora', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('marca_impresora', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('modelo_impresora', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('nombre_host', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('direccion_ip', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('tipo_conexion', 'LIKE', "%{$searchTerm}%")
+                  ->orWhereHas('responsable', function ($r) use ($searchTerm) {
+                      $r->where('nombre_responsable', 'LIKE', "%{$searchTerm}%");
+                  })
+                  ->orWhereHas('oficina', function ($o) use ($searchTerm) {
+                      $o->where('nombre_oficina', 'LIKE', "%{$searchTerm}%");
+                  });
             });
         }
 
-        if ($request->filled('serie')) {
-            $query->where('serie_impresora', 'LIKE', "%{$request->serie}%");
+        // Filtro por oficina
+        $oficinaId = $request->input('oficina_id') ?? $request->input('oficina');
+        if (!empty($oficinaId)) {
+            $query->where('oficina_id', $oficinaId);
         }
 
+        // Filtro por agencia
+        $agenciaId = $request->input('agencia_id') ?? $request->input('agencia');
+        if (!empty($agenciaId)) {
+            $query->whereHas('oficina', function ($q) use ($agenciaId) {
+                $q->where('agencia_id', $agenciaId);
+            });
+        }
+
+        // Filtro por estado
         if ($request->filled('estado_impresora')) {
             $query->where('estado_impresora', $request->estado_impresora);
         }
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('marca_impresora', 'LIKE', "%{$search}%")
-                  ->orWhere('modelo_impresora', 'LIKE', "%{$search}%")
-                  ->orWhere('serie_impresora', 'LIKE', "%{$search}%")
-                  ->orWhere('nombre_host', 'LIKE', "%{$search}%");
-            });
-        }
-
-        $impresoras = $query->orderBy('created_at', 'desc')->paginate(15);
+        $impresoras = $query->orderBy('id', 'desc')->paginate(15)->withQueryString();
         
         $oficinas = Oficina::orderBy('nombre_oficina')->get();
         $agencias = Agencia::orderBy('nombre_agencia')->get();
         $responsables = Responsable::all();
 
+        if ($request->ajax()) {
+            return view('admin.impresoras.partials.table', compact('impresoras'))->render();
+        }
+
         return view('admin.impresoras.index', compact('impresoras', 'oficinas', 'agencias', 'responsables'));
+    }
+
+    /**
+     * Devuelve sugerencias de autocompletado para impresoras en tiempo real.
+     */
+    public function sugerencias(Request $request)
+    {
+        $term = trim($request->input('q') ?? $request->input('serie') ?? $request->input('search') ?? '');
+        if ($term === '') {
+            return response()->json([]);
+        }
+
+        $query = Impresora::with(['oficina.agencia', 'responsable']);
+
+        $query->where(function ($q) use ($term) {
+            $q->where('serie_impresora', 'LIKE', "%{$term}%")
+              ->orWhere('marca_impresora', 'LIKE', "%{$term}%")
+              ->orWhere('modelo_impresora', 'LIKE', "%{$term}%")
+              ->orWhere('nombre_host', 'LIKE', "%{$term}%")
+              ->orWhere('direccion_ip', 'LIKE', "%{$term}%")
+              ->orWhereHas('responsable', fn($r) => $r->where('nombre_responsable', 'LIKE', "%{$term}%"))
+              ->orWhereHas('oficina', fn($o) => $o->where('nombre_oficina', 'LIKE', "%{$term}%"));
+        });
+
+        $oficinaId = $request->input('oficina_id') ?? $request->input('oficina');
+        if (!empty($oficinaId)) {
+            $query->where('oficina_id', $oficinaId);
+        }
+        $agenciaId = $request->input('agencia_id') ?? $request->input('agencia');
+        if (!empty($agenciaId)) {
+            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $agenciaId));
+        }
+        if ($request->filled('estado_impresora')) {
+            $query->where('estado_impresora', $request->estado_impresora);
+        }
+
+        $impresoras = $query->take(8)->get();
+
+        $resultados = $impresoras->map(function ($impresora) {
+            $marcaModelo = trim(($impresora->marca_impresora ?? '') . ' ' . ($impresora->modelo_impresora ?? ''));
+            return [
+                'id'          => $impresora->id,
+                'serie'       => $impresora->serie_impresora,
+                'value'       => $impresora->serie_impresora ?: $marcaModelo,
+                'nombre'      => $marcaModelo ?: 'Impresora',
+                'marcaModelo' => $marcaModelo,
+                'ip'          => $impresora->direccion_ip,
+                'responsable' => $impresora->responsable?->nombre_responsable ?? 'Sin asignar',
+                'oficina'     => $impresora->oficina?->nombre_oficina ?? 'Sin oficina',
+                'estado'      => $impresora->estado_impresora,
+            ];
+        });
+
+        return response()->json($resultados);
     }
 
     /**
@@ -102,7 +173,7 @@ class ImpresoraController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        Impresora::create($request->validated());
+        Impresora::create($validator->validated());
 
         return redirect()->route('admin.impresoras.index')
             ->with('success', 'Impresora registrada correctamente');
@@ -162,7 +233,7 @@ class ImpresoraController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $impresora->update($request->validated());
+        $impresora->update($validator->validated());
 
         return redirect()->route('admin.impresoras.index')
             ->with('success', 'Impresora actualizada correctamente');
@@ -255,14 +326,26 @@ class ImpresoraController extends Controller
     {
         $query = Impresora::with(['oficina.agencia', 'responsable']);
 
-        if ($request->filled('oficina_id')) {
-            $query->where('oficina_id', $request->oficina_id);
+        $searchTerm = trim($request->input('serie') ?? $request->input('search') ?? '');
+        if ($searchTerm !== '') {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('serie_impresora', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('marca_impresora', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('modelo_impresora', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('nombre_host', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('direccion_ip', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('tipo_conexion', 'LIKE', "%{$searchTerm}%")
+                  ->orWhereHas('responsable', fn($r) => $r->where('nombre_responsable', 'LIKE', "%{$searchTerm}%"))
+                  ->orWhereHas('oficina', fn($o) => $o->where('nombre_oficina', 'LIKE', "%{$searchTerm}%"));
+            });
         }
-        if ($request->filled('agencia_id')) {
-            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $request->agencia_id));
+        $oficinaId = $request->input('oficina_id') ?? $request->input('oficina');
+        if (!empty($oficinaId)) {
+            $query->where('oficina_id', $oficinaId);
         }
-        if ($request->filled('serie')) {
-            $query->where('serie_impresora', 'LIKE', "%{$request->serie}%");
+        $agenciaId = $request->input('agencia_id') ?? $request->input('agencia');
+        if (!empty($agenciaId)) {
+            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $agenciaId));
         }
         if ($request->filled('estado_impresora')) {
             $query->where('estado_impresora', $request->estado_impresora);
@@ -347,3 +430,4 @@ class ImpresoraController extends Controller
         return response()->download($tmpFile, $fileName)->deleteFileAfterSend(true);
     }
 }
+

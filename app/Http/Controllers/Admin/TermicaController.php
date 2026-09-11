@@ -23,44 +23,114 @@ class TermicaController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Termica::with(['oficina.agencia', 'responsable']);
-
-        // Filtros
-        if ($request->filled('oficina_id')) {
-            $query->where('oficina_id', $request->oficina_id);
+        if ($request->has('autocomplete') || $request->routeIs('admin.termicas.sugerencias')) {
+            return $this->sugerencias($request);
         }
 
-        if ($request->filled('agencia_id')) {
-            $query->whereHas('oficina', function($q) use ($request) {
-                $q->where('agencia_id', $request->agencia_id);
+        $query = Termica::with(['oficina.agencia', 'responsable', 'ultimoMantenimiento']);
+
+        // Filtro por término de búsqueda (multicampo)
+        $searchTerm = trim($request->input('serie') ?? $request->input('search') ?? '');
+        if ($searchTerm !== '') {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('serie_termica', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('marca_termica', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('modelo_termica', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('nombre_host', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('direccion_ip', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('tipo_conexion', 'LIKE', "%{$searchTerm}%")
+                  ->orWhereHas('responsable', function ($r) use ($searchTerm) {
+                      $r->where('nombre_responsable', 'LIKE', "%{$searchTerm}%");
+                  })
+                  ->orWhereHas('oficina', function ($o) use ($searchTerm) {
+                      $o->where('nombre_oficina', 'LIKE', "%{$searchTerm}%");
+                  });
             });
         }
 
-        if ($request->filled('serie')) {
-            $query->where('serie_termica', 'LIKE', "%{$request->serie}%");
+        // Filtros de oficina y agencia
+        $oficinaId = $request->input('oficina_id') ?? $request->input('oficina');
+        if (!empty($oficinaId)) {
+            $query->where('oficina_id', $oficinaId);
         }
 
+        $agenciaId = $request->input('agencia_id') ?? $request->input('agencia');
+        if (!empty($agenciaId)) {
+            $query->whereHas('oficina', function ($q) use ($agenciaId) {
+                $q->where('agencia_id', $agenciaId);
+            });
+        }
+
+        // Filtro por estado
         if ($request->filled('estado_termica')) {
             $query->where('estado_termica', $request->estado_termica);
         }
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('marca_termica', 'LIKE', "%{$search}%")
-                  ->orWhere('modelo_termica', 'LIKE', "%{$search}%")
-                  ->orWhere('serie_termica', 'LIKE', "%{$search}%")
-                  ->orWhere('nombre_host', 'LIKE', "%{$search}%");
-            });
-        }
-
-        $termicas = $query->orderBy('created_at', 'desc')->paginate(15);
+        $termicas = $query->orderBy('id', 'desc')->paginate(15)->withQueryString();
         
         $oficinas = Oficina::orderBy('nombre_oficina')->get();
         $agencias = Agencia::orderBy('nombre_agencia')->get();
         $responsables = Responsable::all();
 
+        if ($request->ajax()) {
+            return view('admin.termicas.partials.table', compact('termicas'))->render();
+        }
+
         return view('admin.termicas.index', compact('termicas', 'oficinas', 'agencias', 'responsables'));
+    }
+
+    /**
+     * Devuelve sugerencias de autocompletado para impresoras térmicas en tiempo real.
+     */
+    public function sugerencias(Request $request)
+    {
+        $term = trim($request->input('q') ?? $request->input('serie') ?? $request->input('search') ?? '');
+        if ($term === '') {
+            return response()->json([]);
+        }
+
+        $query = Termica::with(['oficina.agencia', 'responsable']);
+
+        $query->where(function ($q) use ($term) {
+            $q->where('serie_termica', 'LIKE', "%{$term}%")
+              ->orWhere('marca_termica', 'LIKE', "%{$term}%")
+              ->orWhere('modelo_termica', 'LIKE', "%{$term}%")
+              ->orWhere('nombre_host', 'LIKE', "%{$term}%")
+              ->orWhere('direccion_ip', 'LIKE', "%{$term}%")
+              ->orWhereHas('responsable', fn($r) => $r->where('nombre_responsable', 'LIKE', "%{$term}%"))
+              ->orWhereHas('oficina', fn($o) => $o->where('nombre_oficina', 'LIKE', "%{$term}%"));
+        });
+
+        $oficinaId = $request->input('oficina_id') ?? $request->input('oficina');
+        if (!empty($oficinaId)) {
+            $query->where('oficina_id', $oficinaId);
+        }
+        $agenciaId = $request->input('agencia_id') ?? $request->input('agencia');
+        if (!empty($agenciaId)) {
+            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $agenciaId));
+        }
+        if ($request->filled('estado_termica')) {
+            $query->where('estado_termica', $request->estado_termica);
+        }
+
+        $termicas = $query->take(8)->get();
+
+        $resultados = $termicas->map(function ($termica) {
+            $marcaModelo = trim(($termica->marca_termica ?? '') . ' ' . ($termica->modelo_termica ?? ''));
+            return [
+                'id'          => $termica->id,
+                'serie'       => $termica->serie_termica,
+                'value'       => $termica->serie_termica ?: $marcaModelo,
+                'nombre'      => $marcaModelo ?: 'Impresora Térmica',
+                'marcaModelo' => $marcaModelo,
+                'ip'          => $termica->direccion_ip,
+                'responsable' => $termica->responsable?->nombre_responsable ?? 'Sin asignar',
+                'oficina'     => $termica->oficina?->nombre_oficina ?? 'Sin oficina',
+                'estado'      => $termica->estado_termica,
+            ];
+        });
+
+        return response()->json($resultados);
     }
 
     /**
@@ -102,7 +172,7 @@ class TermicaController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        Termica::create($request->validated());
+        Termica::create($validator->validated());
 
         return redirect()->route('admin.termicas.index')
             ->with('success', 'Impresora térmica registrada correctamente');
@@ -161,7 +231,7 @@ class TermicaController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $termica->update($request->validated());
+        $termica->update($validator->validated());
 
         return redirect()->route('admin.termicas.index')
             ->with('success', 'Impresora térmica actualizada correctamente');
@@ -254,14 +324,26 @@ class TermicaController extends Controller
     {
         $query = Termica::with(['oficina.agencia', 'responsable']);
 
-        if ($request->filled('oficina_id')) {
-            $query->where('oficina_id', $request->oficina_id);
+        $searchTerm = trim($request->input('serie') ?? $request->input('search') ?? '');
+        if ($searchTerm !== '') {
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('serie_termica', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('marca_termica', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('modelo_termica', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('nombre_host', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('direccion_ip', 'LIKE', "%{$searchTerm}%")
+                  ->orWhere('tipo_conexion', 'LIKE', "%{$searchTerm}%")
+                  ->orWhereHas('responsable', fn($r) => $r->where('nombre_responsable', 'LIKE', "%{$searchTerm}%"))
+                  ->orWhereHas('oficina', fn($o) => $o->where('nombre_oficina', 'LIKE', "%{$searchTerm}%"));
+            });
         }
-        if ($request->filled('agencia_id')) {
-            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $request->agencia_id));
+        $oficinaId = $request->input('oficina_id') ?? $request->input('oficina');
+        if (!empty($oficinaId)) {
+            $query->where('oficina_id', $oficinaId);
         }
-        if ($request->filled('serie')) {
-            $query->where('serie_termica', 'LIKE', "%{$request->serie}%");
+        $agenciaId = $request->input('agencia_id') ?? $request->input('agencia');
+        if (!empty($agenciaId)) {
+            $query->whereHas('oficina', fn($q) => $q->where('agencia_id', $agenciaId));
         }
         if ($request->filled('estado_termica')) {
             $query->where('estado_termica', $request->estado_termica);
@@ -346,3 +428,4 @@ class TermicaController extends Controller
         return response()->download($tmpFile, $fileName)->deleteFileAfterSend(true);
     }
 }
+

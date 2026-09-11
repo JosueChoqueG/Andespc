@@ -10,10 +10,12 @@
                 <h5>Detalles del Modelo</h5>
             </div>
             <div class="card-body">
-                <table class="table table-bordered">
+                <div class="table-responsive">
+<table class="table table-bordered">
                     <tr><th>Modelo</th><td>{{ $modelo->nombre_modelo }}</td></tr>
                     <tr><th>Marca</th><td>{{ $modelo->marca->nombre_marca ?? 'N/A' }}</td></tr>
                 </table>
+</div>
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('modelos.edit', $modelo) }}" class="btn btn-warning me-2">Editar</a>
                     <a href="{{ route('modelos.index') }}" class="btn btn-secondary">Volver</a>

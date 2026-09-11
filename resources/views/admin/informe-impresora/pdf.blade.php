@@ -234,7 +234,8 @@
         </div>
 
         <!-- TABLA DE DESTINATARIOS -->
-        <table class="tabla-meta">
+        <div class="table-responsive">
+<table class="tabla-meta">
             <tr>
                 <td class="etiqueta">A</td>
                 <td class="contenido">
@@ -265,6 +266,7 @@
                 <td class="contenido">{{ $informe->fecha_informe->format('d/m/Y') }}</td>
             </tr>
         </table>
+</div>
 
         @if($informe->descripcion_problema)
         <div class="cuerpo primer-parrafo">

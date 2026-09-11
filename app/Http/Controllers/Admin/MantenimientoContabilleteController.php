@@ -197,7 +197,7 @@ class MantenimientoContabilleteController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $mantenimiento->update($request->validated());
+        $mantenimiento->update($validator->validated());
 
         return redirect()->route('admin.contabilletes.show', $mantenimiento->contabillete_id)
             ->with('success', 'Mantenimiento actualizado correctamente');
@@ -239,3 +239,4 @@ class MantenimientoContabilleteController extends Controller
         return view('admin.mantenimientos-contabillete.historial', compact('contabillete', 'mantenimientos', 'estadisticas'));
     }
 }
+

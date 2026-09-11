@@ -10,7 +10,8 @@
                 <h5><i class="bi bi-cpu"></i> Detalles del Hardware #{{ $hardware->id_hardware }}</h5>
             </div>
             <div class="card-body">
-                <table class="table table-bordered">
+                <div class="table-responsive">
+<table class="table table-bordered">
                     <tr>
                         <th>Procesador</th>
                         <td>{{ $hardware->procesador ?? 'No especificado' }}</td>
@@ -32,6 +33,7 @@
                         </td>
                     </tr>
                 </table>
+</div>
 
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('hardwares.edit', $hardware) }}" class="btn btn-warning me-2">Editar</a>

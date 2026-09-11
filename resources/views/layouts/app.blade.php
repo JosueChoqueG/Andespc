@@ -76,7 +76,9 @@
             box-shadow: 4px 0 25px rgba(0, 0, 0, 0.03);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 1.5rem 1rem;
-            z-index: 1020;
+            z-index: 1025;
+            overflow-y: auto;
+            flex-shrink: 0;
         }
 
         .section-title {
@@ -196,6 +198,7 @@
             padding: 2rem;
             transition: all 0.3s ease;
             min-height: calc(100vh - 60px);
+            min-width: 0; /* Evitar desbordamiento de tablas */
         }
 
         /* Avatar del Usuario con aura solar */
@@ -230,16 +233,22 @@
 
         /* Responsive Mobile Drawer */
         @media (max-width: 991.98px) {
+            .main-content {
+                padding: 1rem;
+            }
             .sidebar-soft {
                 position: fixed;
                 top: 0;
                 left: calc(-1 * var(--sidebar-width));
                 height: 100vh;
-                padding-top: 5rem;
+                padding-top: 4.5rem;
+                transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+                box-shadow: none;
             }
 
             .sidebar-soft.show {
                 left: 0;
+                box-shadow: 8px 0 32px rgba(0, 0, 0, 0.18);
             }
 
             .sidebar-overlay {
@@ -249,9 +258,9 @@
                 left: 0;
                 width: 100vw;
                 height: 100vh;
-                background: rgba(13, 27, 42, 0.5);
+                background: rgba(13, 27, 42, 0.55);
                 backdrop-filter: blur(4px);
-                z-index: 1015;
+                z-index: 1020;
                 opacity: 0;
                 transition: opacity 0.3s ease;
             }
@@ -478,20 +487,70 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const sidebarToggle = document.getElementById('sidebarToggle');
-            const sidebarMenu = document.getElementById('sidebarMenu');
+            const sidebarMenu  = document.getElementById('sidebarMenu');
             const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const toggleIcon = sidebarToggle ? sidebarToggle.querySelector('i') : null;
+
+            function openSidebar() {
+                sidebarMenu.classList.add('show');
+                sidebarOverlay.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                if (toggleIcon) {
+                    toggleIcon.classList.remove('bi-list');
+                    toggleIcon.classList.add('bi-x-lg');
+                }
+            }
+
+            function closeSidebar() {
+                sidebarMenu.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+                document.body.style.overflow = '';
+                if (toggleIcon) {
+                    toggleIcon.classList.remove('bi-x-lg');
+                    toggleIcon.classList.add('bi-list');
+                }
+            }
 
             function toggleSidebar() {
-                sidebarMenu.classList.toggle('show');
-                sidebarOverlay.classList.toggle('show');
+                if (sidebarMenu.classList.contains('show')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
             }
 
             if (sidebarToggle) {
                 sidebarToggle.addEventListener('click', toggleSidebar);
             }
             if (sidebarOverlay) {
-                sidebarOverlay.addEventListener('click', toggleSidebar);
+                sidebarOverlay.addEventListener('click', closeSidebar);
             }
+
+            // Cerrar sidebar al hacer clic en enlace de navegación en móvil
+            if (sidebarMenu) {
+                sidebarMenu.querySelectorAll('a.nav-link-main:not([data-bs-toggle]), a.nav-sub-item').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        if (window.innerWidth < 992) {
+                            closeSidebar();
+                        }
+                    });
+                });
+            }
+
+            // Cerrar con tecla Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && sidebarMenu && sidebarMenu.classList.contains('show')) {
+                    closeSidebar();
+                }
+            });
+
+            // Cerrar sidebar al redimensionar a pantalla grande
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 992) {
+                    closeSidebar();
+                    document.body.style.overflow = '';
+                }
+            });
         });
     </script>
 

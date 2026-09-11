@@ -34,7 +34,8 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="40%">Número de Serie:</th>
                             <td><strong>{{ $impresora->serie_impresora }}</strong></td>
@@ -64,6 +65,7 @@
                             <td>{{ $impresora->fecha_adquisicion ? date('d/m/Y', strtotime($impresora->fecha_adquisicion)) : 'No registrada' }}</td>
                         </tr>
                     </table>
+</div>
                 </div>
             </div>
         </div>
@@ -76,7 +78,8 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="40%">Tipo de Conexión:</th>
                             <td>
@@ -119,6 +122,7 @@
                             </td>
                         </tr>
                     </table>
+</div>
                 </div>
             </div>
         </div>
@@ -133,7 +137,8 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="50%">Velocidad de Impresión:</th>
                             <td>{{ $impresora->velocidad_impresion ?? 'No especificada' }}</td>
@@ -172,6 +177,7 @@
                         </tr>
                         @endif
                     </table>
+</div>
                 </div>
             </div>
         </div>
@@ -190,7 +196,8 @@
                         $correctivos = $impresora->mantenimientos->where('tipo_mantenimiento', 'Correctivo')->count();
                         $ultimoMant = $impresora->mantenimientos->first();
                     @endphp
-                    <table class="table table-bordered">
+                    <div class="table-responsive">
+<table class="table table-bordered">
                         <tr>
                             <th width="50%">Total Mantenimientos:</th>
                             <td><span class="badge bg-primary badge-lg">{{ $totalMant }}</span></td>
@@ -218,6 +225,7 @@
                         </tr>
                         @endif
                     </table>
+</div>
                 </div>
             </div>
         </div>
