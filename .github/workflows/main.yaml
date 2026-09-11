@@ -1,43 +1,3 @@
-name: Publish to CPanel
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  deploy:
-    name: Deploy to cPanel via FTP
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: 'npm'
-
-      - name: Install dependencies and build assets
-        run: |
-          npm ci --legacy-peer-deps
-          npm run build
-
-      - name: Install PHP and Composer
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-          tools: 'composer'
-
-      - name: Install PHP dependencies
-        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
-
-      # Ya NO se corre config:cache / route:cache / view:cache aquí
-
       - name: FTP-Deploy-Action
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -48,6 +8,9 @@ jobs:
           port: 21
           server-dir: ./
           timeout: 60000
+          dangerous-clean-slate: false
+          state-name: '.ftp-deploy-sync-state.json'
+          log-level: minimal
           exclude: |
             - .git*
             - .git/**
@@ -69,3 +32,7 @@ jobs:
             - .gitignore
             - .env.example
             - bootstrap/cache/*.php
+            - storage/logs/**
+            - storage/framework/cache/**
+            - storage/framework/sessions/**
+            - storage/framework/views/**
