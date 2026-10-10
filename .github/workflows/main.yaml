@@ -9,7 +9,7 @@ jobs:
   deploy:
     name: Deploy to cPanel via FTP
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -48,6 +48,9 @@ jobs:
           port: 21
           server-dir: ./
           timeout: 60000
+          dangerous-clean-slate: false
+          state-name: '.ftp-deploy-sync-state.json'
+          log-level: minimal
           exclude: |
             - .git*
             - .git/**
@@ -69,3 +72,7 @@ jobs:
             - .gitignore
             - .env.example
             - bootstrap/cache/*.php
+            - storage/logs/**
+            - storage/framework/cache/**
+            - storage/framework/sessions/**
+            - storage/framework/views/**
