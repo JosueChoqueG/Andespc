@@ -193,13 +193,23 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Tipo Consumible</label>
                                     <input type="text" name="tipo_consumible" class="form-control" 
                                            value="{{ old('tipo_consumible', $impresora->tipo_consumible) }}">
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Capacidad Total</label>
+                                    <input type="number" name="capacidad_impresion" class="form-control" 
+                                           value="{{ old('capacidad_impresion', $impresora->capacidad_impresion ?? 0) }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Cantidad Impresa</label>
@@ -214,14 +224,11 @@
                                            value="{{ old('cantidad_escaneo', $impresora->cantidad_escaneo ?? 0) }}">
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Capacidad Total</label>
-                                    <input type="number" name="capacidad_impresion" class="form-control" 
-                                           value="{{ old('capacidad_impresion', $impresora->capacidad_impresion ?? 0) }}">
+                                    <label>Cantidad de mantenimientos</label>
+                                    <input type="number" name="cantidad_mantenimientos" class="form-control" 
+                                           value="{{ old('cantidad_mantenimientos', $impresora->cantidad_mantenimientos ?? 0) }}">
                                 </div>
                             </div>
                         </div>

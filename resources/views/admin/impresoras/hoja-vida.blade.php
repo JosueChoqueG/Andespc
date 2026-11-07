@@ -203,6 +203,14 @@
                     <th width="10%">Cantidad escaneo</th>
                     <td width="20%" class="text-center">{{ number_format($impresora->cantidad_escaneo ?? 0) }}</td>
                 </tr>
+                <tr>
+                    <th width="15%">Cant. mantenimientos</th>
+                    <td width="20%" class="text-center">{{ number_format($impresora->cantidad_mantenimientos ?? 0) }}</td>
+                    <th width="15%"></th>
+                    <td width="20%" class="text-center"></td>
+                    <th width="10%"></th>
+                    <td class="text-center"></td>
+                </tr>
             </table>
 </div>
             <div class="section-title">3. HISTORIAL DE MANTENIMIENTO</div>

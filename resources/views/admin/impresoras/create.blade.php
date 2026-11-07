@@ -246,18 +246,25 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Cantidad Impresa Actual</label>
                                     <input type="number" name="cantidad_impresion" class="form-control" 
                                            value="{{ old('cantidad_impresion', 0) }}">
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Cantidad Escaneos Actual</label>
                                     <input type="number" name="cantidad_escaneo" class="form-control" 
                                            value="{{ old('cantidad_escaneo', 0) }}">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Cantidad de mantenimientos</label>
+                                    <input type="number" name="cantidad_mantenimientos" class="form-control" 
+                                           value="{{ old('cantidad_mantenimientos', 0) }}">
                                 </div>
                             </div>
                         </div>

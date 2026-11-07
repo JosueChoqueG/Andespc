@@ -75,10 +75,11 @@ class MantenimientoImpresoraController extends Controller
 
         $mantenimiento = MantenimientoImpresora::create($data);
 
-        // Actualizar estado de la impresora si se desea
+        // Actualizar estado e incrementar contador de mantenimientos de la impresora
         $impresora->update([
             'estado_impresora' => $request->filled('fallas_detectadas') ? 'REGULAR' : $impresora->estado_impresora
         ]);
+        $impresora->increment('cantidad_mantenimientos');
 
         if ($request->has('generar_hoja_vida')) {
             return redirect()->route('admin.impresoras.hoja-vida-mantenimiento', $mantenimiento);
@@ -209,9 +210,14 @@ class MantenimientoImpresoraController extends Controller
     public function destroy($id)
     {
         $mantenimiento = MantenimientoImpresora::findOrFail($id);
+        $impresora = $mantenimiento->impresora;
         $impresoraId = $mantenimiento->impresora_id;
         
         $mantenimiento->delete();
+
+        if ($impresora && $impresora->cantidad_mantenimientos > 0) {
+            $impresora->decrement('cantidad_mantenimientos');
+        }
 
         return redirect()->route('admin.impresoras.show', $impresoraId)
             ->with('success', 'Mantenimiento eliminado correctamente');

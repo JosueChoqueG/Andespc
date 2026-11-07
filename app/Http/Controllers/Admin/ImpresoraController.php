@@ -167,6 +167,7 @@ class ImpresoraController extends Controller
             'cantidad_impresion' => 'nullable|integer',
             'capacidad_impresion' => 'nullable|integer',
             'cantidad_escaneo' => 'nullable|integer',
+            'cantidad_mantenimientos' => 'nullable|integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -227,6 +228,7 @@ class ImpresoraController extends Controller
             'cantidad_impresion' => 'nullable|integer',
             'capacidad_impresion' => 'nullable|integer',
             'cantidad_escaneo' => 'nullable|integer',
+            'cantidad_mantenimientos' => 'nullable|integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -373,6 +375,9 @@ class ImpresoraController extends Controller
             'M' => 'VELOCIDAD IMPRESIÓN',
             'N' => 'MODELO CONSUMIBLE',
             'O' => 'TIPO CONSUMIBLE',
+            'P' => 'CANT. IMPRESIÓN',
+            'Q' => 'CANT. ESCANEO',
+            'R' => 'CANT. MANTENIMIENTOS',
         ];
 
         $headerStyle = [
@@ -405,6 +410,9 @@ class ImpresoraController extends Controller
                 'M' => $imp->velocidad_impresion               ?? 'N/A',
                 'N' => $imp->modelo_consumible                 ?? 'N/A',
                 'O' => $imp->tipo_consumible                   ?? 'N/A',
+                'P' => $imp->cantidad_impresion                ?? 0,
+                'Q' => $imp->cantidad_escaneo                  ?? 0,
+                'R' => $imp->cantidad_mantenimientos           ?? 0,
             ];
             foreach ($datos as $col => $valor) {
                 $sheet->setCellValue($col . $fila, $valor);

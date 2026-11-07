@@ -156,6 +156,10 @@
                             <td>{{ number_format($impresora->cantidad_impresion ?? 0, 0, ',', '.') }} páginas</td>
                         </tr>
                         <tr>
+                            <th>Cantidad Escaneos:</th>
+                            <td>{{ number_format($impresora->cantidad_escaneo ?? 0, 0, ',', '.') }}</td>
+                        </tr>
+                        <tr>
                             <th>Capacidad Total:</th>
                             <td>{{ number_format($impresora->capacidad_impresion ?? 0, 0, ',', '.') }} páginas</td>
                         </tr>
@@ -200,8 +204,14 @@
 <table class="table table-bordered">
                         <tr>
                             <th width="50%">Total Mantenimientos:</th>
-                            <td><span class="badge bg-primary badge-lg">{{ $totalMant }}</span></td>
+                            <td><span class="badge bg-primary badge-lg">{{ $impresora->cantidad_mantenimientos ?? $totalMant }}</span></td>
                         </tr>
+                        @if(($impresora->cantidad_mantenimientos ?? 0) > $totalMant)
+                        <tr>
+                            <th>Mantenimientos en Sistema:</th>
+                            <td><span class="badge bg-info">{{ $totalMant }}</span></td>
+                        </tr>
+                        @endif
                         <tr>
                             <th>Mantenimientos Preventivos:</th>
                             <td><span class="badge bg-success">{{ $preventivos }}</span></td>
