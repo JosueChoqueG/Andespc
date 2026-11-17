@@ -183,10 +183,14 @@ class ImpresoraController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $impresora = Impresora::with(['oficina', 'responsable', 'mantenimientos'])
+        $impresora = Impresora::with(['oficina.agencia', 'responsable', 'mantenimientos'])
             ->findOrFail($id);
+
+        if ($request->ajax()) {
+            return view('admin.impresoras.partials.modal-show', compact('impresora'))->render();
+        }
 
         return view('admin.impresoras.show', compact('impresora'));
     }
@@ -194,11 +198,15 @@ class ImpresoraController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $impresora = Impresora::findOrFail($id);
         $oficinas = Oficina::all();
         $responsables = Responsable::all();
+
+        if ($request->ajax()) {
+            return view('admin.impresoras.partials.modal-edit', compact('impresora', 'oficinas', 'responsables'))->render();
+        }
 
         return view('admin.impresoras.edit', compact('impresora', 'oficinas', 'responsables'));
     }

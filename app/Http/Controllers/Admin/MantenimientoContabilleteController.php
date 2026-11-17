@@ -42,11 +42,15 @@ class MantenimientoContabilleteController extends Controller
     /**
      * Show the form for creating a new maintenance record.
      */
-    public function create(Contabillete $contabillete)
+    public function create(Request $request, Contabillete $contabillete)
     {
         $ultimoMantenimiento = $contabillete->mantenimientos()->latest()->first();
         $tecnico = \Illuminate\Support\Facades\Auth::user()->name ?? 'Josue Choque Gomez';
         
+        if ($request->ajax()) {
+            return view('admin.mantenimientos-contabillete.partials.modal-create', compact('contabillete', 'ultimoMantenimiento', 'tecnico'))->render();
+        }
+
         return view('admin.mantenimientos-contabillete.create', compact('contabillete', 'ultimoMantenimiento', 'tecnico'));
     }
 
@@ -220,7 +224,7 @@ class MantenimientoContabilleteController extends Controller
     /**
      * Get maintenance history for a specific bill counter.
      */
-    public function historial($contabilleteId)
+    public function historial(Request $request, $contabilleteId)
     {
         $contabillete = Contabillete::findOrFail($contabilleteId);
         
@@ -235,6 +239,10 @@ class MantenimientoContabilleteController extends Controller
             'con_fallas' => $mantenimientos->whereNotNull('fallas_detectadas')->where('fallas_detectadas', '!=', '')->count(),
             'ultimo_mantenimiento' => $mantenimientos->first(),
         ];
+
+        if ($request->ajax()) {
+            return view('admin.mantenimientos-contabillete.partials.modal-historial', compact('contabillete', 'mantenimientos', 'estadisticas'))->render();
+        }
 
         return view('admin.mantenimientos-contabillete.historial', compact('contabillete', 'mantenimientos', 'estadisticas'));
     }

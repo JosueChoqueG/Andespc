@@ -42,11 +42,15 @@ class MantenimientoTermicaController extends Controller
     /**
      * Show the form for creating a new maintenance record.
      */
-    public function create(Termica $termica)
+    public function create(Request $request, Termica $termica)
     {
         $ultimoMantenimiento = $termica->mantenimientos()->latest()->first();
         $tecnico = \Illuminate\Support\Facades\Auth::user()->name ?? 'Josue Choque Gomez';
         
+        if ($request->ajax()) {
+            return view('admin.mantenimientos-termica.partials.modal-create', compact('termica', 'ultimoMantenimiento', 'tecnico'))->render();
+        }
+
         return view('admin.mantenimientos-termica.create', compact('termica', 'ultimoMantenimiento', 'tecnico'));
     }
 
@@ -220,7 +224,7 @@ class MantenimientoTermicaController extends Controller
     /**
      * Get maintenance history for a specific printer.
      */
-    public function historial($termicaId)
+    public function historial(Request $request, $termicaId)
     {
         $termica = Termica::findOrFail($termicaId);
         
@@ -235,6 +239,10 @@ class MantenimientoTermicaController extends Controller
             'con_fallas' => $mantenimientos->whereNotNull('fallas_detectadas')->where('fallas_detectadas', '!=', '')->count(),
             'ultimo_mantenimiento' => $mantenimientos->first(),
         ];
+
+        if ($request->ajax()) {
+            return view('admin.mantenimientos-termica.partials.modal-historial', compact('termica', 'mantenimientos', 'estadisticas'))->render();
+        }
 
         return view('admin.mantenimientos-termica.historial', compact('termica', 'mantenimientos', 'estadisticas'));
     }

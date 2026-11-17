@@ -208,12 +208,16 @@ class EquipoController extends Controller
         return redirect()->route('equipos.index')->with('success', 'Equipo creado correctamente.');
     }
 
-    public function show(Equipo $equipo)
+    public function show(Request $request, Equipo $equipo)
     {
+        $equipo->load(['oficina.agencia', 'tipoEquipo', 'hardware', 'modelo.marca', 'sistemaOperativo', 'responsable', 'mantenimientos']);
+        if ($request->ajax()) {
+            return view('admin.equipos.partials.modal-show', compact('equipo'))->render();
+        }
         return view('admin.equipos.show', compact('equipo'));
     }
 
-    public function edit(Equipo $equipo)
+    public function edit(Request $request, Equipo $equipo)
     {
         $oficinas = Oficina::all();
         $tipoequipos = TipoEquipo::all();
@@ -221,6 +225,10 @@ class EquipoController extends Controller
         $modelos = Modelo::all();
         $sistemas = SistemaOperativo::all();
         $responsables = Responsable::all();
+
+        if ($request->ajax()) {
+            return view('admin.equipos.partials.modal-edit', compact('equipo', 'oficinas', 'tipoequipos', 'hardwares', 'modelos', 'sistemas', 'responsables'))->render();
+        }
 
         return view('admin.equipos.edit', compact('equipo', 'oficinas', 'tipoequipos', 'hardwares', 'modelos', 'sistemas', 'responsables'));
     }

@@ -76,19 +76,37 @@
                 </td>
                 <td class="px-4 py-3 text-center">
                     <div class="btn-group shadow-sm" role="group">
-                        <a href="{{ route('admin.impresoras.show', $impresora->id) }}" class="btn btn-sm btn-outline-info" title="Ver">
+                        <button type="button" class="btn btn-sm btn-outline-info btn-modal-impresora"
+                                data-bs-toggle="modal" data-bs-target="#modalImpresora"
+                                data-url="{{ route('admin.impresoras.show', $impresora->id) }}" data-size="modal-lg"
+                                title="Ver detalles">
                             <i class="bi bi-eye"></i>
-                        </a>
-                        <a href="{{ route('admin.impresoras.edit', $impresora->id) }}" class="btn btn-sm btn-outline-warning" title="Editar">
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-warning btn-modal-impresora"
+                                data-bs-toggle="modal" data-bs-target="#modalImpresora"
+                                data-url="{{ route('admin.impresoras.edit', $impresora->id) }}" data-size="modal-lg"
+                                title="Editar">
                             <i class="bi bi-pencil"></i>
-                        </a>
-                        <a href="{{ route('admin.mantenimientos-impresora.create', $impresora->id) }}" target="_blank" 
-                           class="btn btn-sm btn-outline-primary" title="Registrar Mantenimiento">
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary btn-modal-impresora"
+                                data-bs-toggle="modal" data-bs-target="#modalImpresora"
+                                data-url="{{ route('admin.mantenimientos-impresora.create', $impresora->id) }}" data-size="modal-lg"
+                                title="Registrar Mantenimiento">
                             <i class="bi bi-tools"></i>
-                        </a>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary btn-modal-impresora"
+                                data-bs-toggle="modal" data-bs-target="#modalImpresora"
+                                data-url="{{ route('admin.mantenimientos-impresora.historial', $impresora->id) }}" data-size="modal-lg"
+                                title="Historial de Mantenimientos">
+                            <i class="bi bi-clock-history"></i>
+                        </button>
                         <a href="{{ route('admin.informes-impresora.create', $impresora->id) }}" target="_blank" 
                            class="btn btn-sm btn-outline-success" title="Nuevo Informe">
                             <i class="bi bi-file-earmark-text"></i> 
+                        </a>
+                        <a href="{{ route('admin.impresoras.hoja-vida', $impresora->id) }}" 
+                           class="btn btn-sm btn-outline-danger" title="Hoja de Vida" target="_blank">
+                            <i class="bi bi-file-pdf"></i>
                         </a>
                     </div>
                 </td>

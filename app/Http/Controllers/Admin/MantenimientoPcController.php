@@ -51,11 +51,15 @@ class MantenimientoPcController extends Controller
     /**
      * Mostrar formulario para crear un nuevo mantenimiento
      */
-    public function create(Equipo $equipo)
+    public function create(Request $request, Equipo $equipo)
     {
         $ultimoMantenimiento = $equipo->mantenimientos()->latest()->first();
         $tecnico = Auth::user()->name ?? 'Josue Choque Gomez';
         
+        if ($request->ajax()) {
+            return view('admin.mantenimientos-pc.partials.modal-create', compact('equipo', 'ultimoMantenimiento', 'tecnico'))->render();
+        }
+
         return view('admin.mantenimientos-pc.create', compact('equipo', 'ultimoMantenimiento', 'tecnico'));
     }
 
@@ -87,7 +91,7 @@ class MantenimientoPcController extends Controller
             return redirect()->route('admin.equipos.hoja-vida-mantenimiento', $mantenimiento);
         }
 
-        return redirect()->route('admin.equipos.index', $equipo)
+        return redirect()->route('equipos.index')
             ->with('success', 'Mantenimiento registrado exitosamente.');
     }
 
@@ -103,9 +107,14 @@ class MantenimientoPcController extends Controller
     /**
      * Mostrar historial de mantenimientos de un equipo
      */
-    public function historial(Equipo $equipo)
+    public function historial(Request $request, Equipo $equipo)
     {
         $mantenimientos = $equipo->mantenimientos()->paginate(10);
+
+        if ($request->ajax()) {
+            return view('admin.mantenimientos-pc.partials.modal-historial', compact('equipo', 'mantenimientos'))->render();
+        }
+
         return view('admin.mantenimientos-pc.historial', compact('equipo', 'mantenimientos'));
     }
 

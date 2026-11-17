@@ -188,10 +188,14 @@ class ContabilleteController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $contabillete = Contabillete::with(['oficina', 'responsable', 'mantenimientos'])
+        $contabillete = Contabillete::with(['oficina.agencia', 'responsable', 'mantenimientos'])
             ->findOrFail($id);
+
+        if ($request->ajax()) {
+            return view('admin.contabilletes.partials.modal-show', compact('contabillete'))->render();
+        }
 
         return view('admin.contabilletes.show', compact('contabillete'));
     }
@@ -199,11 +203,15 @@ class ContabilleteController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $contabillete = Contabillete::findOrFail($id);
         $oficinas = Oficina::all();
         $responsables = Responsable::all();
+
+        if ($request->ajax()) {
+            return view('admin.contabilletes.partials.modal-edit', compact('contabillete', 'oficinas', 'responsables'))->render();
+        }
 
         return view('admin.contabilletes.edit', compact('contabillete', 'oficinas', 'responsables'));
     }

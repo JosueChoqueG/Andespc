@@ -103,7 +103,40 @@
         background-color: #f0f7ff;
         color: #0d6efd;
     }
+
+    /* Modal Equipo Styles */
+    #modalEquipo .modal-content {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+    #modalEquipo .modal-header {
+        border-bottom: none;
+    }
+    #modalEquipo .modal-footer {
+        border-top: 1px solid #e9ecef;
+    }
+    #modalEquipo .modal-body::-webkit-scrollbar {
+        width: 6px;
+    }
+    #modalEquipo .modal-body::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+    #modalEquipo .modal-body::-webkit-scrollbar-track {
+        background: transparent;
+    }
 </style>
+
+{{-- Modal Genérico para Equipos --}}
+<div class="modal fade" id="modalEquipo" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-0 shadow">
+            <div id="modalEquipoContent"></div>
+        </div>
+    </div>
+</div>
 
 @push('scripts')
 <script>
@@ -418,6 +451,117 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Inicializar URL del exportar
     updateExportUrl();
+
+    // ========================================
+    // MODAL AJAX - Equipos (show, edit, mantenimiento, historial)
+    // ========================================
+    const modalEl = document.getElementById('modalEquipo');
+    const modalContent = document.getElementById('modalEquipoContent');
+
+    // Mover modal al body para evitar problemas de stacking context
+    if (modalEl && modalEl.parentElement !== document.body) {
+        document.body.appendChild(modalEl);
+    }
+    if (modalEl) {
+        modalEl.style.zIndex = '1060';
+    }
+
+    function getBootstrapModal(el) {
+        if (window.bootstrap && typeof window.bootstrap.Modal !== 'undefined') {
+            try {
+                return window.bootstrap.Modal.getOrCreateInstance(el);
+            } catch (err) {
+                console.warn('Error getOrCreateInstance bootstrap modal:', err);
+            }
+        }
+        return null;
+    }
+
+    function abrirModal(el, size) {
+        const modalDialog = el.querySelector('.modal-dialog');
+        if (modalDialog) {
+            modalDialog.className = 'modal-dialog ' + (size || 'modal-lg') + ' modal-dialog-centered modal-dialog-scrollable';
+        }
+
+        const bs = getBootstrapModal(el);
+        if (bs) {
+            bs.show();
+        } else if (window.jQuery && typeof $(el).modal === 'function') {
+            $(el).modal('show');
+        } else {
+            el.classList.add('show');
+            el.style.display = 'block';
+            document.body.classList.add('modal-open');
+        }
+    }
+
+    // Limpiar al cerrar modal
+    if (modalEl) {
+        modalEl.addEventListener('hidden.bs.modal', function () {
+            if (modalContent) modalContent.innerHTML = '';
+            if (window.jQuery && $.fn.select2) {
+                $(modalEl).find('.modal-select2').each(function() {
+                    if ($(this).hasClass('select2-hidden-accessible')) {
+                        $(this).select2('destroy');
+                    }
+                });
+            }
+        });
+    }
+
+    // Función unificada para cargar y abrir el modal sin animación de carga
+    function cargarModalEquipo(btn) {
+        const url = btn.getAttribute('data-url');
+        if (!url) return;
+        const size = btn.getAttribute('data-size') || 'modal-lg';
+
+        fetch(url, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'text/html'
+            }
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Error al cargar: ' + response.status);
+            return response.text();
+        })
+        .then(html => {
+            if (modalContent) modalContent.innerHTML = html;
+            abrirModal(modalEl, size);
+
+            // Inicializar Select2 dentro del modal si hay selects
+            if (window.jQuery && $.fn.select2) {
+                $(modalEl).find('.modal-select2').select2({
+                    theme: 'bootstrap-5',
+                    width: '100%',
+                    dropdownParent: $(modalEl)
+                });
+            }
+        })
+        .catch(error => {
+            if (modalContent) {
+                modalContent.innerHTML = `
+                    <div class="modal-header bg-danger text-white py-2 px-3">
+                        <h6 class="modal-title small mb-0"><i class="bi bi-exclamation-triangle me-2"></i>Error</h6>
+                        <button type="button" class="btn-close btn-close-white btn-sm" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-center py-3">
+                        <p class="text-muted small mb-0">No se pudo cargar el contenido. Intente nuevamente.</p>
+                    </div>
+                `;
+            }
+            abrirModal(modalEl, 'modal-sm');
+        });
+    }
+
+    // Delegación de evento clic en cualquier botón con .btn-modal-equipo
+    document.addEventListener('click', function (e) {
+        const btn = e.target.closest('.btn-modal-equipo');
+        if (!btn) return;
+
+        e.preventDefault();
+        cargarModalEquipo(btn);
+    });
 });
 </script>
 @endpush

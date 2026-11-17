@@ -69,20 +69,30 @@
                 </td>
                 <td class="px-4 py-3 text-center">
                     <div class="btn-group shadow-sm" role="group">
-                        <a href="{{ route('equipos.show', $equipo) }}" class="btn btn-sm btn-outline-info" title="Ver detalles">
+                        <button type="button" class="btn btn-sm btn-outline-info btn-modal-equipo"
+                                data-bs-toggle="modal" data-bs-target="#modalEquipo"
+                                data-url="{{ route('equipos.show', $equipo) }}" data-size="modal-lg"
+                                title="Ver detalles">
                             <i class="bi bi-eye"></i>
-                        </a>
-                        <a href="{{ route('equipos.edit', $equipo) }}" class="btn btn-sm btn-outline-warning" title="Editar">
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-warning btn-modal-equipo"
+                                data-bs-toggle="modal" data-bs-target="#modalEquipo"
+                                data-url="{{ route('equipos.edit', $equipo) }}" data-size="modal-lg"
+                                title="Editar">
                             <i class="bi bi-pencil"></i>
-                        </a>
-                        <a href="{{ route('admin.mantenimientos-pc.create', $equipo) }}" target="_blank" 
-                        class="btn btn-sm btn-outline-success" title="Nuevo Mantenimiento">
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-success btn-modal-equipo"
+                                data-bs-toggle="modal" data-bs-target="#modalEquipo"
+                                data-url="{{ route('admin.mantenimientos-pc.create', $equipo) }}" data-size="modal-lg"
+                                title="Nuevo Mantenimiento">
                             <i class="bi bi-tools"></i>
-                        </a>
-                        <a href="{{ route('admin.mantenimientos-pc.historial', $equipo) }} " target="_blank"
-                        class="btn btn-sm btn-outline-secondary" title="Historial">
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary btn-modal-equipo"
+                                data-bs-toggle="modal" data-bs-target="#modalEquipo"
+                                data-url="{{ route('admin.mantenimientos-pc.historial', $equipo) }}" data-size="modal-lg"
+                                title="Historial">
                             <i class="bi bi-clock-history"></i>
-                        </a>
+                        </button>
                         <a href="{{ route('admin.equipos.hoja-vida', $equipo) }}" 
                         class="btn btn-sm btn-outline-primary" title="Hoja de Vida" target="_blank">
                             <i class="bi bi-file-pdf"></i>

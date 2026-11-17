@@ -181,10 +181,14 @@ class TermicaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $termica = Termica::with(['oficina', 'responsable', 'mantenimientos'])
+        $termica = Termica::with(['oficina.agencia', 'responsable', 'mantenimientos'])
             ->findOrFail($id);
+
+        if ($request->ajax()) {
+            return view('admin.termicas.partials.modal-show', compact('termica'))->render();
+        }
 
         return view('admin.termicas.show', compact('termica'));
     }
@@ -192,11 +196,15 @@ class TermicaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $termica = Termica::findOrFail($id);
         $oficinas = Oficina::all();
         $responsables = Responsable::all();
+
+        if ($request->ajax()) {
+            return view('admin.termicas.partials.modal-edit', compact('termica', 'oficinas', 'responsables'))->render();
+        }
 
         return view('admin.termicas.edit', compact('termica', 'oficinas', 'responsables'));
     }

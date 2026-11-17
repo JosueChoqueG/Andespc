@@ -67,15 +67,33 @@
                 </td>
                 <td class="px-4 py-3 text-center">
                     <div class="btn-group shadow-sm" role="group">
-                        <a href="{{ route('admin.contabilletes.show', $contabillete->id) }}" class="btn btn-sm btn-outline-info" title="Ver">
+                        <button type="button" class="btn btn-sm btn-outline-info btn-modal-contabillete"
+                                data-bs-toggle="modal" data-bs-target="#modalContabillete"
+                                data-url="{{ route('admin.contabilletes.show', $contabillete->id) }}" data-size="modal-lg"
+                                title="Ver detalles">
                             <i class="bi bi-eye"></i>
-                        </a>
-                        <a href="{{ route('admin.contabilletes.edit', $contabillete->id) }}" class="btn btn-sm btn-outline-warning" title="Editar">
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-warning btn-modal-contabillete"
+                                data-bs-toggle="modal" data-bs-target="#modalContabillete"
+                                data-url="{{ route('admin.contabilletes.edit', $contabillete->id) }}" data-size="modal-lg"
+                                title="Editar">
                             <i class="bi bi-pencil"></i>
-                        </a>
-                        <a href="{{ route('admin.mantenimientos-contabillete.create', $contabillete->id) }}" target="_blank" 
-                           class="btn btn-sm btn-outline-primary" title="Registrar Mantenimiento">
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-primary btn-modal-contabillete"
+                                data-bs-toggle="modal" data-bs-target="#modalContabillete"
+                                data-url="{{ route('admin.mantenimientos-contabillete.create', $contabillete->id) }}" data-size="modal-lg"
+                                title="Registrar Mantenimiento">
                             <i class="bi bi-tools"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary btn-modal-contabillete"
+                                data-bs-toggle="modal" data-bs-target="#modalContabillete"
+                                data-url="{{ route('admin.mantenimientos-contabillete.historial', $contabillete->id) }}" data-size="modal-lg"
+                                title="Historial de Mantenimientos">
+                            <i class="bi bi-clock-history"></i>
+                        </button>
+                        <a href="{{ route('admin.contabilletes.hoja-vida', $contabillete->id) }}" 
+                           class="btn btn-sm btn-outline-danger" title="Hoja de Vida" target="_blank">
+                            <i class="bi bi-file-pdf"></i>
                         </a>
                     </div>
                 </td>

@@ -1,0 +1,87 @@
+{{-- Modal Create: Nuevo Mantenimiento Impresora (Ultra Compacto & Estético) --}}
+<div class="modal-header py-2 px-3 text-white" style="background: linear-gradient(135deg, #198754 0%, #157347 100%);">
+    <div class="d-flex align-items-center gap-2">
+        <div class="bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+            <i class="bi bi-tools text-white small"></i>
+        </div>
+        <div>
+            <span class="modal-title fw-bold text-white fs-6 d-block lh-sm">Nuevo Mantenimiento</span>
+            <span class="text-white-50" style="font-size: 0.75rem;">{{ $impresora->marca_impresora }} {{ $impresora->modelo_impresora }} &bull; S/N: <strong>{{ $impresora->serie_impresora ?: 'N/A' }}</strong> &bull; IP: {{ $impresora->direccion_ip ?: 'S/I' }}</span>
+        </div>
+    </div>
+    <button type="button" class="btn-close btn-close-white btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<form action="{{ route('admin.mantenimientos-impresora.store', $impresora->id) }}" method="POST" id="form-mantenimiento-impresora-modal">
+    @csrf
+
+    <div class="modal-body p-2" style="max-height: 75vh; overflow-y: auto; font-size: 0.82rem;">
+        {{-- Resumen de la impresora en 1 línea --}}
+        <div class="bg-light border rounded-2 px-2.5 py-1.5 mb-2 d-flex justify-content-between align-items-center flex-wrap gap-2 text-muted" style="font-size: 0.76rem;">
+            <span><strong class="text-dark">Oficina:</strong> {{ $impresora->oficina->nombre_oficina ?? 'N/A' }}</span>
+            <span><strong class="text-dark">Tipo:</strong> {{ $impresora->tipo_impresora }}</span>
+            <span><strong class="text-dark">Estado:</strong> <span class="badge bg-secondary py-0.5 px-2">{{ $impresora->estado_impresora }}</span></span>
+        </div>
+
+        {{-- Formulario Compacto --}}
+        <div class="border rounded-2 p-2 bg-white">
+            <div class="row g-2">
+                <div class="col-md-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.75rem;">
+                        Tipo de Mantenimiento <span class="text-danger">*</span>
+                    </label>
+                    <select name="tipo_mantenimiento" class="form-select form-select-sm py-1" required>
+                        <option value="Preventivo">Preventivo</option>
+                        <option value="Correctivo">Correctivo</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.75rem;">
+                        Fecha <span class="text-danger">*</span>
+                    </label>
+                    <input type="date" name="fecha_mantenimiento" class="form-control form-control-sm py-1"
+                           value="{{ date('Y-m-d') }}" required>
+                </div>
+                <div class="col-12">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.75rem;">
+                        Trabajos Realizados <span class="text-danger">*</span>
+                    </label>
+                    <textarea name="descripcion_mantenimiento" class="form-control form-control-sm py-1" rows="2" required
+                              placeholder="Detalle de los trabajos realizados (presione Enter para líneas múltiples)..."></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.75rem;">Fallas Detectadas</label>
+                    <textarea name="fallas_detectadas" class="form-control form-control-sm py-1" rows="2"
+                              placeholder="Describa fallas encontradas (opcional)..."></textarea>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.75rem;">Solución Aplicada</label>
+                    <textarea name="fallas_solucion" class="form-control form-control-sm py-1" rows="2"
+                              placeholder="Describa soluciones aplicadas (opcional)..."></textarea>
+                </div>
+                <div class="col-12">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.75rem;">Observaciones y Recomendaciones</label>
+                    <textarea name="observacion_general" class="form-control form-control-sm py-1" rows="1"
+                              placeholder="Observaciones o recomendaciones...">{{ $ultimoMantenimiento->observacion_general ?? '' }}</textarea>
+                </div>
+                <div class="col-12">
+                    <div class="form-check form-switch mb-0">
+                        <input type="checkbox" name="generar_hoja_vida" class="form-check-input" id="generarHojaVidaModalImp" checked>
+                        <label class="form-check-label text-dark" for="generarHojaVidaModalImp" style="font-size: 0.76rem;">
+                            <i class="bi bi-file-pdf text-danger me-1"></i>Generar Hoja de Vida automáticamente al guardar
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer bg-light py-1.5 px-3">
+        <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2.5 ms-auto" data-bs-dismiss="modal" style="font-size: 0.78rem;">
+            <i class="bi bi-x-circle me-1"></i>Cancelar
+        </button>
+        <button type="submit" class="btn btn-sm btn-success py-1 px-3 shadow-sm" style="font-size: 0.78rem;">
+            <i class="bi bi-save me-1"></i>Guardar Mantenimiento
+        </button>
+    </div>
+</form>
