@@ -67,14 +67,14 @@ class ImpresoraController extends Controller
         }
 
         $impresoras = $query->orderBy('id', 'desc')->paginate(15)->withQueryString();
-        
-        $oficinas = Oficina::orderBy('nombre_oficina')->get();
-        $agencias = Agencia::orderBy('nombre_agencia')->get();
-        $responsables = Responsable::all();
 
         if ($request->ajax()) {
             return view('admin.impresoras.partials.table', compact('impresoras'))->render();
         }
+
+        $oficinas = Oficina::orderBy('nombre_oficina')->get();
+        $agencias = Agencia::orderBy('nombre_agencia')->get();
+        $responsables = Responsable::orderBy('nombre_responsable')->get();
 
         return view('admin.impresoras.index', compact('impresoras', 'oficinas', 'agencias', 'responsables'));
     }
@@ -136,11 +136,15 @@ class ImpresoraController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $oficinas = Oficina::all();
-        $responsables = Responsable::all();
-        
+        $oficinas = Oficina::with('agencia')->orderBy('nombre_oficina')->get();
+        $responsables = Responsable::orderBy('nombre_responsable')->get();
+
+        if ($request->ajax()) {
+            return view('admin.impresoras.partials.modal-create', compact('oficinas', 'responsables'))->render();
+        }
+
         return view('admin.impresoras.create', compact('oficinas', 'responsables'));
     }
 
@@ -201,8 +205,8 @@ class ImpresoraController extends Controller
     public function edit(Request $request, $id)
     {
         $impresora = Impresora::findOrFail($id);
-        $oficinas = Oficina::all();
-        $responsables = Responsable::all();
+        $oficinas = Oficina::with('agencia')->orderBy('nombre_oficina')->get();
+        $responsables = Responsable::orderBy('nombre_responsable')->get();
 
         if ($request->ajax()) {
             return view('admin.impresoras.partials.modal-edit', compact('impresora', 'oficinas', 'responsables'))->render();

@@ -26,7 +26,7 @@
                     </div>
                 </td>
                 <td class="px-4 py-3">
-                    <span class="d-block fw-medium text-dark mb-1">{{ $equipo->tipoequipo?->nombre_tipo ?? 'N/A' }}</span>
+                    <span class="d-block fw-medium text-dark mb-1">{{ $equipo->tipoEquipo?->nombre_tipo ?? 'N/A' }}</span>
                     <div class="d-flex align-items-center text-muted small">
                         <i class="bi bi-tags me-1"></i> 
                         {{ $equipo->modelo?->marca?->nombre_marca ?? 'N/A' }} 

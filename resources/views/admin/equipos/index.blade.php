@@ -7,9 +7,12 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0"><i class="bi bi-pc-display"></i> Equipos Registrados</h5>
         <div class="d-flex gap-2">
-            <a href="{{ route('equipos.create') }}" class="btn btn-primary shadow-sm" title="Nuevo Equipo">
+            <button type="button" class="btn btn-primary shadow-sm btn-modal-equipo"
+                    data-bs-toggle="modal" data-bs-target="#modalEquipo"
+                    data-url="{{ route('equipos.create') }}" data-size="modal-lg"
+                    title="Nuevo Equipo">
                 <i class="bi bi-plus-circle"></i>
-            </a>
+            </button>
             <a href="{{ route('admin.equipos.exportar') }}" id="btnExportarExcel" class="btn btn-success shadow-sm" title="Exportar a Excel">
                 <i class="bi bi-filetype-xlsx"></i>
             </a>

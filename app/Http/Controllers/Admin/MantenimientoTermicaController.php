@@ -226,7 +226,7 @@ class MantenimientoTermicaController extends Controller
      */
     public function historial(Request $request, $termicaId)
     {
-        $termica = Termica::findOrFail($termicaId);
+        $termica = Termica::with(['oficina', 'responsable'])->findOrFail($termicaId);
         
         $mantenimientos = MantenimientoTermica::where('termica_id', $termicaId)
             ->orderBy('fecha_mantenimiento', 'desc')

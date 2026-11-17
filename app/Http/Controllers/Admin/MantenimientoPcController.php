@@ -109,6 +109,7 @@ class MantenimientoPcController extends Controller
      */
     public function historial(Request $request, Equipo $equipo)
     {
+        $equipo->load(['oficina', 'responsable']);
         $mantenimientos = $equipo->mantenimientos()->paginate(10);
 
         if ($request->ajax()) {

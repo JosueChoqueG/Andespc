@@ -226,7 +226,7 @@ class MantenimientoContabilleteController extends Controller
      */
     public function historial(Request $request, $contabilleteId)
     {
-        $contabillete = Contabillete::findOrFail($contabilleteId);
+        $contabillete = Contabillete::with(['oficina', 'responsable'])->findOrFail($contabilleteId);
         
         $mantenimientos = MantenimientoContabillete::where('contabillete_id', $contabilleteId)
             ->orderBy('fecha_mantenimiento', 'desc')

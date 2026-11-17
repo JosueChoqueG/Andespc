@@ -67,14 +67,14 @@ class TermicaController extends Controller
         }
 
         $termicas = $query->orderBy('id', 'desc')->paginate(15)->withQueryString();
-        
-        $oficinas = Oficina::orderBy('nombre_oficina')->get();
-        $agencias = Agencia::orderBy('nombre_agencia')->get();
-        $responsables = Responsable::all();
 
         if ($request->ajax()) {
             return view('admin.termicas.partials.table', compact('termicas'))->render();
         }
+
+        $oficinas = Oficina::orderBy('nombre_oficina')->get();
+        $agencias = Agencia::orderBy('nombre_agencia')->get();
+        $responsables = Responsable::orderBy('nombre_responsable')->get();
 
         return view('admin.termicas.index', compact('termicas', 'oficinas', 'agencias', 'responsables'));
     }
@@ -136,11 +136,15 @@ class TermicaController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $oficinas = Oficina::all();
-        $responsables = Responsable::all();
-        
+        $oficinas = Oficina::with('agencia')->orderBy('nombre_oficina')->get();
+        $responsables = Responsable::orderBy('nombre_responsable')->get();
+
+        if ($request->ajax()) {
+            return view('admin.termicas.partials.modal-create', compact('oficinas', 'responsables'))->render();
+        }
+
         return view('admin.termicas.create', compact('oficinas', 'responsables'));
     }
 
@@ -199,8 +203,8 @@ class TermicaController extends Controller
     public function edit(Request $request, $id)
     {
         $termica = Termica::findOrFail($id);
-        $oficinas = Oficina::all();
-        $responsables = Responsable::all();
+        $oficinas = Oficina::with('agencia')->orderBy('nombre_oficina')->get();
+        $responsables = Responsable::orderBy('nombre_responsable')->get();
 
         if ($request->ajax()) {
             return view('admin.termicas.partials.modal-edit', compact('termica', 'oficinas', 'responsables'))->render();

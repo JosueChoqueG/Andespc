@@ -7,9 +7,12 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0"><i class="bi bi-receipt text-warning"></i> Impresoras Térmicas Registradas</h5>
         <div class="d-flex gap-2">
-            <a href="{{ route('admin.termicas.create') }}" class="btn btn-primary shadow-sm" title="Nueva Impresora Térmica">
+            <button type="button" class="btn btn-primary shadow-sm btn-modal-termica"
+                    data-bs-toggle="modal" data-bs-target="#modalTermica"
+                    data-url="{{ route('admin.termicas.create') }}" data-size="modal-lg"
+                    title="Nueva Impresora Térmica">
                 <i class="bi bi-plus-circle"></i>
-            </a>
+            </button>
             <a href="{{ route('admin.termicas.exportar') }}" id="btnExportarExcel" class="btn btn-success shadow-sm" title="Exportar a Excel">
                 <i class="bi bi-filetype-xlsx"></i>
             </a>

@@ -7,9 +7,12 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0"><i class="bi bi-printer"></i> Impresoras Registradas</h5>
         <div class="d-flex gap-2">
-            <a href="{{ route('admin.impresoras.create') }}" class="btn btn-primary shadow-sm" title="Nueva Impresora">
+            <button type="button" class="btn btn-primary shadow-sm btn-modal-impresora"
+                    data-bs-toggle="modal" data-bs-target="#modalImpresora"
+                    data-url="{{ route('admin.impresoras.create') }}" data-size="modal-lg"
+                    title="Nueva Impresora">
                 <i class="bi bi-plus-circle"></i>
-            </a>
+            </button>
             <a href="{{ route('admin.impresoras.exportar') }}" id="btnExportarExcel" class="btn btn-success shadow-sm" title="Exportar a Excel">
                 <i class="bi bi-filetype-xlsx"></i>
             </a>

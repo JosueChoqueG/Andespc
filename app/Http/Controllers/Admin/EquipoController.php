@@ -80,13 +80,13 @@ class EquipoController extends Controller
 
         $equipos = $query->orderBy('id', 'desc')->paginate(12)->withQueryString();
 
-        // Necesario para los selects de los filtros
-        $oficinas = Oficina::orderBy('nombre_oficina')->get();
-        $agencias = Agencia::orderBy('nombre_agencia')->get();
-
         if ($request->ajax()) {
             return view('admin.equipos.partials.table', compact('equipos'))->render();
         }
+
+        // Necesario para los selects de los filtros sólo en carga inicial
+        $oficinas = Oficina::orderBy('nombre_oficina')->get();
+        $agencias = Agencia::orderBy('nombre_agencia')->get();
 
         return view('admin.equipos.index', compact('equipos', 'oficinas', 'agencias'));
     }
@@ -164,14 +164,18 @@ class EquipoController extends Controller
         return response()->json($resultados);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $oficinas = Oficina::all();
-        $tipos = TipoEquipo::all();
+        $oficinas = Oficina::with('agencia')->orderBy('nombre_oficina')->get();
+        $tipos = TipoEquipo::orderBy('nombre_tipo')->get();
         $hardwares = Hardware::all();
-        $modelos = Modelo::all();
-        $sistemas = SistemaOperativo::all();
-        $responsables = Responsable::all();
+        $modelos = Modelo::with('marca')->orderBy('nombre_modelo')->get();
+        $sistemas = SistemaOperativo::orderBy('nombre_sistema')->get();
+        $responsables = Responsable::orderBy('nombre_responsable')->get();
+
+        if ($request->ajax()) {
+            return view('admin.equipos.partials.modal-create', compact('oficinas', 'tipos', 'hardwares', 'modelos', 'sistemas', 'responsables'))->render();
+        }
 
         return view('admin.equipos.create', compact('oficinas', 'tipos', 'hardwares', 'modelos', 'sistemas', 'responsables'));
     }
@@ -219,12 +223,12 @@ class EquipoController extends Controller
 
     public function edit(Request $request, Equipo $equipo)
     {
-        $oficinas = Oficina::all();
-        $tipoequipos = TipoEquipo::all();
+        $oficinas = Oficina::with('agencia')->orderBy('nombre_oficina')->get();
+        $tipoequipos = TipoEquipo::orderBy('nombre_tipo')->get();
         $hardwares = Hardware::all();
-        $modelos = Modelo::all();
-        $sistemas = SistemaOperativo::all();
-        $responsables = Responsable::all();
+        $modelos = Modelo::with('marca')->orderBy('nombre_modelo')->get();
+        $sistemas = SistemaOperativo::orderBy('nombre_sistema')->get();
+        $responsables = Responsable::orderBy('nombre_responsable')->get();
 
         if ($request->ajax()) {
             return view('admin.equipos.partials.modal-edit', compact('equipo', 'oficinas', 'tipoequipos', 'hardwares', 'modelos', 'sistemas', 'responsables'))->render();

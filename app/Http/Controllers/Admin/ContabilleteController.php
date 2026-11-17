@@ -73,14 +73,14 @@ class ContabilleteController extends Controller
         }
 
         $contabilletes = $query->orderBy('id', 'desc')->paginate(15)->withQueryString();
-        
-        $oficinas = Oficina::orderBy('nombre_oficina')->get();
-        $agencias = Agencia::orderBy('nombre_agencia')->get();
-        $responsables = Responsable::all();
 
         if ($request->ajax()) {
             return view('admin.contabilletes.partials.table', compact('contabilletes'))->render();
         }
+
+        $oficinas = Oficina::orderBy('nombre_oficina')->get();
+        $agencias = Agencia::orderBy('nombre_agencia')->get();
+        $responsables = Responsable::orderBy('nombre_responsable')->get();
 
         return view('admin.contabilletes.index', compact('contabilletes', 'oficinas', 'agencias', 'responsables'));
     }
@@ -146,11 +146,15 @@ class ContabilleteController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        $oficinas = Oficina::all();
-        $responsables = Responsable::all();
-        
+        $oficinas = Oficina::with('agencia')->orderBy('nombre_oficina')->get();
+        $responsables = Responsable::orderBy('nombre_responsable')->get();
+
+        if ($request->ajax()) {
+            return view('admin.contabilletes.partials.modal-create', compact('oficinas', 'responsables'))->render();
+        }
+
         return view('admin.contabilletes.create', compact('oficinas', 'responsables'));
     }
 
@@ -206,8 +210,8 @@ class ContabilleteController extends Controller
     public function edit(Request $request, $id)
     {
         $contabillete = Contabillete::findOrFail($id);
-        $oficinas = Oficina::all();
-        $responsables = Responsable::all();
+        $oficinas = Oficina::with('agencia')->orderBy('nombre_oficina')->get();
+        $responsables = Responsable::orderBy('nombre_responsable')->get();
 
         if ($request->ajax()) {
             return view('admin.contabilletes.partials.modal-edit', compact('contabillete', 'oficinas', 'responsables'))->render();

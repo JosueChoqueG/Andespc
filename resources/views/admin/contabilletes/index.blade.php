@@ -27,9 +27,12 @@
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0"><i class="bi bi-cash-coin"></i> Contadoras de Billetes Registradas</h5>
         <div class="d-flex gap-2">
-            <a href="{{ route('admin.contabilletes.create') }}" class="btn btn-primary shadow-sm">
+            <button type="button" class="btn btn-primary shadow-sm btn-modal-contabillete"
+                    data-bs-toggle="modal" data-bs-target="#modalContabillete"
+                    data-url="{{ route('admin.contabilletes.create') }}" data-size="modal-lg"
+                    title="Nueva Contadora de Billetes">
                 <i class="bi bi-plus-circle"></i>
-            </a>
+            </button>
             <a href="{{ route('admin.contabilletes.exportar') }}" id="btnExportar" class="btn btn-success shadow-sm">
                 <i class="bi bi-filetype-xlsx"></i>
             </a>

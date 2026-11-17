@@ -232,7 +232,7 @@ class MantenimientoImpresoraController extends Controller
      */
     public function historial(Request $request, $impresoraId)
     {
-        $impresora = Impresora::findOrFail($impresoraId);
+        $impresora = Impresora::with(['oficina', 'responsable'])->findOrFail($impresoraId);
         
         $mantenimientos = MantenimientoImpresora::where('impresora_id', $impresoraId)
             ->orderBy('fecha_mantenimiento', 'desc')
