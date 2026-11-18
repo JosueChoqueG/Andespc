@@ -180,10 +180,24 @@ class ContabilleteController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            }
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Error en el formulario: ' . $validator->errors()->first());
         }
 
-        Contabillete::create($validator->validated());
+        $contabillete = Contabillete::create($validator->validated());
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Contadora de billetes registrada correctamente.',
+                'contabillete' => $contabillete
+            ]);
+        }
 
         return redirect()->route('admin.contabilletes.index')
             ->with('success', 'Contadora de billetes registrada correctamente');

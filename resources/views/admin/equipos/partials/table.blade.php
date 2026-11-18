@@ -70,25 +70,21 @@
                 <td class="px-4 py-3 text-center">
                     <div class="btn-group shadow-sm" role="group">
                         <button type="button" class="btn btn-sm btn-outline-info btn-modal-equipo"
-                                data-bs-toggle="modal" data-bs-target="#modalEquipo"
                                 data-url="{{ route('equipos.show', $equipo) }}" data-size="modal-lg"
                                 title="Ver detalles">
                             <i class="bi bi-eye"></i>
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-warning btn-modal-equipo"
-                                data-bs-toggle="modal" data-bs-target="#modalEquipo"
                                 data-url="{{ route('equipos.edit', $equipo) }}" data-size="modal-lg"
                                 title="Editar">
                             <i class="bi bi-pencil"></i>
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-success btn-modal-equipo"
-                                data-bs-toggle="modal" data-bs-target="#modalEquipo"
                                 data-url="{{ route('admin.mantenimientos-pc.create', $equipo) }}" data-size="modal-lg"
                                 title="Nuevo Mantenimiento">
                             <i class="bi bi-tools"></i>
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-secondary btn-modal-equipo"
-                                data-bs-toggle="modal" data-bs-target="#modalEquipo"
                                 data-url="{{ route('admin.mantenimientos-pc.historial', $equipo) }}" data-size="modal-lg"
                                 title="Historial">
                             <i class="bi bi-clock-history"></i>

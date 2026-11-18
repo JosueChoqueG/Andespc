@@ -6,15 +6,15 @@
         </div>
         <div>
             <span class="modal-title fw-bold text-white fs-6 d-block lh-sm">Historial de Mantenimientos</span>
-            <span class="text-white-50" style="font-size: 0.75rem;">{{ $equipo->nombre_dispositivo }} &bull; S/N: <strong>{{ $equipo->numero_serie ?: 'N/A' }}</strong> &bull; Total: {{ $mantenimientos->total() ?? $mantenimientos->count() }} registros</span>
+            <span class="text-white-50" style="font-size: 0.95rem;">{{ $equipo->nombre_dispositivo }} &bull; S/N: <strong>{{ $equipo->numero_serie ?: 'N/A' }}</strong> &bull; Total: {{ $mantenimientos->total() ?? $mantenimientos->count() }} registros</span>
         </div>
     </div>
     <button type="button" class="btn-close btn-close-white btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
-<div class="modal-body p-2" style="max-height: 75vh; overflow-y: auto; font-size: 0.82rem;">
+<div class="modal-body p-3" style="max-height: 82vh; overflow-y: auto; font-size: 1rem;">
     {{-- Resumen del equipo en 1 línea --}}
-    <div class="bg-light border rounded-2 px-2.5 py-1.5 mb-2 d-flex justify-content-between align-items-center flex-wrap gap-2 text-muted" style="font-size: 0.76rem;">
+    <div class="bg-light border rounded-2 px-2.5 py-1.5 mb-2 d-flex justify-content-between align-items-center flex-wrap gap-2 text-muted" style="font-size: 0.95rem;">
         <span><strong class="text-dark">Oficina:</strong> {{ $equipo->oficina->nombre_oficina ?? 'N/A' }}</span>
         <span><strong class="text-dark">Responsable:</strong> {{ $equipo->responsable->nombre_responsable ?? 'Sin asignar' }}</span>
         @php
@@ -26,13 +26,13 @@
                 'De baja' => 'secondary',
             ][trim($equipo->estado_equipo)] ?? 'dark';
         @endphp
-        <span><strong class="text-dark">Estado:</strong> <span class="badge bg-{{ $badgeConfig }} py-0.5 px-2" style="font-size: 0.7rem;">{{ $equipo->estado_equipo }}</span></span>
+        <span><strong class="text-dark">Estado:</strong> <span class="badge bg-{{ $badgeConfig }} py-0.5 px-2" style="font-size: 0.85rem;">{{ $equipo->estado_equipo }}</span></span>
     </div>
 
     {{-- Tabla de historial --}}
     @if($mantenimientos->count() > 0)
     <div class="table-responsive border rounded-2 bg-white">
-        <table class="table table-sm table-hover align-middle mb-0" style="font-size: 0.78rem;">
+        <table class="table table-sm table-hover align-middle mb-0" style="font-size: 0.95rem;">
             <thead class="table-light">
                 <tr>
                     <th class="py-1.5 ps-2.5" style="width: 85px;">Fecha</th>
@@ -47,7 +47,7 @@
                 <tr>
                     <td class="py-1.5 ps-2.5 fw-medium">{{ $mantenimiento->fecha_mantenimiento ? $mantenimiento->fecha_mantenimiento->format('d/m/Y') : 'N/A' }}</td>
                     <td class="py-1.5 px-2">
-                        <span class="badge bg-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'warning text-dark' }} py-0.5 px-1.5" style="font-size: 0.68rem;">
+                        <span class="badge bg-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'warning text-dark' }} py-0.5 px-1.5" style="font-size: 0.82rem;">
                             {{ $mantenimiento->tipo_mantenimiento }}
                         </span>
                     </td>
@@ -85,13 +85,13 @@
 </div>
 
 <div class="modal-footer bg-light py-1.5 px-3">
-    <a href="{{ route('admin.equipos.hoja-vida', $equipo) }}" class="btn btn-sm btn-outline-info py-1 px-2" target="_blank" style="font-size: 0.78rem;">
+    <a href="{{ route('admin.equipos.hoja-vida', $equipo) }}" class="btn btn-sm btn-outline-info py-1 px-2" target="_blank" style="font-size: 0.95rem;">
         <i class="bi bi-file-earmark-text me-1"></i>Hoja de Vida
     </a>
-    <a href="{{ route('admin.equipos.hoja-vida.pdf', $equipo) }}" class="btn btn-sm btn-outline-danger py-1 px-2" target="_blank" style="font-size: 0.78rem;">
+    <a href="{{ route('admin.equipos.hoja-vida.pdf', $equipo) }}" class="btn btn-sm btn-outline-danger py-1 px-2" target="_blank" style="font-size: 0.95rem;">
         <i class="bi bi-file-pdf me-1"></i>PDF
     </a>
-    <button type="button" class="btn btn-sm btn-secondary py-1 px-2.5 ms-auto" data-bs-dismiss="modal" style="font-size: 0.78rem;">
+    <button type="button" class="btn btn-sm btn-secondary py-1 px-2.5 ms-auto" data-bs-dismiss="modal" style="font-size: 0.95rem;">
         <i class="bi bi-x-circle me-1"></i>Cerrar
     </button>
 </div>

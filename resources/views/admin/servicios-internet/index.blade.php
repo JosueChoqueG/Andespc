@@ -96,18 +96,24 @@
      MODAL — Nuevo Servicio de Internet
 ══════════════════════════════════════════ --}}
 <div class="modal fade" id="modalCrear" aria-labelledby="modalCrearLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-dialog modal-lg modal-dialog-centered" style="max-width: 820px;">
         <div class="modal-content shadow border-0">
 
-            <div class="modal-header bg-light border-bottom py-3">
-                <h5 class="modal-title fw-bold" id="modalCrearLabel">
-                    <i class="bi bi-wifi text-primary me-2"></i>Nuevo Servicio de Internet
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            <div class="modal-header py-2 px-3 text-white" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="bg-white bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
+                        <i class="bi bi-wifi text-white small"></i>
+                    </div>
+                    <div>
+                        <span class="modal-title fw-bold text-white fs-6 d-block lh-sm" id="modalCrearLabel">Nuevo Servicio de Internet</span>
+                        <span class="text-white-50" style="font-size: 0.85rem;">Registrar conexión o proveedor de internet</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-close btn-close-white btn-sm" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
 
             <form method="POST" action="{{ route('admin.servicios-internet.store') }}">
-                <div class="modal-body p-3">
+                <div class="modal-body p-3" style="max-height: 75vh; overflow-y: auto;">
 
                     @if($errors->any())
                         <div class="alert alert-danger alert-dismissible fade show py-2 small mb-3" role="alert">
@@ -126,8 +132,8 @@
                     @include('admin.servicios-internet.form', ['hideButtons' => true])
 
                 </div>
-                <div class="modal-footer bg-light border-top py-2 px-3">
-                    <button type="button" class="btn btn-outline-secondary btn-sm px-3" data-bs-dismiss="modal">
+                <div class="modal-footer bg-light border-top py-2 px-3 d-flex justify-content-between align-items-center">
+                    <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">
                         <i class="bi bi-x-circle me-1"></i>Cancelar
                     </button>
                     <button type="submit" class="btn btn-primary btn-sm px-4">

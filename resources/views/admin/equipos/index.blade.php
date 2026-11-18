@@ -8,7 +8,6 @@
         <h5 class="mb-0"><i class="bi bi-pc-display"></i> Equipos Registrados</h5>
         <div class="d-flex gap-2">
             <button type="button" class="btn btn-primary shadow-sm btn-modal-equipo"
-                    data-bs-toggle="modal" data-bs-target="#modalEquipo"
                     data-url="{{ route('equipos.create') }}" data-size="modal-lg"
                     title="Nuevo Equipo">
                 <i class="bi bi-plus-circle"></i>
@@ -498,6 +497,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    function cerrarModal(el) {
+        const bs = getBootstrapModal(el);
+        if (bs) {
+            bs.hide();
+        } else if (window.jQuery && typeof $(el).modal === 'function') {
+            $(el).modal('hide');
+        } else {
+            el.classList.remove('show');
+            el.style.display = 'none';
+        }
+
+        // Forzar limpieza de backdrop y scroll bloqueado en body
+        setTimeout(() => {
+            document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+        }, 150);
+    }
+
     // Limpiar al cerrar modal
     if (modalEl) {
         modalEl.addEventListener('hidden.bs.modal', function () {
@@ -509,6 +528,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             }
+            // Asegurar limpieza de backdrop huérfano
+            document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
         });
     }
 
@@ -564,6 +588,90 @@ document.addEventListener('DOMContentLoaded', function () {
 
         e.preventDefault();
         cargarModalEquipo(btn);
+    });
+
+    // Envío asíncrono para formularios de modal (Crear y Editar Equipos)
+    document.addEventListener('submit', function (e) {
+        const formEl = e.target.closest('#form-crear-equipo-modal, #form-editar-equipo-modal');
+        if (!formEl) return;
+
+        e.preventDefault();
+
+        const submitBtn = formEl.querySelector('button[type="submit"]');
+        const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Guardando...';
+        }
+
+        const errorDiv = formEl.querySelector('#modal-equipo-errors');
+        if (errorDiv) {
+            errorDiv.classList.add('d-none');
+            errorDiv.innerHTML = '';
+        }
+
+        const formData = new FormData(formEl);
+
+        fetch(formEl.action, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(async response => {
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                let errorMsg = 'Error al procesar el formulario.';
+                if (data.errors) {
+                    const list = Object.values(data.errors).flat().map(err => `<li>${err}</li>`).join('');
+                    errorMsg = `<ul class="mb-0 ps-3">${list}</ul>`;
+                } else if (data.message) {
+                    errorMsg = data.message;
+                }
+                if (errorDiv) {
+                    errorDiv.innerHTML = errorMsg;
+                    errorDiv.classList.remove('d-none');
+                    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else if (window.Swal) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error de validación',
+                        html: errorMsg
+                    });
+                }
+                return;
+            }
+
+            // Éxito: cerrar modal y refrescar tabla limpiando backdrops
+            cerrarModal(modalEl);
+
+            if (window.Swal) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Operación Exitosa!',
+                    text: data.message || 'Equipo guardado correctamente.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+
+            ejecutarFiltroAjax();
+        })
+        .catch(err => {
+            console.error('Error al guardar equipo:', err);
+            if (errorDiv) {
+                errorDiv.innerHTML = 'Ocurrió un error inesperado al guardar el equipo. Intente nuevamente.';
+                errorDiv.classList.remove('d-none');
+            }
+        })
+        .finally(() => {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+            }
+        });
     });
 });
 </script>

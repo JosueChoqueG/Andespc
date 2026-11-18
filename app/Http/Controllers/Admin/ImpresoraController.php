@@ -175,10 +175,24 @@ class ImpresoraController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            }
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Error en el formulario: ' . $validator->errors()->first());
         }
 
-        Impresora::create($validator->validated());
+        $impresora = Impresora::create($validator->validated());
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Impresora registrada correctamente.',
+                'impresora' => $impresora
+            ]);
+        }
 
         return redirect()->route('admin.impresoras.index')
             ->with('success', 'Impresora registrada correctamente');

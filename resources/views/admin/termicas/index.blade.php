@@ -458,6 +458,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function cerrarModal(el) {
+        const bs = getBootstrapModal(el);
+        if (bs) {
+            bs.hide();
+        } else if (window.jQuery && typeof $(el).modal === 'function') {
+            $(el).modal('hide');
+        } else {
+            el.classList.remove('show');
+            el.style.display = 'none';
+        }
+
+        setTimeout(() => {
+            document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+        }, 150);
+    }
+
     if (modalEl) {
         modalEl.addEventListener('hidden.bs.modal', function () {
             if (modalContent) modalContent.innerHTML = '';
@@ -520,6 +539,87 @@ document.addEventListener('DOMContentLoaded', function() {
 
         e.preventDefault();
         cargarModalTermica(btn);
+    });
+
+    // Envío asíncrono para formularios de modal (Crear y Editar Térmicas)
+    document.addEventListener('submit', function (e) {
+        const formEl = e.target.closest('#form-crear-termica-modal, #form-editar-termica-modal');
+        if (!formEl) return;
+
+        e.preventDefault();
+
+        const submitBtn = formEl.querySelector('button[type="submit"]');
+        const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Guardando...';
+        }
+
+        const errorDiv = formEl.querySelector('#modal-termica-errors');
+        if (errorDiv) {
+            errorDiv.classList.add('d-none');
+            errorDiv.innerHTML = '';
+        }
+
+        const formData = new FormData(formEl);
+
+        fetch(formEl.action, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
+            },
+            body: formData
+        })
+        .then(async response => {
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                let errorMsg = 'Error al procesar el formulario.';
+                if (data.errors) {
+                    const list = Object.values(data.errors).flat().map(err => `<li>${err}</li>`).join('');
+                    errorMsg = `<ul class="mb-0 ps-3">${list}</ul>`;
+                } else if (data.message) {
+                    errorMsg = data.message;
+                }
+                if (errorDiv) {
+                    errorDiv.innerHTML = errorMsg;
+                    errorDiv.classList.remove('d-none');
+                    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else if (window.Swal) {
+                    Swal.fire({ icon: 'error', title: 'Error de validación', html: errorMsg });
+                }
+                return;
+            }
+
+            const bs = getBootstrapModal(modalEl);
+            if (bs) bs.hide();
+            cerrarModal(modalEl);
+
+            if (window.Swal) {
+                Swal.fire({
+                    icon: 'success',
+                    title: '¡Operación Exitosa!',
+                    text: data.message || 'Impresora térmica guardada correctamente.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            }
+
+            ejecutarFiltroAjax();
+        })
+        .catch(err => {
+            console.error('Error al guardar térmica:', err);
+            if (errorDiv) {
+                errorDiv.innerHTML = 'Ocurrió un error inesperado al guardar. Intente nuevamente.';
+                errorDiv.classList.remove('d-none');
+            }
+        })
+        .finally(() => {
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+            }
+        });
     });
 });
 </script>

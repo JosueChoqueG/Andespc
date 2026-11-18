@@ -11,6 +11,7 @@ use App\Models\Modelo;
 use App\Models\SistemaOperativo;
 use App\Models\Responsable;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
@@ -170,7 +171,7 @@ class EquipoController extends Controller
         $tipos = TipoEquipo::orderBy('nombre_tipo')->get();
         $hardwares = Hardware::all();
         $modelos = Modelo::with('marca')->orderBy('nombre_modelo')->get();
-        $sistemas = SistemaOperativo::orderBy('nombre_sistema')->get();
+        $sistemas = SistemaOperativo::orderBy('nombre_so')->get();
         $responsables = Responsable::orderBy('nombre_responsable')->get();
 
         if ($request->ajax()) {
@@ -183,10 +184,10 @@ class EquipoController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'nombre_dispositivo' => 'required|string|max:100',
-            'numero_serie' => 'nullable|string|max:100|unique:equipos',
-            'direccion_ip' => 'nullable|ip',
+            'numero_serie' => 'nullable|string|max:100|unique:equipos,numero_serie',
+            'direccion_ip' => 'nullable|string|max:45',
             'direccion_mac' => 'nullable|string|max:17',
             'fecha_adquisicion' => 'nullable|date',
             'estado_equipo' => 'required|in:Operativo,Operativo con Observacion,En mantenimiento,Fuera de servicio,De baja',
@@ -197,17 +198,46 @@ class EquipoController extends Controller
             'modelo_id' => 'required|exists:modelos,id',
             'sistemaoperativo_id' => 'required|exists:sistemaoperativos,id',
             'responsable_id' => 'nullable|exists:responsables,id',
-            'vpn_cusco' => 'nullable|in:Sí,No',
-            'vpn_abancay' => 'nullable|in:Sí,No',
+            'vpn_cusco' => 'nullable|in:Sí,No,Si,no,si',
+            'vpn_abancay' => 'nullable|in:Sí,No,Si,no,si',
             'antivirus' => 'nullable|string|max:100',
-            'depreciacion_anual' => 'nullable|numeric|min:0|max:100',
+            'depreciacion_anual' => 'nullable|numeric|min:0|max:999.99',
             'programas_instalados' => 'nullable|string',
             'licencias' => 'nullable|string',
             'copias_seguridad' => 'nullable|string',
             'observacion' => 'nullable|string',
         ]);
 
-        Equipo::create($validated);
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Error en el formulario: ' . $validator->errors()->first());
+        }
+
+        $validated = $validator->validated();
+        if (!empty($validated['vpn_cusco'])) {
+            $validated['vpn_cusco'] = in_array(mb_strtolower($validated['vpn_cusco']), ['sí', 'si']) ? 'Sí' : 'No';
+        }
+        if (!empty($validated['vpn_abancay'])) {
+            $validated['vpn_abancay'] = in_array(mb_strtolower($validated['vpn_abancay']), ['sí', 'si']) ? 'Sí' : 'No';
+        }
+
+        $equipo = Equipo::create($validated);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Equipo registrado correctamente.',
+                'equipo' => $equipo
+            ]);
+        }
 
         return redirect()->route('equipos.index')->with('success', 'Equipo creado correctamente.');
     }
@@ -227,7 +257,7 @@ class EquipoController extends Controller
         $tipoequipos = TipoEquipo::orderBy('nombre_tipo')->get();
         $hardwares = Hardware::all();
         $modelos = Modelo::with('marca')->orderBy('nombre_modelo')->get();
-        $sistemas = SistemaOperativo::orderBy('nombre_sistema')->get();
+        $sistemas = SistemaOperativo::orderBy('nombre_so')->get();
         $responsables = Responsable::orderBy('nombre_responsable')->get();
 
         if ($request->ajax()) {
@@ -239,10 +269,10 @@ class EquipoController extends Controller
 
     public function update(Request $request, Equipo $equipo)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'nombre_dispositivo' => 'required|string|max:100',
             'numero_serie' => 'nullable|string|max:100|unique:equipos,numero_serie,' . $equipo->id,
-            'direccion_ip' => 'nullable|ip',
+            'direccion_ip' => 'nullable|string|max:45',
             'direccion_mac' => 'nullable|string|max:17',
             'fecha_adquisicion' => 'nullable|date',
             'estado_equipo' => 'required|in:Operativo,Operativo con Observacion,En mantenimiento,Fuera de servicio,De baja',
@@ -253,17 +283,46 @@ class EquipoController extends Controller
             'modelo_id' => 'required|exists:modelos,id',
             'sistemaoperativo_id' => 'required|exists:sistemaoperativos,id',
             'responsable_id' => 'nullable|exists:responsables,id',
-            'vpn_cusco' => 'nullable|in:Sí,No',
-            'vpn_abancay' => 'nullable|in:Sí,No',
+            'vpn_cusco' => 'nullable|in:Sí,No,Si,no,si',
+            'vpn_abancay' => 'nullable|in:Sí,No,Si,no,si',
             'antivirus' => 'nullable|string|max:100',
-            'depreciacion_anual' => 'nullable|numeric|min:0|max:100',
+            'depreciacion_anual' => 'nullable|numeric|min:0|max:999.99',
             'programas_instalados' => 'nullable|string',
             'licencias' => 'nullable|string',
             'copias_seguridad' => 'nullable|string',
             'observacion' => 'nullable|string',
         ]);
 
+        if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors()
+                ], 422);
+            }
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Error en el formulario: ' . $validator->errors()->first());
+        }
+
+        $validated = $validator->validated();
+        if (!empty($validated['vpn_cusco'])) {
+            $validated['vpn_cusco'] = in_array(mb_strtolower($validated['vpn_cusco']), ['sí', 'si']) ? 'Sí' : 'No';
+        }
+        if (!empty($validated['vpn_abancay'])) {
+            $validated['vpn_abancay'] = in_array(mb_strtolower($validated['vpn_abancay']), ['sí', 'si']) ? 'Sí' : 'No';
+        }
+
         $equipo->update($validated);
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Equipo actualizado correctamente.',
+                'equipo' => $equipo
+            ]);
+        }
 
         return redirect()->route('equipos.index')->with('success', 'Equipo actualizado correctamente.');
     }

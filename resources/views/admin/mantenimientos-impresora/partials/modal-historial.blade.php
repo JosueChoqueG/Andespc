@@ -6,25 +6,25 @@
         </div>
         <div>
             <span class="modal-title fw-bold text-white fs-6 d-block lh-sm">Historial de Mantenimientos</span>
-            <span class="text-white-50" style="font-size: 0.75rem;">{{ $impresora->marca_impresora }} {{ $impresora->modelo_impresora }} &bull; S/N: <strong>{{ $impresora->serie_impresora ?: 'N/A' }}</strong> &bull; Total: {{ $mantenimientos->count() }} registros</span>
+            <span class="text-white-50" style="font-size: 0.95rem;">{{ $impresora->marca_impresora }} {{ $impresora->modelo_impresora }} &bull; S/N: <strong>{{ $impresora->serie_impresora ?: 'N/A' }}</strong> &bull; Total: {{ $mantenimientos->count() }} registros</span>
         </div>
     </div>
     <button type="button" class="btn-close btn-close-white btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
-<div class="modal-body p-2" style="max-height: 75vh; overflow-y: auto; font-size: 0.82rem;">
+<div class="modal-body p-3" style="max-height: 82vh; overflow-y: auto; font-size: 1rem;">
     {{-- Resumen de la impresora en 1 línea --}}
-    <div class="bg-light border rounded-2 px-2.5 py-1.5 mb-2 d-flex justify-content-between align-items-center flex-wrap gap-2 text-muted" style="font-size: 0.76rem;">
+    <div class="bg-light border rounded-2 px-2.5 py-1.5 mb-2 d-flex justify-content-between align-items-center flex-wrap gap-2 text-muted" style="font-size: 0.95rem;">
         <span><strong class="text-dark">Oficina:</strong> {{ $impresora->oficina->nombre_oficina ?? 'N/A' }}</span>
         <span><strong class="text-dark">Responsable:</strong> {{ $impresora->responsable->nombre_responsable ?? 'Sin asignar' }}</span>
-        <span><strong class="text-dark">Estado:</strong> <span class="badge bg-secondary py-0.5 px-2" style="font-size: 0.7rem;">{{ $impresora->estado_impresora }}</span></span>
+        <span><strong class="text-dark">Estado:</strong> <span class="badge bg-secondary py-0.5 px-2" style="font-size: 0.85rem;">{{ $impresora->estado_impresora }}</span></span>
         <span><strong class="text-dark">Prev/Corr:</strong> <span class="badge bg-success py-0.5 px-1.5">{{ $estadisticas['preventivos'] ?? 0 }}</span> / <span class="badge bg-danger py-0.5 px-1.5">{{ $estadisticas['correctivos'] ?? 0 }}</span></span>
     </div>
 
     {{-- Tabla de historial --}}
     @if($mantenimientos->count() > 0)
     <div class="table-responsive border rounded-2 bg-white">
-        <table class="table table-sm table-hover align-middle mb-0" style="font-size: 0.78rem;">
+        <table class="table table-sm table-hover align-middle mb-0" style="font-size: 0.95rem;">
             <thead class="table-light">
                 <tr>
                     <th class="py-1.5 ps-2.5" style="width: 85px;">Fecha</th>
@@ -39,7 +39,7 @@
                 <tr>
                     <td class="py-1.5 ps-2.5 fw-medium">{{ $mantenimiento->fecha_mantenimiento ? date('d/m/Y', strtotime($mantenimiento->fecha_mantenimiento)) : 'N/A' }}</td>
                     <td class="py-1.5 px-2">
-                        <span class="badge bg-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'danger' }} py-0.5 px-1.5" style="font-size: 0.68rem;">
+                        <span class="badge bg-{{ $mantenimiento->tipo_mantenimiento == 'Preventivo' ? 'success' : 'danger' }} py-0.5 px-1.5" style="font-size: 0.82rem;">
                             {{ $mantenimiento->tipo_mantenimiento }}
                         </span>
                     </td>
@@ -77,13 +77,13 @@
 </div>
 
 <div class="modal-footer bg-light py-1.5 px-3">
-    <a href="{{ route('admin.impresoras.hoja-vida', $impresora->id) }}" class="btn btn-sm btn-outline-info py-1 px-2" target="_blank" style="font-size: 0.78rem;">
+    <a href="{{ route('admin.impresoras.hoja-vida', $impresora->id) }}" class="btn btn-sm btn-outline-info py-1 px-2" target="_blank" style="font-size: 0.95rem;">
         <i class="bi bi-file-earmark-text me-1"></i>Hoja de Vida
     </a>
-    <a href="{{ route('admin.impresoras.hoja-vida.pdf', $impresora->id) }}" class="btn btn-sm btn-outline-danger py-1 px-2" target="_blank" style="font-size: 0.78rem;">
+    <a href="{{ route('admin.impresoras.hoja-vida.pdf', $impresora->id) }}" class="btn btn-sm btn-outline-danger py-1 px-2" target="_blank" style="font-size: 0.95rem;">
         <i class="bi bi-file-pdf me-1"></i>PDF
     </a>
-    <button type="button" class="btn btn-sm btn-secondary py-1 px-2.5 ms-auto" data-bs-dismiss="modal" style="font-size: 0.78rem;">
+    <button type="button" class="btn btn-sm btn-secondary py-1 px-2.5 ms-auto" data-bs-dismiss="modal" style="font-size: 0.95rem;">
         <i class="bi bi-x-circle me-1"></i>Cerrar
     </button>
 </div>

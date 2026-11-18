@@ -173,10 +173,24 @@ class TermicaController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            }
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Error en el formulario: ' . $validator->errors()->first());
         }
 
-        Termica::create($validator->validated());
+        $termica = Termica::create($validator->validated());
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Impresora térmica registrada correctamente.',
+                'termica' => $termica
+            ]);
+        }
 
         return redirect()->route('admin.termicas.index')
             ->with('success', 'Impresora térmica registrada correctamente');

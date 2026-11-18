@@ -324,6 +324,88 @@
         }
 
         /* End SweetAlert */
+
+        /* Estilos Globales para Modales de Gestión (Legibilidad y Tamaño Confortable) */
+        .modal-dialog.modal-lg {
+            max-width: 980px;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (min-width: 1400px) {
+            .modal-dialog.modal-lg {
+                max-width: 1040px;
+            }
+        }
+        .modal-content {
+            border-radius: 14px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+        .modal-header {
+            padding: 0.85rem 1.25rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .modal-footer {
+            padding: 0.75rem 1.25rem;
+            border-top: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+        }
+        .modal-body {
+            font-family: 'Calibri', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-size: 1rem; /* 16px = ~Calibri 12pt */
+            line-height: 1.5;
+            background-color: #f8fafc;
+        }
+        .modal-body .border.rounded-2 {
+            border-radius: 8px !important;
+            border-color: #e2e8f0 !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            padding: 0.85rem !important;
+            margin-bottom: 0.85rem !important;
+        }
+        .modal-body .form-label {
+            font-size: 0.95rem !important;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 0.3rem;
+            display: inline-block;
+        }
+        .modal-body .form-control-sm,
+        .modal-body .form-select-sm,
+        .modal-body .select2-container--bootstrap-5 .select2-selection {
+            font-size: 0.98rem !important;
+            padding-top: 0.42rem;
+            padding-bottom: 0.42rem;
+            border-radius: 6px;
+            border-color: #cbd5e1;
+            min-height: calc(1.5em + 0.85rem + 2px);
+        }
+        .modal-body .form-control-sm:focus,
+        .modal-body .form-select-sm:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+        .modal-body .section-badge,
+        .modal-body .section-subtitle {
+            font-size: 0.95rem !important;
+            letter-spacing: 0.3px;
+            font-weight: 700;
+        }
+        /* Scrollbar pulido */
+        .modal-body::-webkit-scrollbar {
+            width: 7px;
+        }
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
     </style>
 </head>
 
