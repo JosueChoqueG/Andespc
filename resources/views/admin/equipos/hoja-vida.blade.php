@@ -338,7 +338,7 @@
                     <td style="font-size: 11.5px;">
                         {{ $ultimoMantenimiento->observaciones 
                             ?? $mantenimiento->observaciones 
-                            ?? 'No instalar aplicaciones de internet o sitios no confiables. No manipular la configuración de IP.' }}
+                            ?? 'No instalar aplicaciones de fuentes no confiables' }}
                     </td>
                 </tr>
             </tbody>

@@ -90,7 +90,7 @@
                             <i class="bi bi-clock-history"></i>
                         </button>
                         <a href="{{ route('admin.equipos.hoja-vida', $equipo) }}" 
-                        class="btn btn-sm btn-outline-primary" title="Hoja de Vida" target="_blank">
+                        class="btn btn-sm btn-outline-primary" title="Hoja de Vida" target="_blank" >
                             <i class="bi bi-file-pdf"></i>
                         </a>
                     </div>

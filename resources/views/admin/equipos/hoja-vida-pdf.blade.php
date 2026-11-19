@@ -310,7 +310,7 @@
                     @endforeach
                 </td>
                 <td style="font-size: 11px;">
-                    {{ $ultimoMantenimiento->observaciones ?? ($mantenimiento->observaciones ?? 'No instalar aplicaciones de internet o sitios no confiables. No manipular la configuración de IP.') }}
+                    {{ $ultimoMantenimiento->observaciones ?? ($mantenimiento->observaciones ?? 'No instalar aplicaciones de fuentes no confiables.') }}
                 </td>
             </tr>
         </tbody>
