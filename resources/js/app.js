@@ -13,7 +13,6 @@ import 'select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.min.css';
 import './bootstrap';
 import * as bootstrap from 'bootstrap';
 window.bootstrap = bootstrap;
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Alpine from 'alpinejs';
 import { initSelect2 } from './modules/select2';
 

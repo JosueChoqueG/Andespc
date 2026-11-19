@@ -489,7 +489,7 @@
                 ]);
             @endphp
 
-            <a class="nav-link-main {{ $isPcOpen ? 'active-section' : '' }}" data-bs-toggle="collapse" href="#pcCollapse" role="button" aria-expanded="{{ $isPcOpen ? 'true' : 'false' }}">
+            <a class="nav-link-main {{ $isPcOpen ? 'active-section' : '' }}" data-bs-toggle="collapse" data-bs-target="#pcCollapse" href="#pcCollapse" role="button" aria-expanded="{{ $isPcOpen ? 'true' : 'false' }}" aria-controls="pcCollapse">
                 <div class="icon-box-white"><i class="bi bi-sliders text-primary fs-5"></i></div>
                 <span class="flex-grow-1">Gestión PC</span>
                 <i class="bi bi-chevron-down small opacity-50 transition-transform"></i>
@@ -522,8 +522,8 @@
                 ]);
             @endphp
             <a class="nav-link-main {{ $isInformesOpen ? 'active-section' : '' }}"
-               data-bs-toggle="collapse" href="#informesCollapse" role="button"
-               aria-expanded="{{ $isInformesOpen ? 'true' : 'false' }}">
+               data-bs-toggle="collapse" data-bs-target="#informesCollapse" href="#informesCollapse" role="button"
+               aria-expanded="{{ $isInformesOpen ? 'true' : 'false' }}" aria-controls="informesCollapse">
                 <div class="icon-box-white"><i class="bi bi-file-earmark-text text-danger fs-5"></i></div>
                 <span class="flex-grow-1">Informes</span>
                 <i class="bi bi-chevron-down small opacity-50 transition-transform"></i>
