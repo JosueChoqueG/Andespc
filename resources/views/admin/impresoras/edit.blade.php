@@ -210,25 +210,32 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Cantidad Impresa</label>
                                     <input type="number" name="cantidad_impresion" class="form-control" 
                                            value="{{ old('cantidad_impresion', $impresora->cantidad_impresion ?? 0) }}">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Cantidad Escaneo</label>
                                     <input type="number" name="cantidad_escaneo" class="form-control" 
                                            value="{{ old('cantidad_escaneo', $impresora->cantidad_escaneo ?? 0) }}">
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <div class="form-group">
                                     <label>Cantidad de mantenimientos</label>
                                     <input type="number" name="cantidad_mantenimientos" class="form-control" 
                                            value="{{ old('cantidad_mantenimientos', $impresora->cantidad_mantenimientos ?? 0) }}">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Total de fallos</label>
+                                    <input type="number" name="cantidad_fallos" class="form-control" 
+                                           value="{{ old('cantidad_fallos', $impresora->cantidad_fallos ?? 0) }}" min="0">
                                 </div>
                             </div>
                         </div>

@@ -31,7 +31,8 @@ class Impresora extends Model
         'cantidad_impresion',
         'capacidad_impresion',
         'cantidad_escaneo',
-        'cantidad_mantenimientos'
+        'cantidad_mantenimientos',
+        'cantidad_fallos'
     ];
 
     protected $casts = [
@@ -43,6 +44,7 @@ class Impresora extends Model
         'capacidad_impresion' => 'integer',
         'cantidad_escaneo' => 'integer',
         'cantidad_mantenimientos' => 'integer',
+        'cantidad_fallos' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];

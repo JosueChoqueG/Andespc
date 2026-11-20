@@ -17,16 +17,18 @@
     @method('PUT')
 
     <div class="modal-body p-3" style="max-height: 82vh; overflow-y: auto; font-size: 1rem;">
-        {{-- Bloque 1: Identificación y Ubicación --}}
+        <div id="modal-impresora-errors" class="alert alert-danger py-1.5 px-3 small d-none mb-2"></div>
+
+        {{-- Sección 1: Identificación y Asignación --}}
         <div class="border rounded-2 p-2.5 mb-2.5 bg-white">
             <div class="text-primary fw-semibold mb-1" style="font-size: 0.95rem;">
                 <i class="bi bi-tag me-1"></i> 1. IDENTIFICACIÓN Y ASIGNACIÓN
             </div>
             <div class="row g-2.5">
-                <div class="col-md-4 col-sm-6">
+                <div class="col-md-3 col-sm-6">
                     <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Oficina <span class="text-danger">*</span></label>
                     <select name="oficina_id" class="form-select form-select-sm py-1 modal-select2" required>
-                        <option value="">— Seleccionar —</option>
+                        <option value="">Seleccione Oficina</option>
                         @foreach($oficinas as $oficina)
                             <option value="{{ $oficina->id }}" {{ old('oficina_id', $impresora->oficina_id) == $oficina->id ? 'selected' : '' }}>
                                 {{ $oficina->nombre_oficina }} ({{ $oficina->agencia->nombre_agencia ?? 'N/A' }})
@@ -37,136 +39,185 @@
                 <div class="col-md-4 col-sm-6">
                     <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Responsable</label>
                     <select name="responsable_id" class="form-select form-select-sm py-1 modal-select2">
-                        <option value="">— Sin asignar —</option>
-                        @foreach($responsables as $responsable)
-                            <option value="{{ $responsable->id }}" {{ old('responsable_id', $impresora->responsable_id) == $responsable->id ? 'selected' : '' }}>
-                                {{ $responsable->nombre_responsable }}
+                        <option value="">Seleccione Responsable</option>
+                        @foreach($responsables as $resp)
+                            <option value="{{ $resp->id }}" {{ old('responsable_id', $impresora->responsable_id) == $resp->id ? 'selected' : '' }}>
+                                {{ $resp->nombre_responsable }}
                             </option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-4 col-sm-6">
-                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Nº Serie <span class="text-danger">*</span></label>
-                    <input type="text" name="serie_impresora" class="form-control form-control-sm py-1 font-monospace"
-                           value="{{ old('serie_impresora', $impresora->serie_impresora) }}" required>
-                </div>
-                <div class="col-md-4 col-sm-6">
-                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Tipo <span class="text-danger">*</span></label>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Tipo de Impresora <span class="text-danger">*</span></label>
                     <select name="tipo_impresora" class="form-select form-select-sm py-1" required>
-                        @foreach(['Laser', 'Inyección', 'Matricial', 'Multifuncional', 'Plotter'] as $tipo)
-                            <option value="{{ $tipo }}" {{ old('tipo_impresora', $impresora->tipo_impresora) == $tipo ? 'selected' : '' }}>{{ $tipo }}</option>
+                        <option value="">Seleccione</option>
+                        @php
+                            $tipos = ['Inyección', 'Multifuncional', 'Escaner'];
+                            $tipoActual = old('tipo_impresora', $impresora->tipo_impresora);
+                        @endphp
+                        @if($tipoActual && !in_array($tipoActual, $tipos))
+                            <option value="{{ $tipoActual }}" selected>{{ $tipoActual }}</option>
+                        @endif
+                        @foreach($tipos as $tipo)
+                            <option value="{{ $tipo }}" {{ $tipoActual === $tipo ? 'selected' : '' }}>{{ $tipo }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-4 col-sm-6">
-                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Marca <span class="text-danger">*</span></label>
-                    <input type="text" name="marca_impresora" class="form-control form-control-sm py-1"
-                           value="{{ old('marca_impresora', $impresora->marca_impresora) }}" required>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Marca <span class="text-danger">*</span></label>        
+                    <select name="marca_impresora" class="form-select form-select-sm py-1" required>
+                        <option value="">Seleccione</option>
+                        @php
+                            $marcas = ["KYOCERA", "HP", "BROTHER", "Avision"];
+                            $marcaActual = old('marca_impresora', $impresora->marca_impresora);
+                        @endphp
+                        @if($marcaActual && !in_array($marcaActual, $marcas))
+                            <option value="{{ $marcaActual }}" selected>{{ $marcaActual }}</option>
+                        @endif
+                        @foreach ($marcas as $est)
+                            <option value="{{ $est }}" {{ $marcaActual === $est ? 'selected' : '' }}>{{ $est }}</option>        
+                        @endforeach
+                    </select>        
                 </div>
-                <div class="col-md-4 col-sm-6">
+                <div class="col-md-2 col-sm-6">
                     <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Modelo <span class="text-danger">*</span></label>
-                    <input type="text" name="modelo_impresora" class="form-control form-control-sm py-1"
-                           value="{{ old('modelo_impresora', $impresora->modelo_impresora) }}" required>
+                    <select name="modelo_impresora" class="form-select form-select-sm py-1" required>
+                        <option value="">Seleccione</option>
+                        @php
+                            $modelos = ['M2640', 'M3655idn', 'MA4500ix', 'MA5500ifx', 'HP LaserJet Tank MFP M634', 'HP LaserJet PRO MFP M225dw', 'HP LaserJet Tank MFP 2602sdw', 'HP LaserJet Pro M15w', 'HP Smart Tank 750', 'FF-1905B'];
+                            $modeloActual = old('modelo_impresora', $impresora->modelo_impresora);
+                        @endphp
+                        @if($modeloActual && !in_array($modeloActual, $modelos))
+                            <option value="{{ $modeloActual }}" selected>{{ $modeloActual }}</option>
+                        @endif
+                        @foreach($modelos as $est)
+                            <option value="{{ $est }}" {{ $modeloActual === $est ? 'selected' : '' }}>{{ $est }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Número de Serie <span class="text-danger">*</span></label>
+                    <input type="text" name="serie_impresora" class="form-control form-control-sm py-1 font-monospace"
+                           value="{{ old('serie_impresora', $impresora->serie_impresora) }}" placeholder="VND3K0..." required>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Estado</label>
+                    <select name="estado_impresora" class="form-select form-select-sm py-1">
+                        @foreach(['OPTIMO', 'BUENO', 'REGULAR', 'DEFICIENTE', 'DE BAJA'] as $est)
+                            <option value="{{ $est }}" {{ old('estado_impresora', $impresora->estado_impresora) === $est ? 'selected' : '' }}>{{ $est }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Fecha Adquisición</label>
+                    <input type="date" name="fecha_adquisicion" class="form-control form-control-sm py-1"
+                           value="{{ old('fecha_adquisicion', $impresora->fecha_adquisicion?->format('Y-m-d') ?? ($impresora->fecha_adquisicion ? date('Y-m-d', strtotime($impresora->fecha_adquisicion)) : '')) }}">
                 </div>
             </div>
         </div>
 
-        {{-- Bloque 2: Red y Conectividad --}}
+        {{-- Sección 2: Conectividad y Red --}}
         <div class="border rounded-2 p-2.5 mb-2.5 bg-white">
-            <div class="text-info fw-semibold mb-1" style="font-size: 0.95rem;">
-                <i class="bi bi-hdd-network me-1"></i> 2. CONECTIVIDAD Y ESTADO
+            <div class="text-purple fw-semibold mb-1" style="font-size: 0.95rem; color: #6f42c1;">
+                <i class="bi bi-wifi me-1"></i> 2. CONECTIVIDAD Y RED
             </div>
             <div class="row g-2.5">
-                <div class="col-md-3 col-sm-6">
-                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Conexión</label>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Tipo Conexión</label>
                     <select name="tipo_conexion" class="form-select form-select-sm py-1">
+                        <option value="">Seleccione</option>
                         @foreach(['USB', 'WIFI', 'ETHERNET', 'WIFI-DIRECT'] as $con)
-                            <option value="{{ $con }}" {{ old('tipo_conexion', $impresora->tipo_conexion) == $con ? 'selected' : '' }}>{{ $con }}</option>
+                            <option value="{{ $con }}" {{ old('tipo_conexion', $impresora->tipo_conexion) === $con ? 'selected' : '' }}>{{ $con }}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="col-md-3 col-sm-6">
                     <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Nombre Host</label>
                     <input type="text" name="nombre_host" class="form-control form-control-sm py-1"
-                           value="{{ old('nombre_host', $impresora->nombre_host) }}" placeholder="HOST-PRINTER">
+                           value="{{ old('nombre_host', $impresora->nombre_host) }}" placeholder="PRN-OFICINA-01">
                 </div>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-2 col-sm-12">
                     <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Dirección IP</label>
-                    <input type="text" name="direccion_ip" class="form-control form-control-sm font-monospace py-1"
+                    <input type="text" name="direccion_ip" class="form-control form-control-sm py-1 font-monospace"
                            value="{{ old('direccion_ip', $impresora->direccion_ip) }}" placeholder="192.168.1.50">
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Estado</label>
-                    <select name="estado_impresora" class="form-select form-select-sm py-1">
-                        @foreach(['OPTIMO', 'BUENO', 'REGULAR', 'DEFICIENTE', 'DE BAJA'] as $est)
-                            <option value="{{ $est }}" {{ old('estado_impresora', $impresora->estado_impresora) == $est ? 'selected' : '' }}>{{ $est }}</option>
-                        @endforeach
-                    </select>
                 </div>
             </div>
         </div>
 
-        {{-- Bloque 3: Especificaciones y Consumibles --}}
-        <div class="border rounded-2 p-2.5 mb-2.5 bg-white">
-            <div class="text-success fw-semibold mb-1" style="font-size: 0.95rem;">
+        {{-- Sección 3: Especificaciones y Consumibles --}}
+        <div class="border rounded-2 p-2 bg-white">
+            <div class="text-secondary fw-semibold mb-1" style="font-size: 0.95rem;">
                 <i class="bi bi-gear me-1"></i> 3. ESPECIFICACIONES Y CONSUMIBLES
             </div>
             <div class="row g-2.5">
-                <div class="col-md-3 col-sm-6">
-                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Fecha Adquisición</label>
-                    <input type="date" name="fecha_adquisicion" class="form-control form-control-sm py-1"
-                           value="{{ old('fecha_adquisicion', $impresora->fecha_adquisicion) }}">
-                </div>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-2 col-sm-6">
                     <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Velocidad Impresión</label>
-                    <input type="text" name="velocidad_impresion" class="form-control form-control-sm py-1"
-                           value="{{ old('velocidad_impresion', $impresora->velocidad_impresion) }}" placeholder="Ej: 30 ppm">
+                    <select name="velocidad_impresion" class="form-select form-select-sm py-1">
+                        <option value="">Seleccione</option>
+                        @php
+                            $velocidades = ['20 ppm', '30 ppm', '40 ppm', '45 ppm', '50 ppm', '55 ppm'];
+                            $velocidadActual = old('velocidad_impresion', $impresora->velocidad_impresion);
+                        @endphp
+                        @if($velocidadActual && !in_array($velocidadActual, $velocidades))
+                            <option value="{{ $velocidadActual }}" selected>{{ $velocidadActual }}</option>
+                        @endif
+                        @foreach($velocidades as $con)
+                            <option value="{{ $con }}" {{ $velocidadActual === $con ? 'selected' : '' }}>{{ $con }}</option>
+                        @endforeach
+                    </select>
                 </div>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-2 col-sm-6">
                     <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Modelo Consumible</label>
-                    <input type="text" name="modelo_consumible" class="form-control form-control-sm py-1"
-                           value="{{ old('modelo_consumible', $impresora->modelo_consumible) }}" placeholder="Ej: TN-1060">
+                    <select name="modelo_consumible" class="form-select form-select-sm py-1">
+                        <option value="">Seleccione</option>
+                        @php
+                            $consumibles = ['TK-1175', 'TK-3182', 'TK-3204', 'TK-3432', 'HP 147A', 'W1105A', 'HP 154A', 'HP 6UU47A', 'HP 44A'];
+                            $consumibleActual = old('modelo_consumible', $impresora->modelo_consumible);
+                        @endphp
+                        @if($consumibleActual && !in_array($consumibleActual, $consumibles))
+                            <option value="{{ $consumibleActual }}" selected>{{ $consumibleActual }}</option>
+                        @endif
+                        @foreach($consumibles as $con)
+                            <option value="{{ $con }}" {{ $consumibleActual === $con ? 'selected' : '' }}>{{ $con }}</option>
+                        @endforeach
+                    </select>
                 </div>
-                <div class="col-md-3 col-sm-6">
+                <div class="col-md-2 col-sm-6">
                     <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Tipo Consumible</label>
                     <input type="text" name="tipo_consumible" class="form-control form-control-sm py-1"
-                           value="{{ old('tipo_consumible', $impresora->tipo_consumible) }}" placeholder="Tóner / Tinta">
+                           value="{{ old('tipo_consumible', $impresora->tipo_consumible ?? 'Toner') }}" placeholder="Tóner / Tinta">
                 </div>
-            </div>
-        </div>
-
-        {{-- Bloque 4: Contadores de Uso --}}
-        <div class="border rounded-2 p-2 bg-white">
-            <div class="text-secondary fw-semibold mb-1" style="font-size: 0.95rem;">
-                <i class="bi bi-graph-up me-1"></i> 4. CONTADORES DE PÁGINAS Y ESCANEOS
-            </div>
-            <div class="row g-2.5">
-                <div class="col-md-4 col-sm-4">
-                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Capacidad Total</label>
-                    <input type="number" name="capacidad_impresion" class="form-control form-control-sm py-1"
-                           value="{{ old('capacidad_impresion', $impresora->capacidad_impresion ?? 0) }}">
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Capacidad Impresión</label>
+                    <input type="text" name="capacidad_impresion" class="form-control form-control-sm py-1"
+                           value="{{ old('capacidad_impresion', $impresora->capacidad_impresion) }}" placeholder="1500 hojas">
                 </div>
-                <div class="col-md-4 col-sm-4">
-                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Cantidad Impresa</label>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Contador Impresiones</label>
                     <input type="number" name="cantidad_impresion" class="form-control form-control-sm py-1"
-                           value="{{ old('cantidad_impresion', $impresora->cantidad_impresion ?? 0) }}">
+                           value="{{ old('cantidad_impresion', $impresora->cantidad_impresion ?? 0) }}" min="0">
                 </div>
-                <div class="col-md-4 col-sm-4">
-                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Cantidad Escaneos</label>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Contador Escaneos</label>
                     <input type="number" name="cantidad_escaneo" class="form-control form-control-sm py-1"
-                           value="{{ old('cantidad_escaneo', $impresora->cantidad_escaneo ?? 0) }}">
+                           value="{{ old('cantidad_escaneo', $impresora->cantidad_escaneo ?? 0) }}" min="0">
+                </div>
+                <div class="col-md-2 col-sm-6">
+                    <label class="form-label mb-0 fw-medium text-muted" style="font-size: 0.95rem;">Total de fallos</label>
+                    <input type="number" name="cantidad_fallos" class="form-control form-control-sm py-1"
+                           value="{{ old('cantidad_fallos', $impresora->cantidad_fallos ?? 0) }}" min="0">
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal-footer bg-light py-1.5 px-3">
-        <span class="text-muted me-auto" style="font-size: 0.72rem;"><i class="bi bi-info-circle me-1"></i>Campos con <strong class="text-danger">*</strong> obligatorios</span>
-        <button type="button" class="btn btn-sm btn-outline-secondary py-1 px-2.5" data-bs-dismiss="modal" style="font-size: 0.95rem;">
-            <i class="bi bi-x-circle me-1"></i>Cancelar
+    {{-- Footer --}}
+    <div class="modal-footer py-2 px-3 bg-light d-flex justify-content-between align-items-center">
+        <button type="button" class="btn btn-secondary btn-sm py-1 px-3" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle me-1"></i> Cancelar
         </button>
-        <button type="submit" class="btn btn-sm btn-primary py-1 px-3 shadow-sm" style="font-size: 0.95rem;">
-            <i class="bi bi-floppy me-1"></i>Guardar Cambios
+        <button type="submit" class="btn btn-primary btn-sm py-1 px-3 fw-medium">
+            <i class="bi bi-save2 me-1"></i> Guardar Cambios
         </button>
     </div>
 </form>

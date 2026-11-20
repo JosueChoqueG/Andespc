@@ -160,6 +160,10 @@
                             <td>{{ number_format($impresora->cantidad_escaneo ?? 0, 0, ',', '.') }}</td>
                         </tr>
                         <tr>
+                            <th>Total Fallos:</th>
+                            <td>{{ number_format($impresora->cantidad_fallos ?? 0, 0, ',', '.') }}</td>
+                        </tr>
+                        <tr>
                             <th>Capacidad Total:</th>
                             <td>{{ number_format($impresora->capacidad_impresion ?? 0, 0, ',', '.') }} páginas</td>
                         </tr>
@@ -205,6 +209,10 @@
                         <tr>
                             <th width="50%">Total Mantenimientos:</th>
                             <td><span class="badge bg-primary badge-lg">{{ $impresora->cantidad_mantenimientos ?? $totalMant }}</span></td>
+                        </tr>
+                        <tr>
+                            <th>Total Fallos:</th>
+                            <td><span class="badge bg-danger badge-lg">{{ $impresora->cantidad_fallos ?? 0 }}</span></td>
                         </tr>
                         @if(($impresora->cantidad_mantenimientos ?? 0) > $totalMant)
                         <tr>

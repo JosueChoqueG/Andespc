@@ -138,14 +138,13 @@ class ImpresoraController extends Controller
      */
     public function create(Request $request)
     {
-        $oficinas = Oficina::with('agencia')->orderBy('nombre_oficina')->get();
-        $responsables = Responsable::orderBy('nombre_responsable')->get();
-
         if ($request->ajax()) {
+            $oficinas = Oficina::with('agencia')->orderBy('nombre_oficina')->get();
+            $responsables = Responsable::orderBy('nombre_responsable')->get();
             return view('admin.impresoras.partials.modal-create', compact('oficinas', 'responsables'))->render();
         }
 
-        return view('admin.impresoras.create', compact('oficinas', 'responsables'));
+        return redirect()->route('admin.impresoras.index');
     }
 
     /**
@@ -172,6 +171,7 @@ class ImpresoraController extends Controller
             'capacidad_impresion' => 'nullable|integer',
             'cantidad_escaneo' => 'nullable|integer',
             'cantidad_mantenimientos' => 'nullable|integer|min:0',
+            'cantidad_fallos' => 'nullable|integer|min:0',
         ]);
 
         if ($validator->fails()) {
@@ -255,13 +255,25 @@ class ImpresoraController extends Controller
             'capacidad_impresion' => 'nullable|integer',
             'cantidad_escaneo' => 'nullable|integer',
             'cantidad_mantenimientos' => 'nullable|integer|min:0',
+            'cantidad_fallos' => 'nullable|integer|min:0',
         ]);
 
         if ($validator->fails()) {
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            }
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $impresora->update($validator->validated());
+
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Impresora actualizada correctamente.',
+                'impresora' => $impresora
+            ]);
+        }
 
         return redirect()->route('admin.impresoras.index')
             ->with('success', 'Impresora actualizada correctamente');
@@ -404,6 +416,7 @@ class ImpresoraController extends Controller
             'P' => 'CANT. IMPRESIÓN',
             'Q' => 'CANT. ESCANEO',
             'R' => 'CANT. MANTENIMIENTOS',
+            'S' => 'TOTAL FALLOS',
         ];
 
         $headerStyle = [
@@ -439,6 +452,7 @@ class ImpresoraController extends Controller
                 'P' => $imp->cantidad_impresion                ?? 0,
                 'Q' => $imp->cantidad_escaneo                  ?? 0,
                 'R' => $imp->cantidad_mantenimientos           ?? 0,
+                'S' => $imp->cantidad_fallos                   ?? 0,
             ];
             foreach ($datos as $col => $valor) {
                 $sheet->setCellValue($col . $fila, $valor);

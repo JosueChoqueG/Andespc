@@ -94,9 +94,13 @@
                     <span class="text-muted d-block" style="font-size: 0.85rem;">Dirección IP</span>
                     <span class="font-monospace fw-bold text-dark">{{ $impresora->direccion_ip ?: 'No asignada' }}</span>
                 </div>
-                <div class="d-flex justify-content-between align-items-center p-1.5 rounded bg-light">
+                <div class="d-flex justify-content-between align-items-center p-1.5 rounded bg-light mb-1">
                     <span class="text-muted"><i class="bi bi-tools me-1"></i>Mantenimientos Realizados:</span>
                     <span class="badge bg-primary bg-opacity-10 text-primary fw-bold">{{ $impresora->cantidad_mantenimientos ?? 0 }}</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center p-1.5 rounded bg-light">
+                    <span class="text-muted"><i class="bi bi-exclamation-triangle me-1"></i>Total de Fallos:</span>
+                    <span class="badge bg-danger bg-opacity-10 text-danger fw-bold">{{ $impresora->cantidad_fallos ?? 0 }}</span>
                 </div>
             </div>
         </div>
