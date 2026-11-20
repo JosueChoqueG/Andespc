@@ -72,10 +72,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // 🔹 Panel de administración: rutas bajo /admin
     Route::prefix('admin')->name('admin.')->group(function () {
-        Route::get('/incidencias/nueva', [IncidenciaController::class, 'formulario'])->name('incidencias.formulario');
+        Route::get('/incidencias/create', [IncidenciaController::class, 'create'])->name('incidencias.create');
         Route::post('/incidencias', [IncidenciaController::class, 'guardar'])->name('incidencias.guardar');
         Route::get('/incidencias', [IncidenciaController::class, 'listado'])->name('incidencias.listado');
         Route::get('/incidencias/exportar', [IncidenciaController::class, 'exportarExcel'])->name('incidencias.exportar');
+        Route::get('/incidencias/{incidencia}', [IncidenciaController::class, 'show'])->name('incidencias.show');
+        Route::get('/incidencias/{incidencia}/edit', [IncidenciaController::class, 'edit'])->name('incidencias.edit');
+        Route::put('/incidencias/{incidencia}', [IncidenciaController::class, 'update'])->name('incidencias.update');
+        Route::patch('/incidencias/{incidencia}/cambiar-estado', [IncidenciaController::class, 'cambiarEstado'])->name('incidencias.cambiar-estado');
 
         // CRUD IMPRESORAS
         Route::get('impresoras/sugerencias', [ImpresoraController::class, 'sugerencias'])->name('impresoras.sugerencias');
