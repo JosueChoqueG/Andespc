@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\MantenimientoImpresoraController;
 use App\Http\Controllers\Admin\TermicaController;
 use App\Http\Controllers\Admin\MantenimientoTermicaController;
 use App\Http\Controllers\Admin\ServicioInternetController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MantenimientoPcController;
 use App\Http\Controllers\Admin\ContabilleteController;
 use App\Http\Controllers\Admin\MantenimientoContabilleteController;
@@ -30,27 +31,7 @@ Route::get('/', function () {
 // Grupo de rutas protegidas: requieren autenticación
 Route::middleware(['auth', 'verified'])->group(function () {
     // Dashboard
-    Route::get('/dashboard', function () {
-        // Chart: Equipos por Estado
-        $equiposPorEstado = \App\Models\Equipo::selectRaw('estado_equipo, COUNT(*) as total')
-            ->groupBy('estado_equipo')
-            ->pluck('total', 'estado_equipo')
-            ->toArray();
-
-        // Chart: Incidencias por Estado
-        $incidenciasPorEstado = \App\Models\Incidencia::selectRaw('estado, COUNT(*) as total')
-            ->groupBy('estado')
-            ->pluck('total', 'estado')
-            ->toArray();
-
-        // Recent Incidencias
-        $incidenciasRecientes = \App\Models\Incidencia::with('atendidoPor')
-            ->latest()
-            ->take(6)
-            ->get();
-
-        return view('dashboard', compact('equiposPorEstado', 'incidenciasPorEstado', 'incidenciasRecientes'));
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Perfil de usuario
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

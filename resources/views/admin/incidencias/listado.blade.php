@@ -27,70 +27,76 @@
         </div>
     </div>
 
-    {{-- Métricas & KPIs de la Bitácora --}}
-    <div class="row g-3 mb-4">
+    {{-- Métricas & KPIs de la Bitácora (Compactos y Clickeables) --}}
+    <div class="row g-2.5 mb-3">
         <div class="col-xl-3 col-sm-6">
-            <div class="card border-0 shadow-sm rounded-3 h-100 overflow-hidden" style="border-left: 4px solid #0d6efd !important;">
-                <div class="card-body p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="text-muted fw-semibold d-block" style="font-size: 0.82rem; letter-spacing: 0.5px;">TOTAL REGISTRADAS</span>
-                            <h3 class="mb-0 fw-bold text-dark mt-1">{{ number_format($totalGeneral) }}</h3>
-                            <span class="text-muted small">Historial en Bitácora</span>
-                        </div>
-                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 46px; height: 46px;">
-                            <i class="bi bi-journal-text fs-4"></i>
-                        </div>
+            <div class="card border-0 shadow-sm rounded-3 bg-white p-2.5 cursor-pointer kpi-filter-card" 
+                 style="border-left: 4px solid #0d6efd !important; cursor: pointer;" 
+                 onclick="filtrarPorEstadoKpi('')" title="Click para ver todas las incidencias">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted fw-bold d-block text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">TOTAL REGISTRADAS</span>
+                        <h4 class="mb-0 fw-bold text-dark mt-0.5 font-outfit">{{ number_format($totalGeneral) }}</h4>
+                        <span class="text-muted" style="font-size: 0.72rem;">Historial en Bitácora</span>
+                    </div>
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                        <i class="bi bi-journal-text fs-5"></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-6">
-            <div class="card border-0 shadow-sm rounded-3 h-100 overflow-hidden" style="border-left: 4px solid #198754 !important;">
-                <div class="card-body p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="text-muted fw-semibold d-block" style="font-size: 0.82rem; letter-spacing: 0.5px;">ATENDIDAS CON ÉXITO</span>
-                            <h3 class="mb-0 fw-bold text-success mt-1">{{ number_format($totalAtendidos) }}</h3>
-                            <span class="text-success small fw-semibold">
-                                <i class="bi bi-check-circle me-1"></i>{{ $porcentajeResolucion }}% de resolución
-                            </span>
-                        </div>
-                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 46px; height: 46px;">
-                            <i class="bi bi-check2-all fs-4"></i>
-                        </div>
+            <div class="card border-0 shadow-sm rounded-3 bg-white p-2.5 cursor-pointer kpi-filter-card" 
+                 style="border-left: 4px solid #198754 !important; cursor: pointer;" 
+                 onclick="filtrarPorEstadoKpi('Atendido')" title="Click para filtrar atendidas">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted fw-bold d-block text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">ATENDIDAS CON ÉXITO</span>
+                        <h4 class="mb-0 fw-bold text-success mt-0.5 font-outfit">{{ number_format($totalAtendidos) }}</h4>
+                        <span class="text-success fw-semibold" style="font-size: 0.72rem;">
+                            <i class="bi bi-check-circle me-1"></i>{{ $porcentajeResolucion }}% de resolución
+                        </span>
+                    </div>
+                    <div class="bg-success bg-opacity-10 text-success rounded-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                        <i class="bi bi-check2-all fs-5"></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-6">
-            <div class="card border-0 shadow-sm rounded-3 h-100 overflow-hidden" style="border-left: 4px solid #dc3545 !important;">
-                <div class="card-body p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="text-muted fw-semibold d-block" style="font-size: 0.82rem; letter-spacing: 0.5px;">PENDIENTES DE ATENCIÓN</span>
-                            <h3 class="mb-0 fw-bold text-danger mt-1">{{ number_format($totalPendientes) }}</h3>
-                            <span class="text-danger small">Requieren intervención</span>
-                        </div>
-                        <div class="bg-danger bg-opacity-10 text-danger rounded-circle d-flex align-items-center justify-content-center" style="width: 46px; height: 46px;">
-                            <i class="bi bi-clock-history fs-4"></i>
-                        </div>
+            <div class="card border-0 shadow-sm rounded-3 bg-white p-2.5 cursor-pointer kpi-filter-card" 
+                 style="border-left: 4px solid #dc3545 !important; cursor: pointer;" 
+                 onclick="filtrarPorEstadoKpi('Pendiente')" title="Click para filtrar pendientes">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted fw-bold d-block text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">PENDIENTES DE ATENCIÓN</span>
+                        <h4 class="mb-0 fw-bold text-danger mt-0.5 font-outfit">{{ number_format($totalPendientes) }}</h4>
+                        <span class="text-danger fw-semibold" style="font-size: 0.72rem;">
+                            @if($totalPendientes > 0)
+                                <i class="bi bi-exclamation-circle-fill"></i> Requieren atención
+                            @else
+                                <i class="bi bi-check2"></i> Al día
+                            @endif
+                        </span>
+                    </div>
+                    <div class="bg-danger bg-opacity-10 text-danger rounded-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                        <i class="bi bi-clock-history fs-5"></i>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-sm-6">
-            <div class="card border-0 shadow-sm rounded-3 h-100 overflow-hidden" style="border-left: 4px solid #ffc107 !important;">
-                <div class="card-body p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <span class="text-muted fw-semibold d-block" style="font-size: 0.82rem; letter-spacing: 0.5px;">DERIVADAS / EN PROCESO</span>
-                            <h3 class="mb-0 fw-bold text-warning mt-1">{{ number_format($totalDerivados) }}</h3>
-                            <span class="text-muted small">Terceros o Desarrollo</span>
-                        </div>
-                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center" style="width: 46px; height: 46px;">
-                            <i class="bi bi-arrow-right-circle fs-4"></i>
-                        </div>
+            <div class="card border-0 shadow-sm rounded-3 bg-white p-2.5 cursor-pointer kpi-filter-card" 
+                 style="border-left: 4px solid #ffc107 !important; cursor: pointer;" 
+                 onclick="filtrarPorEstadoKpi('Derivado')" title="Click para filtrar derivadas">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-muted fw-bold d-block text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.5px;">DERIVADAS / EN PROCESO</span>
+                        <h4 class="mb-0 fw-bold text-warning mt-0.5 font-outfit">{{ number_format($totalDerivados) }}</h4>
+                        <span class="text-muted" style="font-size: 0.72rem;">Terceros o Desarrollo</span>
+                    </div>
+                    <div class="bg-warning bg-opacity-10 text-warning rounded-2 d-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                        <i class="bi bi-arrow-right-circle fs-5"></i>
                     </div>
                 </div>
             </div>
@@ -646,6 +652,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    // 7. Filtro Dinámico desde las Tarjetas de Métricas (KPIs)
+    window.filtrarPorEstadoKpi = function(estado) {
+        const selectEstado = document.getElementById('filtroEstado');
+        if (selectEstado) {
+            selectEstado.value = estado;
+            if (window.jQuery && $(selectEstado).data('select2')) {
+                $(selectEstado).trigger('change.select2');
+            }
+            ejecutarFiltroAjax();
+
+            // Feedback visual en la tarjeta activa
+            document.querySelectorAll('.kpi-filter-card').forEach(c => {
+                c.style.opacity = '0.75';
+                c.style.boxShadow = 'none';
+            });
+            if (window.event && window.event.currentTarget) {
+                const target = window.event.currentTarget;
+                target.style.opacity = '1';
+                target.style.boxShadow = '0 6px 18px rgba(0,0,0,0.12)';
+            }
+        }
+    };
 });
 </script>
 @endpush
