@@ -80,6 +80,7 @@
                 <thead class="table-dark" style="background-color: #1d2d44; font-size: 0.88rem;">
                     <tr>
                         <th class="py-2.5 ps-3" style="width: 50px;">#</th>
+                        <th class="py-2.5" style="width: 110px;">DNI</th>
                         <th class="py-2.5">Responsable</th>
                         <th class="py-2.5">Cargo / Puesto</th>
                         <th class="py-2.5">Oficina Asignada</th>
@@ -91,6 +92,15 @@
                     @forelse($responsables as $resp)
                     <tr>
                         <td class="ps-3 text-muted fw-bold">{{ $resp->id }}</td>
+                        <td>
+                            @if($resp->dni)
+                                <span class="font-monospace fw-bold text-dark badge bg-light text-dark border">
+                                    <i class="bi bi-card-heading me-1 text-muted"></i>{{ $resp->dni }}
+                                </span>
+                            @else
+                                <span class="text-muted small">—</span>
+                            @endif
+                        </td>
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-2.5" style="width: 36px; height: 36px;">

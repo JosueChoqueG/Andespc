@@ -9,6 +9,7 @@ class Responsable extends Model
     protected $table = 'responsables';
 
     protected $fillable = [
+        'dni',
         'nombre_responsable',
         'cargo',
         'oficina_id'

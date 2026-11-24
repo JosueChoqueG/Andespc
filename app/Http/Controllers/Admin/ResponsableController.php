@@ -17,7 +17,8 @@ class ResponsableController extends Controller
         if ($request->filled('search')) {
             $s = trim($request->search);
             $query->where(function($q) use ($s) {
-                $q->where('nombre_responsable', 'LIKE', "%{$s}%")
+                $q->where('dni', 'LIKE', "%{$s}%")
+                  ->orWhere('nombre_responsable', 'LIKE', "%{$s}%")
                   ->orWhere('cargo', 'LIKE', "%{$s}%")
                   ->orWhereHas('oficina', function($qOfi) use ($s) {
                       $qOfi->where('nombre_oficina', 'LIKE', "%{$s}%")
@@ -63,6 +64,7 @@ class ResponsableController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            'dni' => 'nullable|string|max:20',
             'nombre_responsable' => 'required|string|max:100|unique:responsables,nombre_responsable',
             'cargo' => 'nullable|string|max:150',
             'oficina_id' => 'nullable|exists:oficinas,id',
@@ -99,6 +101,7 @@ class ResponsableController extends Controller
     public function update(Request $request, Responsable $responsable)
     {
         $validated = $request->validate([
+            'dni' => 'nullable|string|max:20',
             'nombre_responsable' => 'required|string|max:100|unique:responsables,nombre_responsable,' . $responsable->id,
             'cargo' => 'nullable|string|max:150',
             'oficina_id' => 'nullable|exists:oficinas,id',

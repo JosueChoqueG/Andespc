@@ -43,12 +43,22 @@
                         @csrf
                         @method('PUT')
 
-                        <div class="mb-3">
-                            <label for="nombre_responsable" class="form-label fw-semibold text-muted">Nombre y Apellidos <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
-                                <input type="text" name="nombre_responsable" id="nombre_responsable" class="form-control" 
-                                       required value="{{ old('nombre_responsable', $responsable->nombre_responsable) }}">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label for="dni" class="form-label fw-semibold text-muted">DNI</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-card-heading"></i></span>
+                                    <input type="text" name="dni" id="dni" class="form-control font-monospace" 
+                                           placeholder="Ej: 47070551" maxlength="20" value="{{ old('dni', $responsable->dni) }}">
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <label for="nombre_responsable" class="form-label fw-semibold text-muted">Nombre y Apellidos <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
+                                    <input type="text" name="nombre_responsable" id="nombre_responsable" class="form-control" 
+                                           required value="{{ old('nombre_responsable', $responsable->nombre_responsable) }}">
+                                </div>
                             </div>
                         </div>
 

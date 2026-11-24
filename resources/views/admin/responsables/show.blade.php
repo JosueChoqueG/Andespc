@@ -44,6 +44,12 @@
                     <hr>
                     <div class="text-start">
                         <div class="mb-2.5">
+                            <span class="text-muted small d-block">DNI / DOCUMENTO:</span>
+                            <span class="fw-bold font-monospace text-dark">
+                                <i class="bi bi-card-heading text-primary me-1"></i>{{ $responsable->dni ?? 'No registrado' }}
+                            </span>
+                        </div>
+                        <div class="mb-2.5">
                             <span class="text-muted small d-block">OFICINA ASIGNADA:</span>
                             <span class="fw-bold text-dark">
                                 <i class="bi bi-geo-alt text-danger me-1"></i>{{ $responsable->oficina->nombre_oficina ?? 'No asignada' }}
