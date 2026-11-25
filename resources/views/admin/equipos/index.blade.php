@@ -90,20 +90,42 @@
 
 <style>
     /* Estilos para el autocompletado */
+    #autocomplete-dropdown {
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18) !important;
+        border-radius: 8px;
+    }
     #autocomplete-dropdown .dropdown-item {
-        padding: 8px 12px;
+        padding: 9px 14px;
         border-bottom: 1px solid #f1f5f9;
         cursor: pointer;
+        background-color: #ffffff !important;
+        color: #1e293b !important;
         transition: background-color 0.15s ease;
     }
     #autocomplete-dropdown .dropdown-item:last-child {
         border-bottom: none;
     }
+    #autocomplete-dropdown .dropdown-item .fw-semibold {
+        color: #0f172a !important;
+    }
+    #autocomplete-dropdown .dropdown-item .text-muted {
+        color: #64748b !important;
+    }
     #autocomplete-dropdown .dropdown-item:hover,
     #autocomplete-dropdown .dropdown-item.active,
     #autocomplete-dropdown .dropdown-item:focus {
-        background-color: #f0f7ff;
-        color: #0d6efd;
+        background-color: #eff6ff !important;
+        color: #1d4ed8 !important;
+    }
+    #autocomplete-dropdown .dropdown-item:hover .fw-semibold,
+    #autocomplete-dropdown .dropdown-item.active .fw-semibold {
+        color: #1d4ed8 !important;
+    }
+    #autocomplete-dropdown .dropdown-item:hover .text-muted,
+    #autocomplete-dropdown .dropdown-item.active .text-muted {
+        color: #3b82f6 !important;
     }
 
     /* Modal Equipo Styles */

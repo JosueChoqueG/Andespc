@@ -23,25 +23,12 @@
     transform: translateY(-1px);
 }
 
-.dropdown-menu {
+.navbar .dropdown-menu {
     background: #1f2933;
     border-radius: 14px;
     padding: 10px;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
     animation: dropdownFade 0.25s ease-in-out;
-}
-
-@keyframes dropdownFade {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-.navbar .dropdown-menu {
     position: absolute;
     z-index: 1100;
     margin-top: 8px;

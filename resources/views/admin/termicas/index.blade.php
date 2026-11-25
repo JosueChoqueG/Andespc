@@ -99,20 +99,36 @@
 </div>
 
 <style>
+    #autocomplete-dropdown {
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18) !important;
+        border-radius: 8px;
+    }
     #autocomplete-dropdown .dropdown-item {
-        padding: 8px 12px;
+        padding: 9px 14px;
         border-bottom: 1px solid #f1f5f9;
         cursor: pointer;
+        background-color: #ffffff !important;
+        color: #1e293b !important;
         transition: background-color 0.15s ease;
     }
     #autocomplete-dropdown .dropdown-item:last-child {
         border-bottom: none;
     }
+    #autocomplete-dropdown .dropdown-item .fw-semibold {
+        color: #0f172a !important;
+    }
+    #autocomplete-dropdown .dropdown-item .text-muted {
+        color: #64748b !important;
+    }
     #autocomplete-dropdown .dropdown-item:hover,
     #autocomplete-dropdown .dropdown-item.active,
     #autocomplete-dropdown .dropdown-item:focus {
-        background-color: #fef9c3;
-        color: #854d0e;
+        background-color: #fef9c3 !important;
+        color: #854d0e !important;
+    }
+</style>
     }
 </style>
 
