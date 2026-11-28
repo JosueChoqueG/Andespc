@@ -8,522 +8,313 @@
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Instrument Sans', sans-serif;
-            background: #06060e;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-        }
+    /* Reemplaza todo el bloque <style> por este */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: #04040a;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
 
-        /* ===== FONDO PRINCIPAL ===== */
-        .main-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            background: radial-gradient(ellipse at center, #0a0a1a 0%, #06060e 100%);
-        }
+/* ===== FONDO PRINCIPAL ===== */
+.main-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(0, 240, 255, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(255, 0, 128, 0.12) 0%, transparent 40%),
+        radial-gradient(ellipse at center, #0c0d24 0%, #030308 100%);
+}
 
-        /* ===== SERVIDORES (Racks) ===== */
-        .server-rack {
-            position: fixed;
-            z-index: 0;
-            opacity: 0.15;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            padding: 8px;
-            background: rgba(0, 20, 40, 0.3);
-            border: 1px solid rgba(0, 200, 255, 0.05);
-            border-radius: 6px;
-            backdrop-filter: blur(2px);
-        }
-        .server-unit {
-            width: 60px;
-            height: 12px;
-            background: rgba(0, 200, 255, 0.05);
-            border-radius: 3px;
-            border-left: 2px solid rgba(0, 200, 255, 0.1);
-            position: relative;
-            transition: all 0.3s ease;
-            animation: serverGlow 3s ease-in-out infinite;
-        }
-        .server-unit::after {
-            content: '';
-            position: absolute;
-            right: 4px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: #00ff88;
-            animation: ledBlink 1.5s ease-in-out infinite alternate;
-        }
-        .server-unit:nth-child(2)::after { background: #00ccff; animation-delay: 0.3s; }
-        .server-unit:nth-child(3)::after { background: #ff6b00; animation-delay: 0.6s; }
-        .server-unit:nth-child(4)::after { background: #00ff88; animation-delay: 0.9s; }
-        .server-unit:nth-child(5)::after { background: #cc00ff; animation-delay: 0.2s; }
-        .server-unit:nth-child(6)::after { background: #00ccff; animation-delay: 0.5s; }
-        .server-unit:nth-child(7)::after { background: #ff6b00; animation-delay: 0.8s; }
-        .server-unit:nth-child(8)::after { background: #00ff88; animation-delay: 0.1s; }
+/* ===== SERVIDORES (Racks) MÁS VISIBLES ===== */
+.server-rack {
+    position: fixed;
+    z-index: 0;
+    opacity: 0.55; /* Subido de 0.15 a 0.55 */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    background: rgba(10, 25, 50, 0.6);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+    border-radius: 8px;
+    backdrop-filter: blur(4px);
+}
+.server-unit {
+    width: 65px;
+    height: 12px;
+    background: rgba(0, 240, 255, 0.12);
+    border-radius: 3px;
+    border-left: 3px solid #00f0ff;
+    position: relative;
+    animation: serverGlow 2.5s ease-in-out infinite;
+}
+.server-unit::after {
+    content: '';
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #00ff66;
+    box-shadow: 0 0 10px #00ff66;
+    animation: ledBlink 1.2s ease-in-out infinite alternate;
+}
+.server-unit:nth-child(2)::after { background: #00f0ff; animation-delay: 0.3s; }
+.server-unit:nth-child(3)::after { background: #ff007f; animation-delay: 0.6s; }
+.server-unit:nth-child(4)::after { background: #00ff66; animation-delay: 0.9s; }
+.server-unit:nth-child(5)::after { background: #b829ff; animation-delay: 0.2s; }
+.server-unit:nth-child(6)::after { background: #00f0ff; animation-delay: 0.5s; }
+.server-unit:nth-child(7)::after { background: #ff9900; animation-delay: 0.8s; }
 
-        @keyframes serverGlow {
-            0%, 100% { background: rgba(0, 200, 255, 0.03); }
-            50% { background: rgba(0, 200, 255, 0.08); }
-        }
-        @keyframes ledBlink {
-            0% { opacity: 0.2; box-shadow: 0 0 2px currentColor; }
-            100% { opacity: 1; box-shadow: 0 0 15px currentColor, 0 0 30px currentColor; }
-        }
+@keyframes serverGlow {
+    0%, 100% { background: rgba(0, 240, 255, 0.08); }
+    50% { background: rgba(0, 240, 255, 0.22); }
+}
+@keyframes ledBlink {
+    0% { opacity: 0.3; transform: translateY(-50%) scale(0.8); }
+    100% { opacity: 1; transform: translateY(-50%) scale(1.2); box-shadow: 0 0 15px currentColor; }
+}
 
-        /* Rack 1 - Izquierda */
-        .rack1 {
-            left: 3%;
-            top: 10%;
-            transform: rotate(-2deg);
-        }
-        .rack1 .server-unit { width: 50px; height: 10px; }
-        .rack1 .server-unit::after { right: 3px; width: 3px; height: 3px; }
+.rack1 { left: 3%; top: 10%; transform: rotate(-2deg); }
+.rack2 { right: 3%; bottom: 10%; transform: rotate(2deg); }
+.rack3 { left: 8%; bottom: 12%; transform: rotate(-1deg); }
+.rack4 { right: 8%; top: 12%; transform: rotate(1deg); }
+.rack5 { left: 46%; bottom: 4%; }
 
-        /* Rack 2 - Derecha */
-        .rack2 {
-            right: 3%;
-            bottom: 10%;
-            transform: rotate(2deg);
-        }
-        .rack2 .server-unit { width: 55px; height: 11px; }
-        .rack2 .server-unit::after { right: 3px; width: 3px; height: 3px; }
+/* ===== CABLES DE FIBRA ÓPTICA BRILLANTES ===== */
+.fiber-cable {
+    position: fixed;
+    z-index: 0;
+    opacity: 0.65; /* Mucho más llamativo */
+    border-radius: 4px;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+}
+.fiber-cable .light-particle {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 15px currentColor, 0 0 30px currentColor, 0 0 45px currentColor;
+    animation: fiberTravel linear infinite;
+}
+@keyframes fiberTravel {
+    0% { left: 0%; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: 100%; opacity: 0; }
+}
 
-        /* Rack 3 - Abajo izquierda */
-        .rack3 {
-            left: 8%;
-            bottom: 15%;
-            transform: rotate(-1deg);
-        }
-        .rack3 .server-unit { width: 45px; height: 9px; }
-        .rack3 .server-unit::after { right: 2px; width: 3px; height: 3px; }
+.cable1 {
+    top: 8%; left: 10%; width: 80%; height: 3px;
+    background: linear-gradient(90deg, transparent, #00f0ff, #ff007f, #00f0ff, transparent);
+    background-size: 200% 100%;
+    animation: cableFlow 3s linear infinite;
+}
+.cable1 .light-particle { top: -2.5px; color: #00f0ff; animation-duration: 2.5s; }
 
-        /* Rack 4 - Arriba derecha */
-        .rack4 {
-            right: 8%;
-            top: 15%;
-            transform: rotate(1deg);
-        }
-        .rack4 .server-unit { width: 48px; height: 10px; }
-        .rack4 .server-unit::after { right: 2px; width: 3px; height: 3px; }
+.cable2 {
+    top: 22%; left: 5%; width: 60%; height: 3px; transform: rotate(15deg);
+    background: linear-gradient(90deg, transparent, #00ff66, #00f0ff, #00ff66, transparent);
+    background-size: 200% 100%;
+    animation: cableFlow 4s linear infinite reverse;
+}
+.cable2 .light-particle { top: -2.5px; color: #00ff66; animation-duration: 3.2s; }
 
-        /* Rack 5 - Centro inferior */
-        .rack5 {
-            left: 45%;
-            bottom: 5%;
-            transform: rotate(0deg);
-        }
-        .rack5 .server-unit { width: 40px; height: 8px; }
-        .rack5 .server-unit::after { right: 2px; width: 2px; height: 2px; }
+.cable3 {
+    bottom: 14%; left: 5%; width: 90%; height: 3px;
+    background: linear-gradient(90deg, transparent, #b829ff, #00f0ff, #ff007f, transparent);
+    background-size: 200% 100%;
+    animation: cableFlow 5s linear infinite;
+}
+.cable3 .light-particle { top: -2.5px; color: #ff007f; animation-duration: 3s; }
 
-        /* ===== CABLES DE FIBRA ÓPTICA ===== */
-        .fiber-cable {
-            position: fixed;
-            z-index: 0;
-            opacity: 0.25;
-            border-radius: 2px;
-        }
-        .fiber-cable .light-particle {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            box-shadow: 0 0 20px currentColor, 0 0 60px currentColor;
-            animation: fiberTravel linear infinite;
-        }
-        @keyframes fiberTravel {
-            0% { left: 0%; opacity: 0; }
-            5% { opacity: 1; }
-            95% { opacity: 1; }
-            100% { left: 100%; opacity: 0; }
-        }
+.cable4 {
+    bottom: 25%; right: 5%; width: 50%; height: 3px; transform: rotate(-20deg);
+    background: linear-gradient(90deg, transparent, #ff9900, #ff007f, #ff9900, transparent);
+    background-size: 200% 100%;
+    animation: cableFlow 3.5s linear infinite;
+}
+.cable4 .light-particle { top: -2.5px; color: #ff9900; animation-duration: 2.8s; }
 
-        /* Cable 1 - Horizontal superior */
-        .cable1 {
-            top: 8%;
-            left: 10%;
-            width: 80%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #00ccff 20%, #0066ff 50%, #00ccff 80%, transparent);
-            background-size: 200% 100%;
-            animation: cableFlow 4s linear infinite;
-        }
-        .cable1 .light-particle {
-            top: -2px;
-            color: #00ccff;
-            animation-duration: 3s;
-            animation-delay: 0s;
-        }
+.cable5 {
+    left: 50%; top: 5%; width: 3px; height: 40%;
+    background: linear-gradient(180deg, transparent, #00f0ff, #b829ff, transparent);
+    background-size: 100% 200%;
+    animation: cableFlowVertical 4s linear infinite;
+}
+.cable5 .light-particle {
+    left: -2.5px; color: #00f0ff;
+    animation-name: fiberTravelVertical; animation-duration: 3s;
+}
+@keyframes cableFlow { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+@keyframes cableFlowVertical { 0% { background-position: 0 -200%; } 100% { background-position: 0 200%; } }
+@keyframes fiberTravelVertical { 0% { top: 0%; opacity: 0; } 10%, 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
 
-        /* Cable 2 - Diagonal */
-        .cable2 {
-            top: 20%;
-            left: 5%;
-            width: 60%;
-            height: 2px;
-            transform: rotate(15deg);
-            background: linear-gradient(90deg, transparent, #00ff88 20%, #00ccff 50%, #00ff88 80%, transparent);
-            background-size: 200% 100%;
-            animation: cableFlow 5s linear infinite reverse;
-        }
-        .cable2 .light-particle {
-            top: -2px;
-            color: #00ff88;
-            animation-duration: 4s;
-            animation-delay: 1s;
-        }
+/* ===== SEÑALES WiFi ===== */
+.wifi-signal { position: fixed; z-index: 0; opacity: 0.35; }
+.wifi-signal .wave {
+    position: absolute; border: 2px solid; border-radius: 50%;
+    animation: wifiWave 3s ease-out infinite;
+}
+@keyframes wifiWave {
+    0% { width: 20px; height: 20px; opacity: 0.9; }
+    100% { width: 260px; height: 260px; opacity: 0; }
+}
+.wifi1 { left: 15%; top: 35%; }
+.wifi1 .wave { border-color: #00f0ff; }
+.wifi1 i { font-size: 2.5rem; color: #00f0ff; filter: drop-shadow(0 0 12px #00f0ff); }
 
-        /* Cable 3 - Horizontal inferior */
-        .cable3 {
-            bottom: 12%;
-            left: 5%;
-            width: 90%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #cc00ff 20%, #00ccff 50%, #cc00ff 80%, transparent);
-            background-size: 200% 100%;
-            animation: cableFlow 6s linear infinite;
-        }
-        .cable3 .light-particle {
-            top: -2px;
-            color: #cc00ff;
-            animation-duration: 3.5s;
-            animation-delay: 2s;
-        }
+.wifi2 { right: 15%; bottom: 35%; }
+.wifi2 .wave { border-color: #00ff66; }
+.wifi2 i { font-size: 2.5rem; color: #00ff66; filter: drop-shadow(0 0 12px #00ff66); }
 
-        /* Cable 4 - Diagonal inversa */
-        .cable4 {
-            bottom: 25%;
-            right: 5%;
-            width: 50%;
-            height: 2px;
-            transform: rotate(-20deg);
-            background: linear-gradient(90deg, transparent, #00ff88 20%, #ff6b00 50%, #00ff88 80%, transparent);
-            background-size: 200% 100%;
-            animation: cableFlow 4.5s linear infinite;
-        }
-        .cable4 .light-particle {
-            top: -2px;
-            color: #ff6b00;
-            animation-duration: 3.8s;
-            animation-delay: 0.5s;
-        }
+.wifi3 { left: 45%; top: 55%; }
+.wifi3 .wave { border-color: #ff007f; }
+.wifi3 i { font-size: 2.5rem; color: #ff007f; filter: drop-shadow(0 0 12px #ff007f); }
 
-        /* Cable 5 - Vertical */
-        .cable5 {
-            left: 50%;
-            top: 5%;
-            width: 2px;
-            height: 40%;
-            background: linear-gradient(180deg, transparent, #00ccff 20%, #0066ff 50%, #00ccff 80%, transparent);
-            background-size: 100% 200%;
-            animation: cableFlowVertical 5s linear infinite;
-        }
-        .cable5 .light-particle {
-            top: 0;
-            left: -2px;
-            color: #00ccff;
-            animation-name: fiberTravelVertical;
-            animation-duration: 4s;
-            animation-delay: 1.5s;
-        }
-        @keyframes cableFlow {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
-        }
-        @keyframes cableFlowVertical {
-            0% { background-position: 0 -200%; }
-            100% { background-position: 0 200%; }
-        }
-        @keyframes fiberTravelVertical {
-            0% { top: 0%; opacity: 0; }
-            5% { opacity: 1; }
-            95% { opacity: 1; }
-            100% { top: 100%; opacity: 0; }
-        }
+.wifi-signal .wave:nth-child(2) { animation-delay: 0.8s; }
+.wifi-signal .wave:nth-child(3) { animation-delay: 1.6s; }
 
-        /* ===== SEÑALES WiFi ===== */
-        .wifi-signal {
-            position: fixed;
-            z-index: 0;
-            opacity: 0.08;
-        }
-        .wifi-signal .wave {
-            position: absolute;
-            border: 2px solid;
-            border-radius: 50%;
-            animation: wifiWave 3s ease-out infinite;
-        }
-        @keyframes wifiWave {
-            0% { width: 20px; height: 20px; opacity: 0.6; }
-            100% { width: 250px; height: 250px; opacity: 0; }
-        }
+/* ===== PARTÍCULAS FLOTANTES ===== */
+.float-particle {
+    position: fixed; border-radius: 50%; z-index: 0;
+    box-shadow: 0 0 10px currentColor;
+    animation: floatParticle linear infinite;
+}
+@keyframes floatParticle {
+    0% { transform: translateY(100vh) scale(0); opacity: 0; }
+    20%, 80% { opacity: 0.9; }
+    100% { transform: translateY(-100vh) translateX(50px) scale(1.2); opacity: 0; }
+}
 
-        /* WiFi 1 - Izquierda */
-        .wifi1 {
-            left: 15%;
-            top: 35%;
-        }
-        .wifi1 .wave {
-            border-color: #00ccff;
-        }
-        .wifi1 .wave:nth-child(1) { animation-delay: 0s; }
-        .wifi1 .wave:nth-child(2) { animation-delay: 1s; }
-        .wifi1 .wave:nth-child(3) { animation-delay: 2s; }
-        .wifi1 .wave:nth-child(4) { animation-delay: 0.5s; }
-        .wifi1 .wave:nth-child(5) { animation-delay: 1.5s; }
-        .wifi1 i {
-            font-size: 2.5rem;
-            color: #00ccff;
-            position: relative;
-            z-index: 1;
-            animation: wifiPulse 2s ease-in-out infinite;
-        }
+/* ===== HERO CON BORDE NEÓN ===== */
+.hero {
+    text-align: center;
+    max-width: 750px;
+    padding: 3.2rem 2.5rem;
+    background: rgba(10, 12, 28, 0.82);
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    box-shadow: 
+        0 0 50px rgba(0, 240, 255, 0.18),
+        0 0 100px rgba(184, 41, 255, 0.12),
+        inset 0 0 30px rgba(0, 240, 255, 0.08);
+    position: relative;
+    z-index: 1;
+    animation: heroIn 0.8s ease-out;
+}
+@keyframes heroIn {
+    0% { transform: scale(0.92) translateY(25px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.hero h1 {
+    font-size: 2.9rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #00f0ff, #00ff66, #ff007f, #b829ff, #00f0ff);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 4s ease-in-out infinite;
+    filter: drop-shadow(0 2px 15px rgba(0, 240, 255, 0.25));
+}
+@keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+.logo {
+    font-size: 4.2rem;
+    background: linear-gradient(135deg, #00f0ff, #00ff66);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    filter: drop-shadow(0 0 25px rgba(0, 240, 255, 0.6));
+    animation: logoPulse 2s ease-in-out infinite;
+}
+@keyframes logoPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+.tech-badges {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 1.5rem 0;
+}
+.tech-badge {
+    background: rgba(0, 240, 255, 0.1);
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    border-radius: 20px;
+    padding: 0.45rem 1.2rem;
+    font-size: 0.8rem;
+    color: #e0f7ff;
+    font-weight: 600;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.12);
+    transition: all 0.3s ease;
+}
+.tech-badge i { color: #00f0ff; margin-right: 6px; }
+.tech-badge:hover {
+    background: rgba(0, 240, 255, 0.22);
+    border-color: #00f0ff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 20px rgba(0, 240, 255, 0.35);
+}
+.hero p {
+    color: #b8c7e0;
+    font-size: 1.15rem;
+    margin: 1rem 0 2rem;
+    line-height: 1.8;
+}
+.hero p .highlight { color: #00f0ff; font-weight: 700; text-shadow: 0 0 10px rgba(0, 240, 255, 0.4); }
+.hero p .highlight2 { color: #00ff66; font-weight: 700; text-shadow: 0 0 10px rgba(0, 255, 102, 0.4); }
 
-        /* WiFi 2 - Derecha */
-        .wifi2 {
-            right: 15%;
-            bottom: 35%;
-        }
-        .wifi2 .wave {
-            border-color: #00ff88;
-        }
-        .wifi2 .wave:nth-child(1) { animation-delay: 0.5s; }
-        .wifi2 .wave:nth-child(2) { animation-delay: 1.5s; }
-        .wifi2 .wave:nth-child(3) { animation-delay: 2.5s; }
-        .wifi2 .wave:nth-child(4) { animation-delay: 1s; }
-        .wifi2 .wave:nth-child(5) { animation-delay: 2s; }
-        .wifi2 i {
-            font-size: 2.5rem;
-            color: #00ff88;
-            position: relative;
-            z-index: 1;
-            animation: wifiPulse 2.5s ease-in-out infinite 0.5s;
-        }
-
-        /* WiFi 3 - Centro */
-        .wifi3 {
-            left: 45%;
-            top: 55%;
-        }
-        .wifi3 .wave {
-            border-color: #cc00ff;
-        }
-        .wifi3 .wave:nth-child(1) { animation-delay: 1s; }
-        .wifi3 .wave:nth-child(2) { animation-delay: 2s; }
-        .wifi3 .wave:nth-child(3) { animation-delay: 0s; }
-        .wifi3 .wave:nth-child(4) { animation-delay: 1.5s; }
-        .wifi3 .wave:nth-child(5) { animation-delay: 2.5s; }
-        .wifi3 i {
-            font-size: 2.5rem;
-            color: #cc00ff;
-            position: relative;
-            z-index: 1;
-            animation: wifiPulse 1.8s ease-in-out infinite 1s;
-        }
-
-        @keyframes wifiPulse {
-            0%, 100% { transform: scale(1); opacity: 0.6; }
-            50% { transform: scale(1.2); opacity: 1; }
-        }
-
-        /* ===== PARTÍCULAS DE LUZ FLOTANTES ===== */
-        .float-particle {
-            position: fixed;
-            border-radius: 50%;
-            z-index: 0;
-            animation: floatParticle linear infinite;
-            opacity: 0;
-        }
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
-            10% { opacity: 0.3; }
-            50% { opacity: 0.6; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-100vh) translateX(50px) scale(1); opacity: 0; }
-        }
-
-        /* ===== HERO ===== */
-        .hero {
-            text-align: center;
-            max-width: 750px;
-            padding: 3rem 2.5rem;
-            background: rgba(6, 6, 14, 0.88);
-            backdrop-filter: blur(25px);
-            border-radius: 30px;
-            border: 1px solid rgba(0, 200, 255, 0.08);
-            box-shadow: 
-                0 0 80px rgba(0, 200, 255, 0.03),
-                inset 0 0 80px rgba(0, 200, 255, 0.02);
-            position: relative;
-            z-index: 1;
-            animation: heroIn 1s ease-out;
-        }
-        @keyframes heroIn {
-            0% { transform: scale(0.9) translateY(30px); opacity: 0; }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
-        }
-        .hero h1 {
-            font-size: 2.8rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #00ccff, #0066ff, #00ff88, #cc00ff, #00ccff);
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: gradientShift 5s ease-in-out infinite;
-        }
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        .logo {
-            font-size: 4rem;
-            background: linear-gradient(135deg, #00ccff, #0066ff, #00ff88);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            display: inline-block;
-            animation: logoPulse 2s ease-in-out infinite;
-        }
-        @keyframes logoPulse {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(0, 204, 255, 0.1)); }
-            50% { transform: scale(1.05); filter: drop-shadow(0 0 40px rgba(0, 204, 255, 0.3)); }
-        }
-        .tech-badges {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin: 1.5rem 0;
-        }
-        .tech-badge {
-            background: rgba(0, 204, 255, 0.04);
-            border: 1px solid rgba(0, 204, 255, 0.08);
-            border-radius: 20px;
-            padding: 0.4rem 1.2rem;
-            font-size: 0.75rem;
-            color: #88ccff;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            transition: all 0.3s ease;
-        }
-        .tech-badge:hover {
-            background: rgba(0, 204, 255, 0.08);
-            border-color: rgba(0, 204, 255, 0.2);
-            transform: translateY(-2px);
-        }
-        .tech-badge i { margin-right: 6px; }
-        .hero p {
-            color: #667799;
-            font-size: 1.1rem;
-            margin: 1rem 0 2rem;
-            line-height: 1.8;
-        }
-        .hero p .highlight {
-            color: #00ccff;
-            font-weight: 500;
-        }
-        .hero p .highlight2 {
-            color: #00ff88;
-            font-weight: 500;
-        }
-        .btn-custom {
-            border-radius: 50px;
-            padding: 0.8rem 2.2rem;
-            font-weight: 600;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-fiber {
-            background: linear-gradient(135deg, #00ccff, #0066ff);
-            border: none;
-            color: #06060e;
-        }
-        .btn-fiber:hover {
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 10px 50px rgba(0, 204, 255, 0.25);
-            color: #06060e;
-        }
-        .btn-fiber-outline {
-            background: transparent;
-            border: 2px solid rgba(0, 204, 255, 0.3);
-            color: #88ccff;
-        }
-        .btn-fiber-outline:hover {
-            background: rgba(0, 204, 255, 0.05);
-            border-color: #00ccff;
-            transform: translateY(-3px);
-            color: #00ccff;
-        }
-        .btn-fiber::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
-            animation: btnShine 4s linear infinite;
-        }
-        @keyframes btnShine {
-            0% { transform: translate(-30%, -30%) rotate(0deg); }
-            100% { transform: translate(30%, 30%) rotate(360deg); }
-        }
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 1.5rem;
-            font-size: 0.8rem;
-            color: #445566;
-        }
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #00ff88;
-            animation: ledBlink 1.5s ease-in-out infinite;
-        }
-        .status-dot:nth-child(2) {
-            background: #00ccff;
-            animation-delay: 0.3s;
-        }
-        .status-dot:nth-child(3) {
-            background: #cc00ff;
-            animation-delay: 0.6s;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .rack1, .rack2, .rack3, .rack4, .rack5 { display: none; }
-            .cable1, .cable2, .cable3, .cable4, .cable5 { opacity: 0.1; }
-            .wifi1, .wifi2, .wifi3 { opacity: 0.05; }
-            .hero { padding: 2rem 1.5rem; margin: 1rem; }
-            .hero h1 { font-size: 2rem; }
-            .tech-badges { gap: 6px; }
-            .tech-badge { font-size: 0.65rem; padding: 0.3rem 0.8rem; }
-        }
-    </style>
+.btn-custom {
+    border-radius: 50px;
+    padding: 0.9rem 2.5rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+.btn-fiber {
+    background: linear-gradient(135deg, #00f0ff 0%, #0077ff 50%, #b829ff 100%);
+    background-size: 200% auto;
+    border: none;
+    color: #ffffff;
+    box-shadow: 0 0 25px rgba(0, 240, 255, 0.45);
+}
+.btn-fiber:hover {
+    background-position: right center;
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 10px 40px rgba(184, 41, 255, 0.6);
+    color: #ffffff;
+}
+.status-indicator {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-top: 1.8rem; font-size: 0.85rem; color: #94a3b8; font-weight: 500;
+}
+.status-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: #00ff66;
+    box-shadow: 0 0 10px #00ff66;
+    animation: ledBlink 1.2s ease-in-out infinite;
+}
+.status-dot:nth-child(2) { background: #00f0ff; box-shadow: 0 0 10px #00f0ff; animation-delay: 0.3s; }
+.status-dot:nth-child(3) { background: #ff007f; box-shadow: 0 0 10px #ff007f; animation-delay: 0.6s; }
+</style>
 </head>
 <body>
 
