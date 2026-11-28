@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'andes_agent' => [
+        'token' => env('ANDES_AGENT_TOKEN', 'andes_secret_agent_token_2026'),
+    ],
+
 ];
